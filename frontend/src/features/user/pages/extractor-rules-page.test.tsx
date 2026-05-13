@@ -36,9 +36,9 @@ describe("UserExtractorRulesPage", () => {
           id: 11,
           ownerUserId: 1,
           sourceType: "user",
-          name: "我的验证码",
-          description: "提取标题验证码",
-          label: "验证码",
+          name: "Textverification code",
+          description: "TextSubjectverification code",
+          label: "verification code",
           enabled: true,
           targetFields: ["subject"],
           pattern: "\\b(\\d{6})\\b",
@@ -48,7 +48,7 @@ describe("UserExtractorRulesPage", () => {
           mailboxIds: [],
           domainIds: [],
           senderContains: "",
-          subjectContains: "验证码",
+          subjectContains: "verification code",
           sortOrder: 100,
         },
       ],
@@ -57,9 +57,9 @@ describe("UserExtractorRulesPage", () => {
           id: 21,
           sourceType: "admin_default",
           templateKey: "default-code",
-          name: "默认验证码模板",
-          description: "管理员提供",
-          label: "默认验证码",
+          name: "Textverification codeText",
+          description: "Text",
+          label: "Textverification code",
           enabled: true,
           enabledForUser: false,
           targetFields: ["subject"],
@@ -126,7 +126,7 @@ describe("UserExtractorRulesPage", () => {
         mailboxAddress: "alpha@example.test",
         fromAddr: "sender@example.com",
         toAddr: "alpha@example.test",
-        subject: "验证码 123456",
+        subject: "verification code 123456",
         textPreview: "body",
         htmlPreview: "",
         hasAttachments: false,
@@ -141,9 +141,9 @@ describe("UserExtractorRulesPage", () => {
       id: 88,
       ownerUserId: 1,
       sourceType: "user",
-      name: "登录验证码",
+      name: "Textverification code",
       description: "",
-      label: "登录码",
+      label: "Text",
       enabled: true,
       targetFields: ["subject"],
       pattern: "\\b(\\d{6})\\b",
@@ -162,9 +162,9 @@ describe("UserExtractorRulesPage", () => {
       id: 89,
       ownerUserId: 1,
       sourceType: "user",
-      name: "复制模板",
+      name: "Text",
       description: "",
-      label: "默认验证码",
+      label: "Textverification code",
       enabled: true,
       targetFields: ["subject"],
       pattern: "\\b(\\d{6})\\b",
@@ -197,20 +197,20 @@ describe("UserExtractorRulesPage", () => {
   it("renders user rules and admin templates", async () => {
     renderPage();
 
-    expect(await screen.findByText("我的验证码")).toBeInTheDocument();
-    expect(await screen.findByText("默认验证码模板")).toBeInTheDocument();
+    expect(await screen.findByText("Textverification code")).toBeInTheDocument();
+    expect(await screen.findByText("Textverification codeText")).toBeInTheDocument();
   });
 
   it("creates a new extractor rule", async () => {
     renderPage();
 
-    fireEvent.change((await screen.findAllByLabelText("规则名称"))[0], { target: { value: "登录验证码" } });
-    fireEvent.change(screen.getAllByLabelText("正则表达式")[0], { target: { value: "\\b(\\d{6})\\b" } });
+    fireEvent.change((await screen.findAllByLabelText("Rule name"))[0], { target: { value: "Textverification code" } });
+    fireEvent.change(screen.getAllByLabelText("Regular expression")[0], { target: { value: "\\b(\\d{6})\\b" } });
 
-    fireEvent.click(screen.getAllByRole("button", { name: "保存规则" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Save rule" })[0]);
     await waitFor(() => {
       expect(vi.mocked(createMailExtractorRule).mock.calls[0]?.[0]).toMatchObject({
-        name: "登录验证码",
+        name: "Textverification code",
         targetFields: ["subject"],
       });
     });
@@ -219,13 +219,13 @@ describe("UserExtractorRulesPage", () => {
   it("enables and copies admin templates", async () => {
     renderPage();
 
-    fireEvent.click((await screen.findAllByRole("button", { name: "启用" }))[0]);
+    fireEvent.click((await screen.findAllByRole("button", { name: "Enable" }))[0]);
 
     await waitFor(() => {
       expect(enableMailExtractorTemplate).toHaveBeenCalledWith(21);
     });
 
-    fireEvent.click((await screen.findAllByRole("button", { name: "复制到我的规则" }))[0]);
+    fireEvent.click((await screen.findAllByRole("button", { name: "Text and My rules" }))[0]);
 
     await waitFor(() => {
       expect(copyMailExtractorTemplate).toHaveBeenCalledWith(21);
@@ -234,10 +234,10 @@ describe("UserExtractorRulesPage", () => {
 
   it("blocks regex syntax in contains fields before submit", () => {
     const draft = emptyRuleDraft();
-    draft.name = "登录验证码";
+    draft.name = "Textverification code";
     draft.pattern = "\\b(\\d{6})\\b";
     draft.senderContains = ".*@x.ai";
 
-    expect(validateRuleDraft(draft)).toBe("“发件人包含”只支持普通文本包含，不支持正则，请把正则写到主表达式里。");
+    expect(validateRuleDraft(draft)).toBe("“SenderText”Text，Text，Text and Text。");
   });
 });

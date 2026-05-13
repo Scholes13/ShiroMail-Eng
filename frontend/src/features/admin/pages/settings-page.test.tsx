@@ -26,8 +26,8 @@ describe("AdminSettingsPage", () => {
     vi.mocked(fetchAdminSettingsSections).mockResolvedValue([
       {
         key: "site",
-        title: "站点信息",
-        description: "品牌名、联系邮箱、默认语言与时区。",
+        title: "Text",
+        description: "Text、Text、Text。",
         items: [
           {
             key: "site.identity",
@@ -46,8 +46,8 @@ describe("AdminSettingsPage", () => {
       },
       {
         key: "auth",
-        title: "认证与注册",
-        description: "注册开放策略、密码规则、会话策略。",
+        title: "Text",
+        description: "Text、Text、Text。",
         items: [
           {
             key: "auth.registration_policy",
@@ -90,7 +90,7 @@ describe("AdminSettingsPage", () => {
       {
         key: "oauth",
         title: "OAuth / OIDC",
-        description: "第三方登录展示顺序与 provider 凭据。",
+        description: "Text provider Text。",
         items: [
           {
             key: "auth.oauth.display",
@@ -154,8 +154,8 @@ describe("AdminSettingsPage", () => {
       },
       {
         key: "mail",
-        title: "收件与 SMTP",
-        description: "SMTP 监听与收件策略。",
+        title: "Text SMTP",
+        description: "SMTP Text。",
         items: [
           {
             key: "mail.smtp",
@@ -200,8 +200,8 @@ describe("AdminSettingsPage", () => {
       },
       {
         key: "api",
-        title: "API 设置",
-        description: "API 速率限制、鉴权身份桶与严格 IP 限流策略。",
+        title: "API Text",
+        description: "API Text、Text IP Text。",
         items: [
           {
             key: "api.limits",
@@ -232,8 +232,8 @@ describe("AdminSettingsPage", () => {
       },
       {
         key: "domain",
-        title: "域名平台策略",
-        description: "公开域发布审核等平台级域名策略。",
+        title: "DomainText",
+        description: "TextDomainText。",
         items: [
           {
             key: "domain.public_pool_policy",
@@ -295,17 +295,17 @@ describe("AdminSettingsPage", () => {
     );
 
     expect(
-      await screen.findByRole("textbox", { name: "站点名称" }),
+      await screen.findByRole("textbox", { name: "Text" }),
     ).toHaveValue("Shiro Email");
     await waitFor(() => {
-      expect(screen.getByRole("textbox", { name: "站点地址" })).toHaveValue(
+      expect(screen.getByRole("textbox", { name: "Text" })).toHaveValue(
         "https://mail.example.com",
       );
     });
-    expect(screen.getByRole("tab", { name: "OAuth 设置" })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "用户设置" })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "API 设置" })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: "其他设置" })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "OAuth Text" })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Text" })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "API Text" })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Text" })).toBeInTheDocument();
     expect(vi.mocked(upsertAdminConfig)).not.toHaveBeenCalled();
   });
 
@@ -323,7 +323,7 @@ describe("AdminSettingsPage", () => {
       </QueryClientProvider>,
     );
 
-    const otherTab = await screen.findByRole("tab", { name: "其他设置" });
+    const otherTab = await screen.findByRole("tab", { name: "Text" });
     otherTab.focus();
     fireEvent.keyDown(otherTab, { key: "Enter", code: "Enter" });
 
@@ -349,11 +349,11 @@ describe("AdminSettingsPage", () => {
       </QueryClientProvider>,
     );
 
-    const otherTab = await screen.findByRole("tab", { name: "其他设置" });
+    const otherTab = await screen.findByRole("tab", { name: "Text" });
     otherTab.focus();
     fireEvent.keyDown(otherTab, { key: "Enter", code: "Enter" });
-    await screen.findByText("账户邮件发信");
-    fireEvent.click(screen.getByRole("button", { name: "发送测试邮件" }));
+    await screen.findByText("Text");
+    fireEvent.click(screen.getByRole("button", { name: "TextTest message" }));
 
     await waitFor(() => {
       expect(vi.mocked(sendAdminMailDeliveryTest)).toHaveBeenCalledWith({
@@ -361,7 +361,7 @@ describe("AdminSettingsPage", () => {
       });
     });
     expect(
-      await screen.findByText("最近一次 SMTP 测试"),
+      await screen.findByText("Text SMTP Text"),
     ).toBeInTheDocument();
     expect(screen.getByText("Success")).toBeInTheDocument();
   });
@@ -394,11 +394,11 @@ describe("AdminSettingsPage", () => {
       </QueryClientProvider>,
     );
 
-    const otherTab = await screen.findByRole("tab", { name: "其他设置" });
+    const otherTab = await screen.findByRole("tab", { name: "Text" });
     otherTab.focus();
     fireEvent.keyDown(otherTab, { key: "Enter", code: "Enter" });
-    await screen.findByText("账户邮件发信");
-    fireEvent.click(screen.getByRole("button", { name: "发送测试邮件" }));
+    await screen.findByText("Text");
+    fireEvent.click(screen.getByRole("button", { name: "TextTest message" }));
 
     expect(await screen.findByText("Failed")).toBeInTheDocument();
     expect(screen.getByText("starttls_unavailable")).toBeInTheDocument();
@@ -420,17 +420,17 @@ describe("AdminSettingsPage", () => {
       </QueryClientProvider>,
     );
 
-    const oauthTab = await screen.findByRole("tab", { name: "OAuth 设置" });
+    const oauthTab = await screen.findByRole("tab", { name: "OAuth Text" });
     oauthTab.focus();
     fireEvent.keyDown(oauthTab, { key: "Enter", code: "Enter" });
 
-    await screen.findByText("OAuth 应用");
+    await screen.findByText("OAuth Text");
     const githubCard = screen.getByText("GitHub").closest("div.rounded-xl");
     expect(githubCard).not.toBeNull();
     fireEvent.click(
-      within(githubCard as HTMLElement).getByRole("button", { name: "删除" }),
+      within(githubCard as HTMLElement).getByRole("button", { name: "Text" }),
     );
-    fireEvent.click(screen.getByRole("button", { name: "保存设置" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(deleteAdminConfig)).toHaveBeenCalledWith(
@@ -453,15 +453,15 @@ describe("AdminSettingsPage", () => {
       </QueryClientProvider>,
     );
 
-    const apiTab = await screen.findByRole("tab", { name: "API 设置" });
+    const apiTab = await screen.findByRole("tab", { name: "API Text" });
     apiTab.focus();
     fireEvent.keyDown(apiTab, { key: "Enter", code: "Enter" });
 
     const strictIpInput = await screen.findByRole("spinbutton", {
-      name: "严格 IP RPM",
+      name: "Text IP RPM",
     });
     fireEvent.change(strictIpInput, { target: { value: "2400" } });
-    fireEvent.click(screen.getByRole("button", { name: "保存设置" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(upsertAdminConfig)).toHaveBeenCalledWith("api.limits", {
@@ -501,7 +501,7 @@ describe("AdminSettingsPage", () => {
       </QueryClientProvider>,
     );
 
-    const apiTab = await screen.findByRole("tab", { name: "API 设置" });
+    const apiTab = await screen.findByRole("tab", { name: "API Text" });
     apiTab.focus();
     fireEvent.keyDown(apiTab, { key: "Enter", code: "Enter" });
 

@@ -35,7 +35,7 @@ function getLocaleResource(language: SupportedLanguage): LocaleResource {
     return resource;
   }
 
-  return zhCN;
+  return enUS;
 }
 
 function toPlainTranslationResource(language: SupportedLanguage) {
@@ -130,7 +130,7 @@ export async function initializeI18n() {
         },
       },
       lng: initialLanguage,
-      fallbackLng: "zh-CN",
+      fallbackLng: "en-US",
       supportedLngs: [...supportedLanguages],
       interpolation: {
         escapeValue: false,
@@ -150,7 +150,7 @@ export async function changeAppLanguage(language: SupportedLanguage) {
   const instance = await initializeI18n();
 
   await Promise.all(
-    [...new Set<SupportedLanguage>([language, "zh-CN"])]
+    [...new Set<SupportedLanguage>([language, "en-US"])]
       .filter((item) => !loadedLanguages.has(item))
       .map((item) => loadLanguageResource(item)),
   );

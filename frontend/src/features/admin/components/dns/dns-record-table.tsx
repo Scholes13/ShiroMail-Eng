@@ -68,11 +68,11 @@ export function DnsRecordTable({
   return (
     <div className="space-y-3 rounded-xl border border-border/60 bg-background/80 p-3">
       <SectionToggle
-        description={`共 ${records.length} 条 DNS Records`}
+        description={`Text ${records.length} Text DNS Records`}
         expanded={expanded}
         meta={
           <WorkspaceBadge variant="outline">
-            第 {page} / {totalPages} 页
+            Text {page} / {totalPages} Text
           </WorkspaceBadge>
         }
         title="DNS Records"
@@ -123,8 +123,8 @@ export function DnsRecordTable({
         </div>
       ) : expanded ? (
         <WorkspaceEmpty
-          title="暂无 Records"
-          description="当前 Zone 还没有可读取的 DNS Records。"
+          title="Text Records"
+          description="Text Zone Text DNS Records。"
         />
       ) : null}
     </div>

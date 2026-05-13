@@ -23,10 +23,10 @@ export function OAuthCallbackPage() {
       return null;
     }
     if (!provider) {
-      return "缺少 OAuth provider。";
+      return "Text OAuth provider。";
     }
     if (!code || !state) {
-      return "OAuth 回调参数不完整。";
+      return "OAuth Text。";
     }
     return null;
   }, [code, provider, providerError, state]);
@@ -41,7 +41,7 @@ export function OAuthCallbackPage() {
     if (error) {
       return error;
     }
-    return "正在完成 OAuth 登录并跳转到对应工作台...";
+    return "Text OAuth Text and Text...";
   }, [callbackError, error, providerError]);
   usePageTitle(composePageTitle(provider ? `OAuth · ${provider}` : "OAuth", siteName));
 
@@ -74,7 +74,7 @@ export function OAuthCallbackPage() {
         setError(
           getAPIErrorMessage(
             currentError,
-            "OAuth 登录失败，请返回首页重试。",
+            "OAuth Text，Text。",
           ),
         );
       });

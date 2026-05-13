@@ -44,7 +44,7 @@ export function resolveMessageBody(message: {
     return preview;
   }
 
-  return "暂无正文内容。";
+  return "TextBodyText。";
 }
 
 export function resolveHtmlBody(message: {
@@ -60,8 +60,8 @@ export function buildMailHtmlPreview(content: string, cidSources: Record<string,
 
   html = html.replace(/<script\b[\s\S]*?<\/script>/gi, "");
   html = html.replace(/<iframe\b[\s\S]*?<\/iframe>/gi, (_match) => {
-    notices.push("已隐藏邮件中的嵌入框架内容。");
-    return buildNoticeBlock("已隐藏嵌入内容，请下载原文查看。");
+    notices.push("Text。");
+    return buildNoticeBlock("Text，Text。");
   });
   html = html.replace(/<img\b([^>]*?)\bsrc=(["'])cid:([^"']+)\2([^>]*)>/gi, (_match, beforeSrc, quote, cidValue, afterSrc) => {
     const normalizedCID = normalizeCIDReference(cidValue);
@@ -69,9 +69,9 @@ export function buildMailHtmlPreview(content: string, cidSources: Record<string,
     if (resolvedSource) {
       return addImageLoadingHints(`<img${beforeSrc ?? ""} src=${quote}${resolvedSource}${quote}${afterSrc ?? ""}>`);
     }
-    notices.push(`邮件中的 CID 图片 ${normalizedCID} 暂时无法解析。`);
+    notices.push(`Text CID Text ${normalizedCID} Text。`);
     const alt = getImageAltText(`${beforeSrc ?? ""} ${afterSrc ?? ""}`);
-    return buildNoticeBlock(alt ? `CID 图片未解析：${alt}` : `CID 图片 ${normalizedCID} 暂不支持预览，请下载原文或附件查看。`);
+    return buildNoticeBlock(alt ? `CID Text：${alt}` : `CID Text ${normalizedCID} Text，Text。`);
   });
   html = html.replace(/<img\b([^>]*?)\bsrc=(["'])(data:image\/[^"']+)\2([^>]*)>/gi, (...args) => {
     const match = args[0];
@@ -81,9 +81,9 @@ export function buildMailHtmlPreview(content: string, cidSources: Record<string,
     if (dataUri.length <= HTML_DATA_URI_LIMIT) {
       return addImageLoadingHints(match);
     }
-    notices.push("已隐藏过大的内联图片，避免邮件预览卡顿。");
+    notices.push("Text，Text。");
     const alt = getImageAltText(`${beforeSrc ?? ""} ${afterSrc ?? ""}`);
-    return buildNoticeBlock(alt ? `图片已隐藏：${alt}` : "过大的内联图片已隐藏，请下载原文查看。");
+    return buildNoticeBlock(alt ? `Text：${alt}` : "Text，Text。");
   });
   html = html.replace(/<img\b[^>]*>/gi, (match) => addImageLoadingHints(match));
 
@@ -221,7 +221,7 @@ export function extractReceivedTimeline(headers: MailHeaderMap) {
     const route = parts[0]?.replace(/\s+/g, " ").trim() ?? trimmed;
     const date = parts.slice(1).join(";").trim();
     return {
-      route: route || "投递链路未知",
+      route: route || "Text",
       date,
       raw: clampMultiline(trimmed, RECEIVED_ENTRY_LIMIT),
       isRawTruncated: trimmed.length > RECEIVED_ENTRY_LIMIT,
@@ -256,7 +256,7 @@ function clampMultiline(value: string, limit: number) {
   if (value.length <= limit) {
     return value;
   }
-  return `${value.slice(0, limit).trimEnd()}\n\n[内容已截断，剩余部分请下载原文查看]`;
+  return `${value.slice(0, limit).trimEnd()}\n\n[Text，Text]`;
 }
 
 function buildNoticeBlock(text: string) {

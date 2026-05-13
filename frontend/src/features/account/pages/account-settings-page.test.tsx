@@ -124,7 +124,7 @@ describe("AccountSettingsPage", () => {
     expect(await screen.findByDisplayValue("galiais")).toBeInTheDocument();
     expect(screen.getByDisplayValue("galiais")).toBeInTheDocument();
     expect(screen.getAllByDisplayValue("galiais@example.com").length).toBeGreaterThan(0);
-    expect(screen.getByText(/TOTP (inactive|未启用)/)).toBeInTheDocument();
+    expect(screen.getByText(/TOTP (inactive|TextEnable)/)).toBeInTheDocument();
   });
 
   it("updates account profile and requests email verification", async () => {
@@ -138,7 +138,7 @@ describe("AccountSettingsPage", () => {
     fireEvent.change(screen.getByDisplayValue("30"), {
       target: { value: "45" },
     });
-    fireEvent.click(screen.getAllByRole("button", { name: /Save settings|保存设置/ })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /Save settings|Text/ })[0]);
 
     await waitFor(() => {
       expect(vi.mocked(updateAccountProfile).mock.calls[0]?.[0]).toEqual({
@@ -152,17 +152,17 @@ describe("AccountSettingsPage", () => {
     fireEvent.change(screen.getByPlaceholderText("name@example.com"), {
       target: { value: "ops@example.com" },
     });
-    fireEvent.click(screen.getByRole("button", { name: /Send code|发送验证码/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Send code|Textverification code/ }));
 
     await waitFor(() => {
       expect(vi.mocked(requestAccountEmailChange).mock.calls[0]?.[0]).toBe("ops@example.com");
     });
     expect(await screen.findByText(/ops@example\.com/)).toBeInTheDocument();
 
-    fireEvent.change(screen.getByPlaceholderText(/Enter the 6-digit code|输入 6 位验证码/), {
+    fireEvent.change(screen.getByPlaceholderText(/Enter the 6-digit code|Text 6 Textverification code/), {
       target: { value: "654321" },
     });
-    fireEvent.click(screen.getByRole("button", { name: /Confirm email change|确认换绑/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Confirm email change|Text/ }));
 
     await waitFor(() => {
       expect(vi.mocked(confirmAccountEmailChange).mock.calls[0]?.[0]).toEqual({
@@ -176,17 +176,17 @@ describe("AccountSettingsPage", () => {
     renderPage();
 
     await screen.findByDisplayValue("galiais");
-    fireEvent.click(screen.getByRole("button", { name: /Prepare 2FA|开始配置 2FA/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Prepare 2FA|Text 2FA/ }));
 
     expect(await screen.findByDisplayValue("SECRET123")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Copy manual key|复制手动密钥/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Copy manual key|Text/ }));
     await waitFor(() => {
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith("SECRET123");
     });
-    fireEvent.change(screen.getByPlaceholderText(/Enter the 6-digit code|输入 6 位验证码/), {
+    fireEvent.change(screen.getByPlaceholderText(/Enter the 6-digit code|Text 6 Textverification code/), {
       target: { value: "123456" },
     });
-    fireEvent.click(screen.getByRole("button", { name: /Enable TOTP|启用 TOTP/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Enable TOTP|Enable TOTP/ }));
 
     await waitFor(() => {
       expect(vi.mocked(enableTOTP).mock.calls[0]?.[0]).toBe("123456");
@@ -211,10 +211,10 @@ describe("AccountSettingsPage", () => {
     renderPage();
 
     await screen.findByDisplayValue("galiais");
-    fireEvent.change(screen.getAllByLabelText(/Current password|当前密码/)[1], {
+    fireEvent.change(screen.getAllByLabelText(/Current password|Text/)[1], {
       target: { value: "Secret123!" },
     });
-    fireEvent.click(screen.getByRole("button", { name: /Disable TOTP|停用 TOTP/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Disable TOTP|Disable TOTP/ }));
 
     await waitFor(() => {
       expect(vi.mocked(disableTOTP).mock.calls[0]?.[0]).toBe("Secret123!");
@@ -226,8 +226,8 @@ describe("AccountSettingsPage", () => {
 
     renderPage();
 
-    expect(await screen.findByText(/Account settings|账户设置/)).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Refresh|刷新数据/ }));
+    expect(await screen.findByText(/Account settings|Text/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Refresh|Refresh data/ }));
 
     await waitFor(() => {
       expect(vi.mocked(fetchAccountProfile)).toHaveBeenCalledTimes(2);

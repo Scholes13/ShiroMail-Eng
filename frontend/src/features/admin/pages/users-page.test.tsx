@@ -81,18 +81,18 @@ describe("AdminUsersPage", () => {
     renderPage();
 
     expect(await screen.findByText("alice")).toBeInTheDocument();
-    expect(await screen.findByText("alice@shiro.local · active · 未验证")).toBeInTheDocument();
+    expect(await screen.findByText("alice@shiro.local · active · Text")).toBeInTheDocument();
     expect(await screen.findByText("admin")).toBeInTheDocument();
-    expect(await screen.findByText("管理员")).toBeInTheDocument();
-    expect(await screen.findByText("邮箱总量")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
   });
 
   it("updates selected user profile from the dialog", async () => {
     renderPage();
 
-    fireEvent.click((await screen.findAllByRole("button", { name: "编辑" }))[0]);
+    fireEvent.click((await screen.findAllByRole("button", { name: "Text" }))[0]);
 
-    const dialog = await screen.findByRole("dialog", { name: "编辑用户" });
+    const dialog = await screen.findByRole("dialog", { name: "Text" });
     const dialogQueries = within(dialog);
 
     fireEvent.change(dialogQueries.getByDisplayValue("alice"), {
@@ -102,12 +102,12 @@ describe("AdminUsersPage", () => {
       target: { value: "alice-updated@shiro.local" },
     });
     fireEvent.click(dialogQueries.getByRole("checkbox", { name: "admin" }));
-    fireEvent.click(dialogQueries.getByLabelText("邮箱已验证"));
-    fireEvent.click(dialogQueries.getByLabelText("停用"));
-    fireEvent.change(dialogQueries.getByPlaceholderText("输入新密码以覆盖"), {
+    fireEvent.click(dialogQueries.getByLabelText("Text"));
+    fireEvent.click(dialogQueries.getByLabelText("Disable"));
+    fireEvent.change(dialogQueries.getByPlaceholderText("Text"), {
       target: { value: "BetterSecret123!" },
     });
-    fireEvent.click(dialogQueries.getByRole("button", { name: "保存修改" }));
+    fireEvent.click(dialogQueries.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(updateAdminUser).mock.calls[0]?.[0]).toBe(1);
@@ -125,10 +125,10 @@ describe("AdminUsersPage", () => {
   it("deletes a non-current user from destructive dialog", async () => {
     renderPage();
 
-    fireEvent.click((await screen.findAllByRole("button", { name: "删除" }))[0]);
+    fireEvent.click((await screen.findAllByRole("button", { name: "Text" }))[0]);
 
-    const dialog = await screen.findByRole("alertdialog", { name: "删除用户？" });
-    fireEvent.click(within(dialog).getByRole("button", { name: "确认删除" }));
+    const dialog = await screen.findByRole("alertdialog", { name: "Text？" });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(deleteAdminUser).mock.calls[0]?.[0]).toBe(1);
@@ -139,10 +139,10 @@ describe("AdminUsersPage", () => {
     vi.mocked(deleteAdminUser).mockRejectedValueOnce(new Error("user still has mailboxes"));
     renderPage();
 
-    fireEvent.click((await screen.findAllByRole("button", { name: "删除" }))[0]);
+    fireEvent.click((await screen.findAllByRole("button", { name: "Text" }))[0]);
 
-    const dialog = await screen.findByRole("alertdialog", { name: "删除用户？" });
-    fireEvent.click(within(dialog).getByRole("button", { name: "确认删除" }));
+    const dialog = await screen.findByRole("alertdialog", { name: "Text？" });
+    fireEvent.click(within(dialog).getByRole("button", { name: "Text" }));
 
     expect(await screen.findByText("user still has mailboxes")).toBeInTheDocument();
   });

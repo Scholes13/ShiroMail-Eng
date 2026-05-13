@@ -169,7 +169,7 @@ describe("UserApiKeysPage", () => {
     expect((await screen.findAllByText("mailboxes.read")).length).toBeGreaterThan(0);
     expect((await screen.findAllByText("domains.verify")).length).toBeGreaterThan(0);
     expect(await screen.findByText("private_only")).toBeInTheDocument();
-    expect(await screen.findByText("绑定 0")).toBeInTheDocument();
+    expect(await screen.findByText("Text 0")).toBeInTheDocument();
   });
 
   it("creates enterprise api keys with selected scopes, policy and domain bindings", async () => {
@@ -187,22 +187,22 @@ describe("UserApiKeysPage", () => {
     );
 
     expect(
-      screen.queryByPlaceholderText("输入密钥名称，如 SDK / Bot / Worker"),
+      screen.queryByPlaceholderText("Text，Text SDK / Bot / Worker"),
     ).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "创建密钥" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     const dialog = await screen.findByRole("dialog");
     const dialogQueries = within(dialog);
 
     fireEvent.change(
-      dialogQueries.getByPlaceholderText("输入密钥名称，如 SDK / Bot / Worker"),
+      dialogQueries.getByPlaceholderText("Text，Text SDK / Bot / Worker"),
       {
       target: { value: "ops-key" },
       },
     );
 
-    fireEvent.click(dialogQueries.getByRole("combobox", { name: "域访问模式" }));
+    fireEvent.click(dialogQueries.getByRole("combobox", { name: "Text" }));
     fireEvent.click((await screen.findAllByText("private_only")).at(-1)!);
 
     fireEvent.click(
@@ -211,14 +211,14 @@ describe("UserApiKeysPage", () => {
     fireEvent.click(dialogQueries.getByRole("checkbox", { name: "platform_public" }));
     fireEvent.click(dialogQueries.getByRole("checkbox", { name: "public_pool" }));
 
-    fireEvent.click(dialogQueries.getByRole("combobox", { name: "绑定域名" }));
+    fireEvent.click(dialogQueries.getByRole("combobox", { name: "TextDomain" }));
     fireEvent.click(await screen.findByText("private.example.com"));
 
-    fireEvent.click(dialogQueries.getByRole("combobox", { name: "绑定权限" }));
+    fireEvent.click(dialogQueries.getByRole("combobox", { name: "Text" }));
     fireEvent.click((await screen.findAllByText("verify")).at(-1)!);
 
-    fireEvent.click(dialogQueries.getByRole("button", { name: "添加绑定" }));
-    fireEvent.click(dialogQueries.getByRole("button", { name: "创建密钥" }));
+    fireEvent.click(dialogQueries.getByRole("button", { name: "Text" }));
+    fireEvent.click(dialogQueries.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(createApiKey).mock.calls[0]?.[0]).toEqual({
@@ -247,7 +247,7 @@ describe("UserApiKeysPage", () => {
       });
     });
 
-    expect(await screen.findByRole("dialog", { name: "API 密钥已创建" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "API Text" })).toBeInTheDocument();
     expect(await screen.findByDisplayValue("sk_live_preview_2")).toBeInTheDocument();
   });
 
@@ -310,9 +310,9 @@ describe("UserApiKeysPage", () => {
     expect(await screen.findByText("active-worker")).toBeInTheDocument();
     expect(screen.queryByText("revoked-worker")).not.toBeInTheDocument();
 
-    fireEvent.click((await screen.findAllByRole("button", { name: "撤销" }))[0]);
+    fireEvent.click((await screen.findAllByRole("button", { name: "Text" }))[0]);
 
-    expect(await screen.findByRole("dialog", { name: "确认撤销 API 密钥" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "Text API Text" })).toBeInTheDocument();
     expect(await screen.findByDisplayValue("active-worker")).toBeInTheDocument();
   });
 });

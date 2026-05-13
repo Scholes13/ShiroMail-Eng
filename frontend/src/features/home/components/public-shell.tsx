@@ -62,16 +62,16 @@ export function PublicShell({ children, hero, pageClassName }: PublicShellProps)
       return composePageTitle("Pricing", siteName);
     }
     if (location.pathname === "/updates") {
-      return composePageTitle("功能更新", siteName);
+      return composePageTitle("Text", siteName);
     }
     if (location.pathname === "/docs") {
-      return composePageTitle("文档", siteName);
+      return composePageTitle("Text", siteName);
     }
     if (location.pathname === "/faq") {
-      return composePageTitle("常见问题", siteName);
+      return composePageTitle("Textissue", siteName);
     }
     if (location.pathname === "/stats") {
-      return composePageTitle("统计说明", siteName);
+      return composePageTitle("Text", siteName);
     }
     return siteName;
   })();
@@ -114,7 +114,7 @@ export function PublicShell({ children, hero, pageClassName }: PublicShellProps)
               </div>
             </Link>
 
-            <nav aria-label="公开站主导航" className="mx-auto hidden items-center gap-1 md:flex">
+            <nav aria-label="Text" className="mx-auto hidden items-center gap-1 md:flex">
               {publicNavItems.map((item) => {
                 const active = location.pathname === item.match;
                 const label = t(item.labelKey);
@@ -160,7 +160,7 @@ export function PublicShell({ children, hero, pageClassName }: PublicShellProps)
             </div>
           </div>
 
-          <nav aria-label="公开站移动导航" className="flex gap-2 overflow-x-auto border-t border-border/60 px-3 py-2 md:hidden sm:px-4">
+          <nav aria-label="Text" className="flex gap-2 overflow-x-auto border-t border-border/60 px-3 py-2 md:hidden sm:px-4">
             {publicNavItems.map((item) => {
               const active = location.pathname === item.match;
               const label = t(item.labelKey);

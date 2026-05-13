@@ -23,14 +23,14 @@ describe("AdminRulesPage", () => {
     vi.mocked(fetchAdminRules).mockResolvedValue([
       {
         id: "default",
-        name: "默认保留策略",
+        name: "Text",
         retentionHours: 24,
         autoExtend: false,
         updatedAt: "2026-04-03T10:00:00Z",
       },
       {
         id: "vip",
-        name: "高可用邮箱",
+        name: "Text",
         retentionHours: 72,
         autoExtend: true,
         updatedAt: "2026-04-03T11:00:00Z",
@@ -57,8 +57,8 @@ describe("AdminRulesPage", () => {
       </QueryClientProvider>,
     );
 
-    expect(await screen.findByText("默认保留策略")).toBeInTheDocument();
-    expect(await screen.findByText("高可用邮箱")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
     expect(await screen.findByText("72h")).toBeInTheDocument();
   });
 
@@ -76,20 +76,20 @@ describe("AdminRulesPage", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.click(await screen.findByRole("button", { name: /高可用邮箱/ }));
-    fireEvent.change(screen.getByPlaceholderText("规则名称"), {
-      target: { value: "VIP 自动续期策略" },
+    fireEvent.click(await screen.findByRole("button", { name: /Text/ }));
+    fireEvent.change(screen.getByPlaceholderText("Rule name"), {
+      target: { value: "VIP Text" },
     });
     fireEvent.change(screen.getByRole("spinbutton"), {
       target: { value: "96" },
     });
-    fireEvent.click(screen.getByLabelText("启用自动续期"));
-    fireEvent.click(screen.getByRole("button", { name: "保存规则" }));
+    fireEvent.click(screen.getByLabelText("EnableText"));
+    fireEvent.click(screen.getByRole("button", { name: "Save rule" }));
 
     await waitFor(() => {
       expect(vi.mocked(upsertAdminRule).mock.calls[0]?.[0]).toBe("vip");
       expect(vi.mocked(upsertAdminRule).mock.calls[0]?.[1]).toEqual({
-        name: "VIP 自动续期策略",
+        name: "VIP Text",
         retentionHours: 96,
         autoExtend: false,
       });

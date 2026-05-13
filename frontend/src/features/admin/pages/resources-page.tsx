@@ -90,21 +90,21 @@ export function AdminResourcesPage() {
 
   return (
     <WorkspacePage>
-      <WorkspacePanel description="集中查看核心资源库存、运行任务和最近审计活动。" title="资源仓库">
+      <WorkspacePanel description="Text、Text。" title="Text">
         <div className="grid gap-4 xl:grid-cols-3">
           <ResourceSummaryCard
-            description="DNS Provider 账号"
-            title="Provider 账号"
+            description="DNS Provider Text"
+            title="Provider Text"
             value={providerItems.length}
           />
           <ResourceSummaryCard
-            description="系统配置项"
-            title="配置注册表"
+            description="Text"
+            title="Text"
             value={configItems.length}
           />
           <ResourceSummaryCard
-            description="后台任务"
-            title="任务队列"
+            description="Text"
+            title="Text"
             value={jobItems.length}
           />
         </div>
@@ -113,9 +113,9 @@ export function AdminResourcesPage() {
           <Card className="border-border/60 bg-card/92 shadow-none">
             <CardContent className="space-y-3 py-4">
               <div className="space-y-1">
-                <div className="text-sm font-medium">Provider 账号</div>
+                <div className="text-sm font-medium">Provider Text</div>
                 <p className="text-sm leading-6 text-muted-foreground">
-                  展示平台当前接入的域名供应商账号与能力集。
+                  TextDomainText。
                 </p>
               </div>
               {providerItems.length ? (
@@ -135,7 +135,7 @@ export function AdminResourcesPage() {
                   ))}
                 </div>
               ) : (
-                <WorkspaceEmpty description="当前还没有接入任何 Provider 账号。" title="暂无 Provider 账号" />
+                <WorkspaceEmpty description="Text Provider Text。" title="Text Provider Text" />
               )}
             </CardContent>
           </Card>
@@ -143,9 +143,9 @@ export function AdminResourcesPage() {
           <Card className="border-border/60 bg-card/92 shadow-none">
             <CardContent className="space-y-3 py-4">
               <div className="space-y-1">
-                <div className="text-sm font-medium">配置注册表</div>
+                <div className="text-sm font-medium">Text</div>
                 <p className="text-sm leading-6 text-muted-foreground">
-                  最近更新过的配置项会优先展示在这里，便于快速回看。
+                  Text，Text。
                 </p>
               </div>
               {configItems.length ? (
@@ -160,7 +160,7 @@ export function AdminResourcesPage() {
                   ))}
                 </div>
               ) : (
-                <WorkspaceEmpty description="当前还没有可展示的配置项。" title="暂无配置项" />
+                <WorkspaceEmpty description="Text。" title="Text" />
               )}
             </CardContent>
           </Card>
@@ -168,9 +168,9 @@ export function AdminResourcesPage() {
           <Card className="border-border/60 bg-card/92 shadow-none">
             <CardContent className="space-y-3 py-4">
               <div className="space-y-1">
-                <div className="text-sm font-medium">任务队列</div>
+                <div className="text-sm font-medium">Text</div>
                 <p className="text-sm leading-6 text-muted-foreground">
-                  观察任务最近状态与异常，快速定位 worker 与同步链路问题。
+                  Text，Text worker Textissue。
                 </p>
               </div>
               {jobItems.length ? (
@@ -185,7 +185,7 @@ export function AdminResourcesPage() {
                               <p>{failure.title}</p>
                               <p className="text-muted-foreground">{failure.description}</p>
                             </div>
-                          ) : (item.errorMessage || "无异常")
+                          ) : (item.errorMessage || "Text")
                         }
                         key={item.id}
                         meta={
@@ -207,7 +207,7 @@ export function AdminResourcesPage() {
                   })}
                 </div>
               ) : (
-                <WorkspaceEmpty description="当前没有任务记录。" title="暂无任务" />
+                <WorkspaceEmpty description="Text。" title="Text" />
               )}
             </CardContent>
           </Card>
@@ -215,9 +215,9 @@ export function AdminResourcesPage() {
           <Card className="border-border/60 bg-card/92 shadow-none">
             <CardContent className="space-y-3 py-4">
               <div className="space-y-1">
-                <div className="text-sm font-medium">最近审计活动</div>
+                <div className="text-sm font-medium">Text</div>
                 <p className="text-sm leading-6 text-muted-foreground">
-                  保留最近的后台资源变更与操作轨迹，方便排障与回溯。
+                  Text，Text。
                 </p>
               </div>
               {auditItems.length ? (
@@ -244,7 +244,7 @@ export function AdminResourcesPage() {
                   ))}
                 </div>
               ) : (
-                <WorkspaceEmpty description="当前没有可展示的审计记录。" title="暂无审计记录" />
+                <WorkspaceEmpty description="Text。" title="Text" />
               )}
             </CardContent>
           </Card>

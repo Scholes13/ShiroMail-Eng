@@ -231,7 +231,7 @@ describe("UserDomainsPage", () => {
         kind: "root",
       },
       passed: false,
-      summary: "DNS 传播验证未通过，请根据缺失或漂移记录继续修复。",
+      summary: "DNS Text，Text。",
       zoneName: "owned-private.test",
       verifiedCount: 1,
       totalCount: 2,
@@ -239,7 +239,7 @@ describe("UserDomainsPage", () => {
         {
           verificationType: "mx",
           status: "drifted",
-          summary: "MX 记录仍未对齐",
+          summary: "MX Text",
           expectedRecords: [],
           observedRecords: [],
           repairRecords: [
@@ -264,16 +264,16 @@ describe("UserDomainsPage", () => {
     expect(await screen.findByText("owned-private.test")).toBeInTheDocument();
     expect(await screen.findByText("owned-public.test")).toBeInTheDocument();
     expect(screen.queryByText("shared-public-pool.test")).not.toBeInTheDocument();
-    expect(await screen.findByRole("button", { name: "申请加入公共池" })).toBeInTheDocument();
-    expect(await screen.findByRole("button", { name: "下线公共池" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Text" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Text" })).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "申请加入公共池" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
     await waitFor(() => {
       expect(vi.mocked(requestDomainPublicPool).mock.calls[0]?.[0]).toBe(1);
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "下线公共池" }));
-    fireEvent.click(await screen.findByRole("button", { name: "确认继续" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
     await waitFor(() => {
       expect(vi.mocked(withdrawDomainPublicPool).mock.calls[0]?.[0]).toBe(3);
     });
@@ -282,13 +282,13 @@ describe("UserDomainsPage", () => {
   it("creates root domains and subdomains inside dialogs", async () => {
     renderPage();
 
-    fireEvent.click(screen.getByRole("button", { name: "新增根域名" }));
+    fireEvent.click(screen.getByRole("button", { name: "TextDomain" }));
 
-    const rootDialog = await screen.findByRole("dialog", { name: "添加根域名" });
+    const rootDialog = await screen.findByRole("dialog", { name: "TextDomain" });
     fireEvent.change(within(rootDialog).getByPlaceholderText("example.com"), {
       target: { value: "new-root.test" },
     });
-    fireEvent.click(within(rootDialog).getByRole("button", { name: "添加根域名" }));
+    fireEvent.click(within(rootDialog).getByRole("button", { name: "TextDomain" }));
 
     await waitFor(() => {
       expect(vi.mocked(createDomain).mock.calls[0]?.[0]).toEqual({
@@ -303,17 +303,17 @@ describe("UserDomainsPage", () => {
       });
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "新增子域名" }));
+    fireEvent.click(screen.getByRole("button", { name: "TextDomain" }));
 
-    const generateDialog = await screen.findByRole("dialog", { name: "批量生成子域名" });
+    const generateDialog = await screen.findByRole("dialog", { name: "TextDomain" });
     const generateDialogQueries = within(generateDialog);
 
-    fireEvent.click(generateDialogQueries.getByRole("combobox", { name: "选择根域名" }));
+    fireEvent.click(generateDialogQueries.getByRole("combobox", { name: "TextDomain" }));
     fireEvent.click(await screen.findByRole("option", { name: "owned-private.test" }));
-    fireEvent.change(generateDialogQueries.getByRole("textbox", { name: "多级前缀" }), {
+    fireEvent.change(generateDialogQueries.getByRole("textbox", { name: "Text" }), {
       target: { value: "mx\nrelay" },
     });
-    fireEvent.click(generateDialogQueries.getByRole("button", { name: "批量生成子域名" }));
+    fireEvent.click(generateDialogQueries.getByRole("button", { name: "TextDomain" }));
 
     await waitFor(() => {
       expect(vi.mocked(generateSubdomains).mock.calls[0]?.[0]).toEqual({
@@ -332,13 +332,13 @@ describe("UserDomainsPage", () => {
   it("allows binding dialog actions for a root domain", async () => {
     renderPage();
 
-    fireEvent.click((await screen.findAllByRole("button", { name: "更换服务商" }))[0]);
+    fireEvent.click((await screen.findAllByRole("button", { name: "Text" }))[0]);
 
-    const bindDialog = await screen.findByRole("dialog", { name: "更换 DNS 服务商" });
+    const bindDialog = await screen.findByRole("dialog", { name: "Text DNS Text" });
     const bindDialogQueries = within(bindDialog);
 
     expect(bindDialogQueries.getByText("Cloudflare Prod")).toBeInTheDocument();
-    fireEvent.click(bindDialogQueries.getByRole("button", { name: "解绑" }));
+    fireEvent.click(bindDialogQueries.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(updateDomainProviderBinding).mock.calls[0]?.[0]).toBe(1);
@@ -352,6 +352,6 @@ describe("UserDomainsPage", () => {
     fireEvent.click(await screen.findByRole("button", { name: /owned-private\.test/i }));
 
     expect(await screen.findByText("mx.owned-private.test")).toBeInTheDocument();
-    expect(await screen.findAllByRole("link", { name: "创建邮箱" })).not.toHaveLength(0);
+    expect(await screen.findAllByRole("link", { name: "Text" })).not.toHaveLength(0);
   });
 });

@@ -132,8 +132,8 @@ describe("UserMailboxPage", () => {
       items: [
         {
           ruleId: 3,
-          ruleName: "验证码",
-          label: "验证码",
+          ruleName: "verification code",
+          label: "verification code",
           sourceType: "user",
           sourceField: "subject",
           value: "123456",
@@ -214,12 +214,12 @@ describe("UserMailboxPage", () => {
     expect(await screen.findByText("hello full body")).toBeInTheDocument();
     expect(await screen.findByText("123456")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "下载原文" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
     await waitFor(() => {
       expect(downloadMailboxMessageRaw).toHaveBeenCalledWith(7, 99);
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "下载附件" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
     await waitFor(() => {
       expect(downloadMailboxMessageAttachment).toHaveBeenCalledWith(7, 99, 0);
     });
@@ -289,7 +289,7 @@ describe("UserMailboxPage", () => {
     );
 
     expect(await screen.findByText("Null-safe message")).toBeInTheDocument();
-    expect(await screen.findByText("这封邮件没有附件。")).toBeInTheDocument();
+    expect(await screen.findByText("Text。")).toBeInTheDocument();
   });
 
   it("prefills domain selection from the route query", async () => {
@@ -370,13 +370,13 @@ describe("UserMailboxPage", () => {
 
     expect((await screen.findAllByText("alpha@example.test")).length).toBeGreaterThan(0);
 
-    fireEvent.click((await screen.findAllByRole("button", { name: "释放邮箱" }))[0]);
-    fireEvent.click(await screen.findByRole("button", { name: "确认释放" }));
+    fireEvent.click((await screen.findAllByRole("button", { name: "Text" }))[0]);
+    fireEvent.click(await screen.findByRole("button", { name: "Confirm release" }));
 
     await waitFor(() => {
       expect(vi.mocked(releaseMailbox).mock.calls[0]?.[0]).toBe(7);
     });
 
-    expect((await screen.findAllByText("还没有可用邮箱")).length).toBeGreaterThan(0);
+    expect((await screen.findAllByText("Text")).length).toBeGreaterThan(0);
   });
 });

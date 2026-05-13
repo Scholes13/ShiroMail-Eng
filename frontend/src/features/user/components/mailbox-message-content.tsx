@@ -58,17 +58,17 @@ export function MessageContentCard({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="inline-flex items-center gap-2 text-sm font-medium">
             <FileText className="size-4" />
-            邮件内容
+            Text
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {messageViewMode === "html" && htmlPreview ? (
               <Button size="sm" type="button" variant="outline" onClick={() => openHtmlPreviewWindow(htmlPreview.html)}>
-                新窗口打开
+                Text
               </Button>
             ) : null}
             <div className="inline-flex rounded-lg border border-border/60 bg-muted/20 p-1">
               {([
-                { value: "text" as const, label: "文本" },
+                { value: "text" as const, label: "Text" },
                 { value: "html" as const, label: "HTML" },
                 { value: "raw" as const, label: "Raw" },
               ]).map((option) => (
@@ -112,7 +112,7 @@ export function MessageContentCard({
 
 function HtmlContent({ htmlPreview }: { htmlPreview: HtmlPreview | null }) {
   if (!htmlPreview) {
-    return <WorkspaceEmpty description="这封邮件没有可展示的 HTML 正文。" title="暂无 HTML 内容" />;
+    return <WorkspaceEmpty description="Text HTML Body。" title="Text HTML Text" />;
   }
   return (
     <div className="space-y-3">
@@ -125,7 +125,7 @@ function HtmlContent({ htmlPreview }: { htmlPreview: HtmlPreview | null }) {
         className="min-h-[420px] w-full rounded-xl border border-border/60 bg-white"
         sandbox="allow-same-origin"
         srcDoc={buildMailHtmlDocument(htmlPreview.html)}
-        title="HTML 邮件预览"
+        title="HTML Text"
         onLoad={(event) => {
           const frame = event.currentTarget;
           const doc = frame.contentDocument;
@@ -158,42 +158,42 @@ function RawContent({
     return (
       <div className="space-y-3">
         <div className="rounded-xl border border-border/60 bg-muted/10 p-3 text-xs leading-6 text-muted-foreground">
-          这封邮件体积约 {Math.max(1, Math.round((selectedMessageSummary.sizeBytes || 0) / 1024))} KB。
-          为避免页面卡顿，Raw 预览默认不自动加载；你仍可下载原文，或手动加载截断预览。
+          Text {Math.max(1, Math.round((selectedMessageSummary.sizeBytes || 0) / 1024))} KB。
+          Text，Raw Text；Text，Text。
         </div>
         <div className="flex justify-end">
           <Button size="sm" type="button" variant="outline" onClick={onRequestRawPreview}>
-            加载 Raw 预览
+            Text Raw Text
           </Button>
         </div>
       </div>
     );
   }
   if (isRawLoading) {
-    return <WorkspaceEmpty description="正在读取原始邮件内容，请稍候。" title="正在加载 Raw" />;
+    return <WorkspaceEmpty description="Text，Text。" title="Text Raw" />;
   }
   if (!rawPreview) {
-    return <WorkspaceEmpty description="当前邮件没有可读取的 Raw 原文。" title="Raw 不可用" />;
+    return <WorkspaceEmpty description="Text Raw Text。" title="Raw Text" />;
   }
   return (
     <div className="space-y-3">
       {rawPreview.isTruncated ? (
         <div className="rounded-xl border border-border/60 bg-muted/10 p-3 text-xs leading-6 text-muted-foreground">
-          Raw 体积较大，页面仅展示前 {Math.max(1, Math.round(rawPreview.preview.length / 1024))} KB 预览。
-          完整原文请使用上方"下载原文"。
+          Raw Text，Text {Math.max(1, Math.round(rawPreview.preview.length / 1024))} KB Text。
+          Text"Text"。
         </div>
       ) : null}
       <div className="grid gap-3 md:grid-cols-2">
         <div className="rounded-xl border border-border/60 bg-muted/10 p-3">
           <div className="mb-2 text-xs font-medium text-foreground">Raw Headers</div>
           <pre className="max-h-[260px] overflow-auto whitespace-pre-wrap break-all text-xs leading-6 text-muted-foreground">
-            {rawPreview.headers || "暂无 Header 原文。"}
+            {rawPreview.headers || "Text Header Text。"}
           </pre>
         </div>
         <div className="rounded-xl border border-border/60 bg-muted/10 p-3">
           <div className="mb-2 text-xs font-medium text-foreground">Raw Body</div>
           <pre className="max-h-[260px] overflow-auto whitespace-pre-wrap break-all text-xs leading-6 text-muted-foreground">
-            {rawPreview.body || "暂无 Body 原文。"}
+            {rawPreview.body || "Text Body Text。"}
           </pre>
         </div>
       </div>
@@ -204,12 +204,12 @@ function RawContent({
           variant="outline"
           onClick={() => {
             void navigator.clipboard.writeText(rawPreview.preview).then(
-              () => onFeedback(rawPreview.isTruncated ? "Raw 预览已复制，完整原文请下载。" : "Raw 原文已复制。"),
-              () => onFeedback(rawPreview.isTruncated ? "复制 Raw 预览失败，请改用下载原文。" : "复制 Raw 原文失败，请手动复制。"),
+              () => onFeedback(rawPreview.isTruncated ? "Raw Text，Text。" : "Raw Text。"),
+              () => onFeedback(rawPreview.isTruncated ? "Text Raw Text，Text。" : "Text Raw Text，Text。"),
             );
           }}
         >
-          {rawPreview.isTruncated ? "复制预览" : "复制 Raw"}
+          {rawPreview.isTruncated ? "Text" : "Text Raw"}
         </Button>
       </div>
       <pre className="max-h-[320px] overflow-auto rounded-xl border border-border/60 bg-muted/20 p-4 text-xs leading-6 text-muted-foreground whitespace-pre-wrap break-all">

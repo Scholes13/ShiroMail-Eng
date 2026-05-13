@@ -76,23 +76,23 @@ export function DnsProviderFormDialog({
     >
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-4xl">
         <DialogHeader>
-          <DialogTitle>{isEditing ? "编辑 Provider 账号" : "新增 Provider 账号"}</DialogTitle>
+          <DialogTitle>{isEditing ? "Text Provider Text" : "Text Provider Text"}</DialogTitle>
           <DialogDescription>
             {isEditing
               ? coreFieldsLocked
-                ? "当前 Provider 已绑定域名，可继续更新显示名称、凭据、状态和权限，但不能改服务商类型或鉴权方式。"
-                : "当前 Provider 未绑定域名，服务商类型、鉴权方式、凭据与权限都可以直接修改。"
-              : "使用逐字段表单录入 DNS 服务商凭据，后续所有操作都通过可视化按钮完成。"}
+                ? "Text Provider TextDomain，Text、Text、Text，Text。"
+                : "Text Provider TextDomain，Text、Text、Text。"
+              : "Text DNS Text，Text。"}
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
-              <WorkspaceField label="DNS 服务商">
+              <WorkspaceField label="DNS Text">
                 <OptionCombobox
-                  ariaLabel="DNS 服务商"
-                  emptyLabel="没有匹配服务商"
+                  ariaLabel="DNS Text"
+                  emptyLabel="Text"
                   onValueChange={(value) => {
                     const nextProvider = value || "cloudflare";
                     onDraftChange((current) => ({
@@ -115,8 +115,8 @@ export function DnsProviderFormDialog({
                     { value: "cloudflare", label: "Cloudflare" },
                     { value: "spaceship", label: "Spaceship" },
                   ]}
-                  placeholder="选择服务商"
-                  searchPlaceholder="搜索服务商"
+                  placeholder="Text"
+                  searchPlaceholder="Text"
                   disabled={coreFieldsLocked}
                   value={draft.provider}
                 />
@@ -124,19 +124,19 @@ export function DnsProviderFormDialog({
               <WorkspaceField label="Owner">
                 <OptionCombobox
                   ariaLabel="Owner Type"
-                  emptyLabel="没有匹配 Owner"
+                  emptyLabel="Text Owner"
                   onValueChange={() => {}}
                   options={[
                     { value: "platform", label: "platform" },
                   ]}
-                  placeholder="选择归属"
-                  searchPlaceholder="搜索归属"
+                  placeholder="Text"
+                  searchPlaceholder="Text"
                   disabled
                   value={draft.ownerType}
                 />
               </WorkspaceField>
 
-              <WorkspaceField label="显示名称">
+              <WorkspaceField label="Text">
                 <Input
                   className="h-10"
                   onChange={(event) =>
@@ -145,15 +145,15 @@ export function DnsProviderFormDialog({
                       displayName: event.target.value,
                     }))
                   }
-                  placeholder="例如：Cloudflare 主账号"
+                  placeholder="Example: Cloudflare Text"
                   value={draft.displayName}
                 />
               </WorkspaceField>
 
-              <WorkspaceField label="状态">
+              <WorkspaceField label="Text">
                 <OptionCombobox
                   ariaLabel="Provider Status"
-                  emptyLabel="没有匹配状态"
+                  emptyLabel="Text"
                   onValueChange={(value) =>
                     onDraftChange((current) => ({
                       ...current,
@@ -165,16 +165,16 @@ export function DnsProviderFormDialog({
                     { value: "degraded", label: "degraded" },
                     { value: "pending", label: "pending" },
                   ]}
-                  placeholder="选择状态"
-                  searchPlaceholder="搜索状态"
+                  placeholder="Text"
+                  searchPlaceholder="Text"
                   value={draft.status}
                 />
               </WorkspaceField>
 
-              <WorkspaceField label="鉴权方式">
+              <WorkspaceField label="Text">
                 <OptionCombobox
                   ariaLabel="Provider Auth Type"
-                  emptyLabel="没有匹配鉴权方式"
+                  emptyLabel="Text"
                   onValueChange={(value) => {
                     onDraftChange((current) => ({
                       ...current,
@@ -197,8 +197,8 @@ export function DnsProviderFormDialog({
                             { value: "api_key", label: "Global API Key + Email" },
                           ]
                   }
-                  placeholder="选择鉴权方式"
-                  searchPlaceholder="搜索鉴权方式"
+                  placeholder="Text"
+                  searchPlaceholder="Text"
                   disabled={coreFieldsLocked}
                   value={draft.authType}
                 />
@@ -206,9 +206,9 @@ export function DnsProviderFormDialog({
             </div>
             <div className="rounded-2xl border border-border/60 bg-muted/20 p-4">
               <div className="mb-3 space-y-1">
-                <p className="text-sm font-medium">凭据字段</p>
+                <p className="text-sm font-medium">Text</p>
                 <p className="text-sm text-muted-foreground">
-                  按服务商填写必要字段，不需要再手写 JSON 或 Secret Ref。
+                  Text，Text JSON Text Secret Ref。
                 </p>
               </div>
 
@@ -218,7 +218,7 @@ export function DnsProviderFormDialog({
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {getProviderAuthModeMeta(draft.provider, draft.authType).description}
-                  {isEditing ? " 留空则沿用当前已保存的凭据。" : ""}
+                  {isEditing ? " Text。" : ""}
                 </p>
               </div>
 
@@ -247,18 +247,18 @@ export function DnsProviderFormDialog({
           <div className="space-y-4">
             <div className="rounded-2xl border border-border/60 bg-card p-4">
               <div className="mb-3 space-y-1">
-                <p className="text-sm font-medium">权限</p>
+                <p className="text-sm font-medium">Text</p>
                 <p className="text-sm text-muted-foreground">
-                  选择这个 Provider 账号已授予的权限，后续操作会按权限范围展示。
+                  Text Provider Text，Text。
                 </p>
               </div>
 
               <MultiOptionCombobox
-                ariaLabel="权限"
-                emptyLabel="没有可选权限"
+                ariaLabel="Text"
+                emptyLabel="Text"
                 options={getProviderPermissionOptions(draft.provider)}
-                placeholder="选择需要的权限"
-                searchPlaceholder="继续搜索权限"
+                placeholder="Text"
+                searchPlaceholder="Text"
                 values={draft.permissionValues}
                 onValuesChange={(values) =>
                   onDraftChange((current) => ({
@@ -270,10 +270,10 @@ export function DnsProviderFormDialog({
             </div>
 
             <div className="rounded-2xl border border-border/60 bg-muted/20 p-4 text-sm text-muted-foreground">
-              <p className="font-medium text-foreground">提交后效果</p>
+              <p className="font-medium text-foreground">Text</p>
               <p className="mt-2 leading-7">
-                平台会直接按这些字段保存凭据，并用于校验连接、读取 Zone、读取
-                Records 与应用变更。
+                Text，Text、Text Zone、Text
+                Records Text。
               </p>
             </div>
           </div>
@@ -286,7 +286,7 @@ export function DnsProviderFormDialog({
             </NoticeBanner>
           ) : null}
           <DialogClose asChild>
-            <Button variant="outline">取消</Button>
+            <Button variant="outline">Cancel</Button>
           </DialogClose>
           <Button
             disabled={
@@ -302,10 +302,10 @@ export function DnsProviderFormDialog({
             onClick={onSubmit}
           >
             {isPending
-              ? "提交中..."
+              ? "Submitting..."
               : isEditing
-                ? "保存 Provider 账号"
-                : "添加 Provider 账号"}
+                ? "Text Provider Text"
+                : "Text Provider Text"}
           </Button>
         </DialogFooter>
       </DialogContent>

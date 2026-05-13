@@ -149,7 +149,7 @@ describe("AdminDomainsPage", () => {
         kind: "root",
       },
       passed: false,
-      summary: "DNS 传播验证未通过，请根据缺失或漂移记录继续修复。",
+      summary: "DNS Text，Text。",
       zoneName: "provider-bound.test",
       verifiedCount: 1,
       totalCount: 2,
@@ -157,7 +157,7 @@ describe("AdminDomainsPage", () => {
         {
           verificationType: "dmarc",
           status: "drifted",
-          summary: "DMARC 仍未对齐",
+          summary: "DMARC Text",
           expectedRecords: [],
           observedRecords: [],
           repairRecords: [
@@ -187,10 +187,10 @@ describe("AdminDomainsPage", () => {
   it("renders current domain-management overview", async () => {
     renderPage(createQueryClient());
 
-    expect(await screen.findByText("域名管理")).toBeInTheDocument();
-    expect(await screen.findByRole("button", { name: "添加域名" })).toBeInTheDocument();
-    expect(await screen.findByRole("button", { name: "新增子域名" })).toBeInTheDocument();
-    expect(await screen.findByText("域名资产")).toBeInTheDocument();
+    expect(await screen.findByText("DomainText")).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "TextDomain" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "TextDomain" })).toBeInTheDocument();
+    expect(await screen.findByText("DomainText")).toBeInTheDocument();
     expect((await screen.findAllByText("provider-bound.test")).length).toBeGreaterThan(0);
     expect((await screen.findAllByText("Primary Cloudflare")).length).toBeGreaterThan(0);
   });
@@ -198,17 +198,17 @@ describe("AdminDomainsPage", () => {
   it("creates subdomains from dialog", async () => {
     renderPage(createQueryClient());
 
-    fireEvent.click(screen.getByRole("button", { name: "新增子域名" }));
+    fireEvent.click(screen.getByRole("button", { name: "TextDomain" }));
 
-    const subdomainDialog = await screen.findByRole("dialog", { name: "批量生成子域名" });
+    const subdomainDialog = await screen.findByRole("dialog", { name: "TextDomain" });
     const subdomainDialogQueries = within(subdomainDialog);
 
-    fireEvent.click(subdomainDialogQueries.getByRole("combobox", { name: "选择根域名" }));
+    fireEvent.click(subdomainDialogQueries.getByRole("combobox", { name: "TextDomain" }));
     fireEvent.click(await screen.findByRole("option", { name: "provider-bound.test" }));
-    fireEvent.change(subdomainDialogQueries.getByRole("textbox", { name: "多级前缀" }), {
+    fireEvent.change(subdomainDialogQueries.getByRole("textbox", { name: "Text" }), {
       target: { value: "mx\nrelay" },
     });
-    fireEvent.click(subdomainDialogQueries.getByRole("button", { name: "批量生成子域名" }));
+    fireEvent.click(subdomainDialogQueries.getByRole("button", { name: "TextDomain" }));
 
     await waitFor(() => {
       expect(vi.mocked(generateAdminSubdomains).mock.calls[0]?.[0]).toEqual({
@@ -226,13 +226,13 @@ describe("AdminDomainsPage", () => {
   it("triggers approval workflow for pending-review domains", async () => {
     renderPage(createQueryClient());
 
-    fireEvent.click(await screen.findByRole("button", { name: "批准" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(reviewAdminDomainPublication).mock.calls[0]?.[0]).toBe(8);
       expect(vi.mocked(reviewAdminDomainPublication).mock.calls[0]?.[1]).toBe("approve");
     });
-    expect(await screen.findByText("域名已批准进入公共域名池。")).toBeInTheDocument();
+    expect(await screen.findByText("DomainTextDomainText。")).toBeInTheDocument();
   });
 
 });

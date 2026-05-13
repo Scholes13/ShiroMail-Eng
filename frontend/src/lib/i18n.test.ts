@@ -32,7 +32,7 @@ describe("i18n lazy loading", () => {
     await changeAppLanguage("zh-CN");
 
     expect(i18n.language).toBe("zh-CN");
-    expect(i18n.t("common.refresh")).toBe("刷新数据");
+    expect(i18n.t("common.refresh")).toBe("Refresh data");
     expect(document.documentElement.lang).toBe("zh-CN");
     expect(window.localStorage.getItem("shiro-email.language")).toBe("zh-CN");
   });

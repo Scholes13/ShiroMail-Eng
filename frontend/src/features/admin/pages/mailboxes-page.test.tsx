@@ -156,8 +156,8 @@ describe("AdminMailboxesPage", () => {
       items: [
         {
           ruleId: 7,
-          ruleName: "验证码模板",
-          label: "验证码",
+          ruleName: "verification codeText",
+          label: "verification code",
           sourceType: "admin_default",
           sourceField: "subject",
           value: "834271",
@@ -227,22 +227,22 @@ describe("AdminMailboxesPage", () => {
   it("renders admin mailbox management with active mailbox list", async () => {
     renderPage();
 
-    expect(await screen.findByText("邮箱管理")).toBeInTheDocument();
+    expect(await screen.findByText("Mailbox management")).toBeInTheDocument();
     expect((await screen.findAllByText("alpha@shiro.local")).length).toBeGreaterThan(0);
     expect(screen.queryByText("beta@shiro.local")).not.toBeInTheDocument();
     expect(await screen.findByText(/alice · shiro\.local/)).toBeInTheDocument();
     expect(await screen.findByText("full admin body")).toBeInTheDocument();
-    expect(await screen.findByText("验证码")).toBeInTheDocument();
+    expect(await screen.findByText("verification code")).toBeInTheDocument();
     expect(await screen.findByText("834271")).toBeInTheDocument();
   });
 
   it("creates mailbox from the admin creation form", async () => {
     renderPage();
 
-    fireEvent.change(await screen.findByPlaceholderText("留空则自动生成"), {
+    fireEvent.change(await screen.findByPlaceholderText("Text"), {
       target: { value: "newbox" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "创建邮箱" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(createAdminMailbox).mock.calls[0]?.[0]).toMatchObject({
@@ -257,14 +257,14 @@ describe("AdminMailboxesPage", () => {
   it("extends and releases the selected mailbox", async () => {
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: "续期 24 小时" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Text 24 hours" }));
     await waitFor(() => {
       expect(vi.mocked(extendAdminMailbox).mock.calls[0]?.[0]).toBe(1);
       expect(vi.mocked(extendAdminMailbox).mock.calls[0]?.[1]).toBe(24);
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "释放邮箱" }));
-    fireEvent.click(await screen.findByRole("button", { name: "确认释放" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Confirm release" }));
 
     await waitFor(() => {
       expect(vi.mocked(releaseAdminMailbox).mock.calls[0]?.[0]).toBe(1);

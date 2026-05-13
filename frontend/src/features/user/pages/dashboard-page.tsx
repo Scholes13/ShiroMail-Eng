@@ -55,7 +55,7 @@ export function UserDashboardPage() {
   const dashboard = dashboardQuery.data;
   const overview = overviewQuery.data;
   const [trendDays, setTrendDays] = useState(7);
-  const displayName = sessionUsername || overview?.username || "Shiro 用户";
+  const displayName = sessionUsername || overview?.username || "Shiro Text";
   const greeting = getGreeting(t);
   const domains = dashboard?.availableDomains ?? [];
   const ownedDomains = domains.filter((item) => item.ownerUserId === sessionUserId);

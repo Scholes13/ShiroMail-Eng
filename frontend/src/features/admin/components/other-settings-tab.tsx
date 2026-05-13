@@ -44,8 +44,8 @@ export function OtherSettingsTab({
   return (
     <div className="grid gap-4">
       <WorkspacePanel
-        title="邮件基础设施"
-        description="管理 SMTP 监听地址、邮件主机名与基础收件开关。"
+        title="Text"
+        description="Text SMTP Text、Text。"
       >
         <MailSettingsForm
           smtp={smtp}
@@ -59,8 +59,8 @@ export function OtherSettingsTab({
       </WorkspacePanel>
 
       <WorkspacePanel
-        title="账户邮件发信"
-        description="配置注册验证、找回密码与账户通知发信 SMTP。"
+        title="Text"
+        description="Text、Text SMTP。"
       >
         <MailSettingsForm
           smtp={smtp}
@@ -81,8 +81,8 @@ export function OtherSettingsTab({
       </WorkspacePanel>
 
       <WorkspacePanel
-        title="入站策略"
-        description="控制 raw 保留、附件大小、catch-all 与入站收件限制。"
+        title="Text"
+        description="Text raw Text、Text、catch-all Text。"
       >
         <MailSettingsForm
           smtp={smtp}
@@ -96,12 +96,12 @@ export function OtherSettingsTab({
       </WorkspacePanel>
 
       <WorkspacePanel
-        title="平台治理"
-        description="整站级公开域审核与后续平台风控策略。"
+        title="Text"
+        description="Text。"
       >
         <div className="mb-3 flex items-center gap-2 text-sm font-medium">
           <ShieldCheck className="size-4 text-muted-foreground" />
-          域名平台策略
+          DomainText
         </div>
         <DomainPolicyForm
           value={domainPolicy}

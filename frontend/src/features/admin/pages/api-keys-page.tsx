@@ -158,7 +158,7 @@ export function AdminApiKeysPage() {
     },
     onError: (error) => {
       setCreateError(
-        getAPIErrorMessage(error, "创建 API Key 失败，请检查权限、域绑定和会话状态后重试。"),
+        getAPIErrorMessage(error, "Text API Key Text，Text、Text。"),
       );
     },
   });
@@ -207,12 +207,12 @@ export function AdminApiKeysPage() {
   };
 
   function handleAddBinding() {
-    const domainError = validateSelection("域名", bindingDraft.domainId, domainOptions.map((item) => item.value));
+    const domainError = validateSelection("Domain", bindingDraft.domainId, domainOptions.map((item) => item.value));
     if (domainError) {
       setCreateError(domainError);
       return;
     }
-    const accessError = validateSelection("绑定权限", bindingDraft.accessLevel, DOMAIN_BINDING_ACCESS_OPTIONS.map((item) => item.value));
+    const accessError = validateSelection("Text", bindingDraft.accessLevel, DOMAIN_BINDING_ACCESS_OPTIONS.map((item) => item.value));
     if (accessError) {
       setCreateError(accessError);
       return;
@@ -224,16 +224,16 @@ export function AdminApiKeysPage() {
   }
 
   function handleCreateKey() {
-    const nameError = validateRequiredText("密钥名称", name, { minLength: 2, maxLength: 80 });
+    const nameError = validateRequiredText("Text", name, { minLength: 2, maxLength: 80 });
     if (nameError) {
       setCreateError(nameError);
       return;
     }
     if (!selectedScopes.length) {
-      setCreateError("至少需要选择一个 scope。");
+      setCreateError(" must be at leastText scope。");
       return;
     }
-    const modeError = validateSelection("域访问模式", resourcePolicy.domainAccessMode, DOMAIN_ACCESS_MODE_OPTIONS.map((item) => item.value));
+    const modeError = validateSelection("Text", resourcePolicy.domainAccessMode, DOMAIN_ACCESS_MODE_OPTIONS.map((item) => item.value));
     if (modeError) {
       setCreateError(modeError);
       return;
@@ -250,9 +250,9 @@ export function AdminApiKeysPage() {
   return (
     <WorkspacePage>
       <WorkspacePanel
-          action={<Button onClick={() => setCreateDialogOpen(true)}>新增 API Key</Button>}
-        description="管理员面板仅管理当前管理员自己的 API Key，避免混入普通用户密钥；不添加域绑定时默认可访问当前管理员账号全部可用域名。"
-        title="API 密钥"
+          action={<Button onClick={() => setCreateDialogOpen(true)}>Text API Key</Button>}
+        description="Text API Key，Text；TextDomain。"
+        title="API Text"
       >
         <Dialog
           onOpenChange={(open) => {
@@ -265,18 +265,18 @@ export function AdminApiKeysPage() {
         >
           <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-4xl">
             <DialogHeader>
-              <DialogTitle>新增 API Key</DialogTitle>
+              <DialogTitle>Text API Key</DialogTitle>
               <DialogDescription>
-                为当前管理员创建新的 API Key，并统一配置 scopes、resource policy 与域名绑定。
+                Text API Key，Text scopes、resource policy TextDomainText。
               </DialogDescription>
             </DialogHeader>
 
             <div className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
               <div className="space-y-4">
-                <WorkspaceField label="密钥名称">
+                <WorkspaceField label="Text">
                   <Input
                     onChange={(event) => setName(event.target.value)}
-                    placeholder="输入密钥名称，如 Admin Worker / Audit Bot"
+                    placeholder="Text，Text Admin Worker / Audit Bot"
                     value={name}
                   />
                 </WorkspaceField>
@@ -285,7 +285,7 @@ export function AdminApiKeysPage() {
                   <div className="space-y-1">
                     <p className="text-sm font-medium">Scopes</p>
                     <p className="text-sm text-muted-foreground">
-                      为当前管理员分配最小权限集，避免后台脚本持有过宽 scope。
+                      Text，Text scope。
                     </p>
                   </div>
 
@@ -319,14 +319,14 @@ export function AdminApiKeysPage() {
                   <div className="space-y-1">
                     <p className="text-sm font-medium">Resource Policy</p>
                     <p className="text-sm text-muted-foreground">
-                      控制这把 key 可访问的域类型，以及是否允许 DNS / Provider 级修改。
+                      Text key Text，Text DNS / Provider Text。
                     </p>
                   </div>
 
-                  <WorkspaceField label="域访问模式">
+                  <WorkspaceField label="Text">
                     <OptionCombobox
-                      ariaLabel="域访问模式"
-                      emptyLabel="没有匹配的模式"
+                      ariaLabel="Text"
+                      emptyLabel="Text"
                       onValueChange={(value) =>
                         setResourcePolicy((current) => ({
                           ...current,
@@ -334,8 +334,8 @@ export function AdminApiKeysPage() {
                         }))
                       }
                       options={DOMAIN_ACCESS_MODE_OPTIONS}
-                      placeholder="选择访问模式"
-                      searchPlaceholder="搜索访问模式"
+                      placeholder="Text"
+                      searchPlaceholder="Text"
                       value={resourcePolicy.domainAccessMode}
                     />
                   </WorkspaceField>
@@ -398,30 +398,30 @@ export function AdminApiKeysPage() {
                   <div className="space-y-1">
                     <p className="text-sm font-medium">Domain Bindings</p>
                     <p className="text-sm text-muted-foreground">
-                      把 key 限制到指定域名，可用于平台托管的审计、自动验证或发布任务；留空则默认作用于当前管理员账号全部可访问域名。
+                      Text key Text and TextDomain，Text、Text；TextDomain。
                     </p>
                   </div>
 
-                  <WorkspaceField label="绑定域名">
+                  <WorkspaceField label="TextDomain">
                     <OptionCombobox
-                      ariaLabel="绑定域名"
+                      ariaLabel="TextDomain"
                       disabled={!domainOptions.length}
-                      emptyLabel="没有可绑定域名"
+                      emptyLabel="TextDomain"
                       onValueChange={(value) =>
                         setBindingDraft((current) => ({ ...current, domainId: value }))
                       }
                       options={domainOptions}
-                      placeholder="选择域名"
-                      searchPlaceholder="搜索域名"
+                      placeholder="TextDomain"
+                      searchPlaceholder="TextDomain"
                       value={bindingDraft.domainId || undefined}
                     />
                   </WorkspaceField>
 
                   <div className="grid gap-4 md:grid-cols-[1fr_auto]">
-                    <WorkspaceField label="绑定权限">
+                    <WorkspaceField label="Text">
                       <OptionCombobox
-                        ariaLabel="绑定权限"
-                        emptyLabel="没有匹配权限"
+                        ariaLabel="Text"
+                        emptyLabel="Text"
                         onValueChange={(value) =>
                           setBindingDraft((current) => ({
                             ...current,
@@ -429,8 +429,8 @@ export function AdminApiKeysPage() {
                           }))
                         }
                         options={DOMAIN_BINDING_ACCESS_OPTIONS}
-                        placeholder="选择权限"
-                        searchPlaceholder="搜索权限"
+                        placeholder="Text"
+                        searchPlaceholder="Text"
                         value={bindingDraft.accessLevel}
                       />
                     </WorkspaceField>
@@ -441,7 +441,7 @@ export function AdminApiKeysPage() {
                         onClick={handleAddBinding}
                         variant="outline"
                       >
-                        添加绑定
+                        Text
                       </Button>
                     </div>
                   </div>
@@ -472,7 +472,7 @@ export function AdminApiKeysPage() {
                                   size="sm"
                                   variant="ghost"
                                 >
-                                  移除
+                                  Text
                                 </Button>
                               </>
                             }
@@ -483,8 +483,8 @@ export function AdminApiKeysPage() {
                     </div>
                   ) : (
                     <WorkspaceEmpty
-                      description="如果不加绑定，这把 key 会按 resource policy 访问整类域资源。"
-                      title="未限制到具体域名"
+                      description="Text，Text key Text resource policy Text。"
+                      title="Text and TextDomain"
                     />
                   )}
                 </div>
@@ -498,13 +498,13 @@ export function AdminApiKeysPage() {
                 </NoticeBanner>
               ) : null}
               <DialogClose asChild>
-                <Button variant="outline">取消</Button>
+                <Button variant="outline">Cancel</Button>
               </DialogClose>
               <Button
                 disabled={!canSubmit || createMutation.isPending}
                 onClick={handleCreateKey}
               >
-                {createMutation.isPending ? "创建中..." : "创建密钥"}
+                {createMutation.isPending ? "Text..." : "Text"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -522,23 +522,23 @@ export function AdminApiKeysPage() {
           <DialogContent className="sm:max-w-xl">
             <DialogHeader>
               <DialogTitle>
-                {revealedKey?.mode === "rotated" ? "已轮换 API 密钥" : "已新增 API 密钥"}
+                {revealedKey?.mode === "rotated" ? "Text API Text" : "Text API Text"}
               </DialogTitle>
               <DialogDescription>
-                这把密钥当前只会完整展示一次，请立即复制给对应用户或安全存档。
+                Text，Text。
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4">
-              <WorkspaceField label="密钥名称">
+              <WorkspaceField label="Text">
                 <Input readOnly value={revealedKey?.name ?? ""} />
               </WorkspaceField>
 
-              <WorkspaceField label="明文密钥">
+              <WorkspaceField label="Text">
                 <div className="space-y-2">
                   <Input className="font-mono text-[0.82rem]" readOnly value={revealedKey?.secret ?? ""} />
                   <p className="text-xs text-muted-foreground">
-                    关闭窗口后列表仍只显示脱敏值，请现在就复制到安全存储。
+                    Text，Text and Text。
                   </p>
                 </div>
               </WorkspaceField>
@@ -547,22 +547,22 @@ export function AdminApiKeysPage() {
             <DialogFooter>
               {copyState === "done" ? (
                 <NoticeBanner autoHideMs={5000} className="mr-auto text-xs" onDismiss={() => setCopyState("idle")} variant="success">
-                  已复制到剪贴板
+                  Text and Text
                 </NoticeBanner>
               ) : copyState === "failed" ? (
                 <NoticeBanner autoHideMs={5000} className="mr-auto text-xs" onDismiss={() => setCopyState("idle")} variant="error">
-                  复制失败，请手动复制
+                  Text，Text
                 </NoticeBanner>
               ) : (
                 <div className="mr-auto text-xs text-muted-foreground">
-                  建议现在就复制到安全存储中
+                  Text and Text
                 </div>
               )}
               <Button onClick={handleCopySecret} variant="secondary">
-                复制密钥
+                Text
               </Button>
               <DialogClose asChild>
-                <Button variant="outline">关闭</Button>
+                <Button variant="outline">Text</Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
@@ -578,22 +578,22 @@ export function AdminApiKeysPage() {
         >
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>确认撤销 API 密钥</DialogTitle>
+              <DialogTitle>Text API Text</DialogTitle>
               <DialogDescription>
-                这会让对应用户的这把 key 立即失效，现有脚本和服务调用会被拒绝。
+                Text key Text，Text。
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-3">
-              <WorkspaceField label="密钥名称">
+              <WorkspaceField label="Text">
                 <Input readOnly value={pendingRevokeItem?.name ?? ""} />
               </WorkspaceField>
-              <WorkspaceField label="当前预览">
+              <WorkspaceField label="Text">
                 <Input className="font-mono text-[0.82rem]" readOnly value={pendingRevokeItem?.keyPreview ?? ""} />
               </WorkspaceField>
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline">取消</Button>
+                <Button variant="outline">Cancel</Button>
               </DialogClose>
               <Button
                 disabled={revokeMutation.isPending}
@@ -609,7 +609,7 @@ export function AdminApiKeysPage() {
                 }}
                 variant="destructive"
               >
-                {revokeMutation.isPending ? "撤销中..." : "确认撤销"}
+                {revokeMutation.isPending ? "Text..." : "Text"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -635,8 +635,8 @@ export function AdminApiKeysPage() {
                       </div>
                       <div className="flex flex-wrap gap-2 text-[0.8rem]">
                         <span>{item.resourcePolicy.domainAccessMode}</span>
-                        <span>绑定 {domainBindings.length}</span>
-                        <span>最近使用 {formatDateTime(item.lastUsedAt)}</span>
+                        <span>Text {domainBindings.length}</span>
+                        <span>Text {formatDateTime(item.lastUsedAt)}</span>
                         <span>{formatDomainPolicySummary(item)}</span>
                       </div>
                     </div>
@@ -651,14 +651,14 @@ export function AdminApiKeysPage() {
                         size="sm"
                         variant="secondary"
                       >
-                        轮换
+                        Text
                       </Button>
                       <Button
                         onClick={() => setPendingRevokeItem(item)}
                         size="sm"
                         variant="outline"
                       >
-                        撤销
+                        Text
                       </Button>
                     </>
                   }
@@ -677,8 +677,8 @@ export function AdminApiKeysPage() {
           </div>
         ) : (
           <WorkspaceEmpty
-            description="这里只显示当前管理员自己创建且仍在生效的 API Key。"
-            title="暂无 API Key"
+            description="Text API Key。"
+            title="Text API Key"
           />
         )}
       </WorkspacePanel>
@@ -740,16 +740,16 @@ function upsertDomainBinding(
 function formatDomainPolicySummary(item: ApiKeyItem) {
   const targets: string[] = [];
   if (item.resourcePolicy.allowOwnedPrivateDomains) {
-    targets.push("私有域");
+    targets.push("Text");
   }
   if (item.resourcePolicy.allowPlatformPublicDomains) {
-    targets.push("平台公共域");
+    targets.push("Text");
   }
   if (item.resourcePolicy.allowUserPublishedDomains) {
-    targets.push("用户公共池");
+    targets.push("Text");
   }
   if (targets.length === 0) {
-    return "未授予域访问";
+    return "Text";
   }
   return targets.join(" / ");
 }

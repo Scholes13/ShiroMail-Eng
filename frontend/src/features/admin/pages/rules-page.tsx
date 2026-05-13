@@ -48,7 +48,7 @@ export function AdminRulesPage() {
 
   return (
     <WorkspacePage>
-      <WorkspacePanel description="管理邮箱保留时间与自动续期策略。" title="规则中心">
+      <WorkspacePanel description="Text。" title="Text">
         <div className="grid gap-6 xl:grid-cols-[0.92fr_1.08fr]">
           <div className="space-y-3">
             {(rulesQuery.data ?? []).map((item) => {
@@ -78,7 +78,7 @@ export function AdminRulesPage() {
                           {item.retentionHours}h
                         </span>
                       </div>
-                      <div className="text-xs text-muted-foreground">更新于 {formatDateTime(item.updatedAt)}</div>
+                      <div className="text-xs text-muted-foreground">Text {formatDateTime(item.updatedAt)}</div>
                     </CardContent>
                   </Card>
                 </button>
@@ -88,16 +88,16 @@ export function AdminRulesPage() {
 
           <Card className="border-border/60 bg-muted/10 shadow-none">
             <CardContent className="space-y-4 py-4">
-              <WorkspaceField label="规则名称">
+              <WorkspaceField label="Rule name">
                 <Input
                   className="h-9"
                   onChange={(event) => setDraft((current) => ({ ...current, name: event.target.value }))}
-                  placeholder="规则名称"
+                  placeholder="Rule name"
                   value={draft.name}
                 />
               </WorkspaceField>
 
-              <WorkspaceField label="保留时长（小时）">
+              <WorkspaceField label="Text（hours）">
                 <Input
                   className="h-9"
                   min={1}
@@ -114,11 +114,11 @@ export function AdminRulesPage() {
                   onCheckedChange={(checked) => setDraft((current) => ({ ...current, autoExtend: checked === true }))}
                 />
                 <Label className="text-sm" htmlFor="admin-rule-auto-extend">
-                  启用自动续期
+                  EnableText
                 </Label>
               </div>
 
-              <Button onClick={() => saveMutation.mutate()}>保存规则</Button>
+              <Button onClick={() => saveMutation.mutate()}>Save rule</Button>
             </CardContent>
           </Card>
         </div>

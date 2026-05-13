@@ -10,19 +10,19 @@ import { mailboxLocalPartSchema } from "@/lib/schemas";
 import type { DomainOption } from "../api";
 
 const ttlOptions = [
-  { label: "永久", value: "permanent", keywords: ["permanent", "forever", "永久", "不过期"] },
-  { label: "24 小时", value: "24", keywords: ["1 day", "24"] },
-  { label: "72 小时", value: "72", keywords: ["3 days", "72"] },
-  { label: "168 小时", value: "168", keywords: ["7 days", "168"] },
+  { label: "Permanent", value: "permanent", keywords: ["permanent", "forever", "Permanent", "Text"] },
+  { label: "24 hours", value: "24", keywords: ["1 day", "24"] },
+  { label: "72 hours", value: "72", keywords: ["3 days", "72"] },
+  { label: "168 hours", value: "168", keywords: ["7 days", "168"] },
 ];
 
 const retentionOptions = [
-  { label: "永久保留", value: "0", keywords: ["forever", "keep", "永久"] },
-  { label: "7 天", value: "7", keywords: ["7 days", "一周"] },
-  { label: "14 天", value: "14", keywords: ["14 days", "两周"] },
-  { label: "30 天", value: "30", keywords: ["30 days", "一个月"] },
-  { label: "60 天", value: "60", keywords: ["60 days", "两个月"] },
-  { label: "90 天", value: "90", keywords: ["90 days", "三个月"] },
+  { label: "PermanentText", value: "0", keywords: ["forever", "keep", "Permanent"] },
+  { label: "7 Text", value: "7", keywords: ["7 days", "Text"] },
+  { label: "14 Text", value: "14", keywords: ["14 days", "Text"] },
+  { label: "30 Text", value: "30", keywords: ["30 days", "Text"] },
+  { label: "60 Text", value: "60", keywords: ["60 days", "Text"] },
+  { label: "90 Text", value: "90", keywords: ["90 days", "Text"] },
 ];
 
 type Props = {
@@ -87,30 +87,30 @@ export function MailboxCreateForm({
       <CardContent className="space-y-4 py-4">
         <div className="flex items-center gap-2 text-sm font-medium">
           <MailPlus className="size-4" />
-          <span>创建新邮箱</span>
+          <span>Text</span>
         </div>
 
         <div className="grid gap-4 md:grid-cols-[1fr_180px_180px_auto]">
-          <WorkspaceField label="域名">
+          <WorkspaceField label="Domain">
             <OptionCombobox
-              ariaLabel="选择域名"
-              emptyLabel="没有匹配域名"
+              ariaLabel="TextDomain"
+              emptyLabel="TextDomain"
               onValueChange={onDomainIdChange}
               options={domains.map((domain) => ({
                 value: String(domain.id),
                 label: domain.domain,
                 keywords: [domain.rootDomain, domain.kind],
               }))}
-              placeholder="选择域名"
-              searchPlaceholder="搜索域名"
+              placeholder="TextDomain"
+              searchPlaceholder="TextDomain"
               value={effectiveDomainId}
             />
           </WorkspaceField>
 
-          <WorkspaceField label="有效期">
+          <WorkspaceField label="TTL">
             <OptionCombobox
-              ariaLabel="邮箱有效期"
-              emptyLabel="没有匹配的有效期"
+              ariaLabel="TextTTL"
+              emptyLabel="TextTTL"
               onValueChange={(value) => {
                 if (value === "permanent") {
                   onPermanentChange(true);
@@ -120,20 +120,20 @@ export function MailboxCreateForm({
                 }
               }}
               options={ttlOptions}
-              placeholder="选择有效期"
-              searchPlaceholder="搜索有效期"
+              placeholder="TextTTL"
+              searchPlaceholder="TextTTL"
               value={permanent ? "permanent" : String(ttlHours)}
             />
           </WorkspaceField>
 
-          <WorkspaceField label="消息保留">
+          <WorkspaceField label="Text">
             <OptionCombobox
-              ariaLabel="消息保留时间"
-              emptyLabel="没有匹配的保留时间"
+              ariaLabel="Text"
+              emptyLabel="Text"
               onValueChange={(value) => onRetentionDaysChange(Number(value))}
               options={retentionOptions}
-              placeholder="选择保留时间"
-              searchPlaceholder="搜索保留时间"
+              placeholder="Text"
+              searchPlaceholder="Text"
               value={String(retentionDays)}
             />
           </WorkspaceField>
@@ -145,15 +145,15 @@ export function MailboxCreateForm({
               onClick={handleSubmit}
             >
               <MailPlus className="size-4" />
-              {isPending ? "创建中..." : "创建邮箱"}
+              {isPending ? "Text..." : "Text"}
             </Button>
           </div>
         </div>
 
-        <WorkspaceField label="邮箱前缀">
+        <WorkspaceField label="Text">
           <Input
             onChange={(event) => handleLocalPartChange(event.target.value)}
-            placeholder="留空则自动生成"
+            placeholder="Text"
             value={localPart}
           />
           {localPartError ? <p className="text-xs text-destructive">{localPartError}</p> : null}

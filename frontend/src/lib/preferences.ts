@@ -9,16 +9,20 @@ export const supportedLanguages = ["zh-CN", "en-US"] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
 
 export function normalizeLanguage(value?: string | null): SupportedLanguage {
+  if (typeof value === "string" && value.toLowerCase().startsWith("zh")) {
+    return "zh-CN";
+  }
+
   if (typeof value === "string" && value.toLowerCase().startsWith("en")) {
     return "en-US";
   }
 
-  return "zh-CN";
+  return "en-US";
 }
 
 export function readStoredLanguage(): SupportedLanguage {
   if (typeof window === "undefined") {
-    return "zh-CN";
+    return "en-US";
   }
 
   const raw = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);

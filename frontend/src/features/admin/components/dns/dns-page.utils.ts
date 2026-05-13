@@ -59,15 +59,15 @@ export type ProviderCredentials = {
 export const DEFAULT_PROVIDER_PERMISSIONS = ["zones.read", "dns.write"];
 export const PROVIDER_PERMISSION_OPTIONS: Record<"cloudflare" | "spaceship", OptionComboboxOption[]> = {
   cloudflare: [
-    { value: "tokens.verify", label: "Token 验证", keywords: ["tokens.verify", "token verify"] },
-    { value: "zones.read", label: "Zone 读取", keywords: ["zones.read", "zone read"] },
-    { value: "dns.read", label: "DNS 读取", keywords: ["dns.read", "dns read"] },
-    { value: "dns.write", label: "DNS 写入", keywords: ["dns.write", "dns write", "dns edit"] },
+    { value: "tokens.verify", label: "Token Text", keywords: ["tokens.verify", "token verify"] },
+    { value: "zones.read", label: "Zone Text", keywords: ["zones.read", "zone read"] },
+    { value: "dns.read", label: "DNS Text", keywords: ["dns.read", "dns read"] },
+    { value: "dns.write", label: "DNS Text", keywords: ["dns.write", "dns write", "dns edit"] },
   ],
   spaceship: [
-    { value: "zones.read", label: "Zone 读取", keywords: ["zones.read", "zone read"] },
-    { value: "dns.read", label: "DNS 读取", keywords: ["dns.read", "dns read"] },
-    { value: "dns.write", label: "DNS 写入", keywords: ["dns.write", "dns write"] },
+    { value: "zones.read", label: "Zone Text", keywords: ["zones.read", "zone read"] },
+    { value: "dns.read", label: "DNS Text", keywords: ["dns.read", "dns read"] },
+    { value: "dns.write", label: "DNS Text", keywords: ["dns.write", "dns write"] },
   ],
 };
 
@@ -120,32 +120,32 @@ export function recordsToEditable(records: ProviderRecordItem[]) {
 export function describeAdminProviderWorkspaceError(message: string) {
   const normalized = message.toLowerCase();
   if (normalized.includes("unsupported dns record type")) {
-    return "当前工作区里包含暂不支持的记录类型，请先检查该 Zone 中的记录类型是否受支持。";
+    return "Text，Text Zone Text。";
   }
   if (normalized.includes("invalid request headers")) {
-    return "DNS 服务商拒绝了当前请求头，请检查鉴权方式是否与凭据匹配。";
+    return "DNS Text，Text。";
   }
   if (normalized.includes("authentication") || normalized.includes("unauthorized") || normalized.includes("forbidden")) {
-    return "DNS 服务商鉴权失败，请检查 API Token、邮箱、API Key 或 Secret 是否正确，并确认账号权限足够。";
+    return "DNS Text，Text API Token、Text、API Key Text Secret Text，Text。";
   }
   if (normalized.includes("status 400")) {
-    return "DNS 服务商拒绝了这次请求，请检查凭据格式、鉴权方式和接口权限是否正确。";
+    return "DNS Text，Text、Text。";
   }
   if (normalized.includes("status 401") || normalized.includes("status 403")) {
-    return "DNS 服务商返回未授权，请检查 Provider 凭据是否过期或权限不足。";
+    return "DNS Text，Text Provider Text。";
   }
   if (normalized.includes("status 404")) {
-    return "指定的 Zone 或记录在 DNS 服务商侧不存在，请确认域名已真正接入该 Provider。";
+    return "Text Zone Text DNS Text，TextDomainText Provider。";
   }
   if (
     normalized.includes("status 429") ||
     normalized.includes("too many requests") ||
     normalized.includes("rate limit")
   ) {
-    return "DNS 服务商当前触发了频率限制，请稍后再试，不要连续重复刷新。";
+    return "DNS Text，Text，TextRefresh。";
   }
   if (normalized.includes("status 5")) {
-    return "DNS 服务商暂时不可用，请稍后再试。";
+    return "DNS Text，Text。";
   }
   return message;
 }
@@ -198,12 +198,12 @@ export function describeChangeSetOperations(changeSet: DNSChangeSetItem) {
     counts.other ? `${counts.other} other` : null,
   ].filter(Boolean);
 
-  return items.length ? items.join(" · ") : "无操作";
+  return items.length ? items.join(" · ") : "Text";
 }
 
 export function formatChangeSetTimestamp(value?: string) {
   if (!value) {
-    return "时间未知";
+    return "Text";
   }
 
   const date = new Date(value);
@@ -255,13 +255,13 @@ export function getProviderCredentialFields(provider: string, authType: string) 
       {
         key: "apiKey" as const,
         label: "API Key",
-        placeholder: "输入 Spaceship API Key",
+        placeholder: "Text Spaceship API Key",
         type: "password",
       },
       {
         key: "apiSecret" as const,
         label: "API Secret",
-        placeholder: "输入 Spaceship API Secret",
+        placeholder: "Text Spaceship API Secret",
         type: "password",
       },
     ];
@@ -272,13 +272,13 @@ export function getProviderCredentialFields(provider: string, authType: string) 
       {
         key: "apiEmail" as const,
         label: "Account Email",
-        placeholder: "输入 Cloudflare 账号邮箱（仅 Global API Key 模式需要）",
+        placeholder: "Text Cloudflare Text（Text Global API Key Text）",
         type: "email",
       },
       {
         key: "apiKey" as const,
         label: "Global API Key",
-        placeholder: "输入 Cloudflare Global API Key",
+        placeholder: "Text Cloudflare Global API Key",
         type: "password",
       },
     ];
@@ -288,7 +288,7 @@ export function getProviderCredentialFields(provider: string, authType: string) 
     {
       key: "apiToken" as const,
       label: "API Token",
-      placeholder: "输入 Cloudflare API Token（推荐）",
+      placeholder: "Text Cloudflare API Token（Text）",
       type: "password",
     },
   ];
@@ -321,20 +321,20 @@ export function getProviderAuthModeMeta(provider: string, authType: string) {
   if (provider === "spaceship") {
     return {
       title: "Spaceship API Key + Secret",
-      description: "当前模式下需要填写 API Key 与 API Secret，平台会用它们读取 Zone 与 DNS 记录。",
+      description: "Text API Key Text API Secret，Text Zone Text DNS Text。",
     };
   }
 
   if (authType === "api_key") {
     return {
       title: "Cloudflare Global API Key + Email",
-      description: "当前模式下需要填写账号邮箱和 Global API Key，不再显示 API Token 输入框。",
+      description: "Text Global API Key，Text API Token Text。",
     };
   }
 
   return {
     title: "Cloudflare API Token",
-    description: "当前模式下只需要 API Token，推荐使用具备 Zone Read / DNS Read / DNS Edit 权限的 Token。",
+    description: "Text API Token，Text Zone Read / DNS Read / DNS Edit Text Token。",
   };
 }
 

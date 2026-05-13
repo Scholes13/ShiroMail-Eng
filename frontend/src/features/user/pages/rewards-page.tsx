@@ -24,28 +24,28 @@ export function UserRewardsPage() {
         action={
           <Badge className="rounded-full" variant="outline">
             <Gift className="mr-1 size-3.5" />
-            {balanceQuery.isLoading ? "正在同步奖励数据" : "奖励余额已同步"}
+            {balanceQuery.isLoading ? "Syncing reward data" : "Reward balance synced"}
           </Badge>
         }
-        description="集中查看可用余额、最近流水和兑换入口，作为当前账户的奖励与余额总览。"
-        title="兑换中心"
+        description="View available balance, recent activity, and redemption entry points for this account."
+        title="Redemption center"
       >
         <div className="grid gap-4 md:grid-cols-3">
           <WorkspaceMetric
-            hint="当前账户所有奖励、赠送和扣减共用这笔可用额度。"
-            label="可用余额"
+            hint="All rewards, grants, and deductions share this available balance."
+            label="Available balance"
             value={formatCurrency(balance?.balanceCents ?? 0)}
           />
           <WorkspaceMetric
-            hint="展示最近产生的奖励与扣减记录，作为兑换前的余额依据。"
-            label="最近流水"
+            hint="Shows recent rewards and deductions as the balance reference before redemption."
+            label="Recent activity"
             value={balance?.entries.length ?? 0}
           />
-          <WorkspaceMetric hint="余额、兑换与套餐资源都在当前控制台内查看和处理。" label="兑换路径" value="统一控制台" />
+          <WorkspaceMetric hint="Balance, redemptions, and plan resources are handled in this console." label="Redemption path" value="Unified console" />
         </div>
       </WorkspacePanel>
 
-      <WorkspacePanel description="通过余额明细和套餐资源两条路径，快速确认当前账户的兑换依据与可用额度。" title="奖励说明">
+      <WorkspacePanel description="Confirm redemption basis and available quota through balance details and plan resources." title="Reward notes">
         <div className="grid gap-4 md:grid-cols-2">
           <Card className="border-border/60 bg-muted/10 shadow-none">
             <CardContent className="flex items-start justify-between gap-3 py-4">
@@ -54,8 +54,8 @@ export function UserRewardsPage() {
                   <Coins className="size-4" />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm font-medium">查看余额明细</p>
-                  <p className="text-xs leading-6 text-muted-foreground">跳转到余额页，查看所有增减记录与说明。</p>
+                  <p className="text-sm font-medium">View balance details</p>
+                  <p className="text-xs leading-6 text-muted-foreground">Text and Text，Text。</p>
                 </div>
               </div>
               <Button asChild size="icon-sm" variant="ghost">
@@ -73,8 +73,8 @@ export function UserRewardsPage() {
                   <ShieldCheck className="size-4" />
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm font-medium">查看套餐资源</p>
-                  <p className="text-xs leading-6 text-muted-foreground">对照当前订阅计划与资源配额，决定后续兑换方向。</p>
+                  <p className="text-sm font-medium">View plan resources</p>
+                  <p className="text-xs leading-6 text-muted-foreground">Compare the current subscription and quotas to plan redemptions.</p>
                 </div>
               </div>
               <Button asChild size="icon-sm" variant="ghost">
@@ -87,7 +87,7 @@ export function UserRewardsPage() {
         </div>
       </WorkspacePanel>
 
-      <WorkspacePanel description="最近奖励、扣减和调整记录都会直接展示在这里，便于核对余额变化。" title="最近奖励流水">
+      <WorkspacePanel description="Recent rewards, deductions, and adjustments are shown here for balance checks." title="Recent reward activity">
         {balance?.entries.length ? (
           <div className="space-y-3">
             {balance.entries.map((entry) => (
@@ -105,7 +105,7 @@ export function UserRewardsPage() {
             ))}
           </div>
         ) : (
-          <WorkspaceEmpty description="当前还没有奖励流水记录。" title="暂无奖励流水" />
+          <WorkspaceEmpty description="No reward activity yet." title="No reward activity" />
         )}
       </WorkspacePanel>
     </WorkspacePage>

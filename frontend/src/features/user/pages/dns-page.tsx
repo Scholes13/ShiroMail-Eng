@@ -83,15 +83,15 @@ const EMPTY_PROVIDER_CREDENTIALS: ProviderCredentials = {
 const DEFAULT_PROVIDER_PERMISSIONS = ["zones.read", "dns.write"];
 const PROVIDER_PERMISSION_OPTIONS: Record<"cloudflare" | "spaceship", OptionComboboxOption[]> = {
   cloudflare: [
-    { value: "tokens.verify", label: "Token 验证", keywords: ["tokens.verify", "token verify"] },
-    { value: "zones.read", label: "Zone 读取", keywords: ["zones.read", "zone read"] },
-    { value: "dns.read", label: "DNS 读取", keywords: ["dns.read", "dns read"] },
-    { value: "dns.write", label: "DNS 写入", keywords: ["dns.write", "dns write", "dns edit"] },
+    { value: "tokens.verify", label: "Token Text", keywords: ["tokens.verify", "token verify"] },
+    { value: "zones.read", label: "Zone Text", keywords: ["zones.read", "zone read"] },
+    { value: "dns.read", label: "DNS Text", keywords: ["dns.read", "dns read"] },
+    { value: "dns.write", label: "DNS Text", keywords: ["dns.write", "dns write", "dns edit"] },
   ],
   spaceship: [
-    { value: "zones.read", label: "Zone 读取", keywords: ["zones.read", "zone read"] },
-    { value: "dns.read", label: "DNS 读取", keywords: ["dns.read", "dns read"] },
-    { value: "dns.write", label: "DNS 写入", keywords: ["dns.write", "dns write"] },
+    { value: "zones.read", label: "Zone Text", keywords: ["zones.read", "zone read"] },
+    { value: "dns.read", label: "DNS Text", keywords: ["dns.read", "dns read"] },
+    { value: "dns.write", label: "DNS Text", keywords: ["dns.write", "dns write"] },
   ],
 };
 const PERSISTED_QUERY_STALE_TIME = 60_000;
@@ -164,8 +164,8 @@ function getUserDomainsCacheKey(userId: string | undefined, suffix: string) {
 function getProviderCredentialFields(provider: string, authType: string) {
   if (provider === "spaceship") {
     return [
-      { key: "apiKey" as const, label: "API Key", placeholder: "输入 Spaceship API Key", type: "password" },
-      { key: "apiSecret" as const, label: "API Secret", placeholder: "输入 Spaceship API Secret", type: "password" },
+      { key: "apiKey" as const, label: "API Key", placeholder: "Text Spaceship API Key", type: "password" },
+      { key: "apiSecret" as const, label: "API Secret", placeholder: "Text Spaceship API Secret", type: "password" },
     ];
   }
 
@@ -174,13 +174,13 @@ function getProviderCredentialFields(provider: string, authType: string) {
       {
         key: "apiEmail" as const,
         label: "Account Email",
-        placeholder: "输入 Cloudflare 账号邮箱（仅 Global API Key 模式需要）",
+        placeholder: "Text Cloudflare Text（Text Global API Key Text）",
         type: "email",
       },
       {
         key: "apiKey" as const,
         label: "Global API Key",
-        placeholder: "输入 Cloudflare Global API Key",
+        placeholder: "Text Cloudflare Global API Key",
         type: "password",
       },
     ];
@@ -190,7 +190,7 @@ function getProviderCredentialFields(provider: string, authType: string) {
     {
       key: "apiToken" as const,
       label: "API Token",
-      placeholder: "输入 Cloudflare API Token（推荐）",
+      placeholder: "Text Cloudflare API Token（Text）",
       type: "password",
     },
   ];
@@ -218,26 +218,26 @@ function getProviderAuthModeMeta(provider: string, authType: string) {
   if (provider === "spaceship") {
     return {
       title: "Spaceship API Key + Secret",
-      description: "当前模式下需要填写 API Key 与 API Secret，平台会用它们读取 Zone 与 DNS 记录。",
+      description: "Text API Key Text API Secret，Text Zone Text DNS Text。",
     };
   }
 
   if (authType === "api_key") {
     return {
       title: "Cloudflare Global API Key + Email",
-      description: "当前模式下需要填写账号邮箱和 Global API Key，不再显示 API Token 输入框。",
+      description: "Text Global API Key，Text API Token Text。",
     };
   }
 
   return {
     title: "Cloudflare API Token",
-    description: "当前模式下只需要 API Token，推荐使用具备 Zone Read / DNS Read / DNS Edit 权限的 Token。",
+    description: "Text API Token，Text Zone Read / DNS Read / DNS Edit Text Token。",
   };
 }
 
 function formatProviderTimestamp(value?: string) {
   if (!value) {
-    return "时间未知";
+    return "Text";
   }
 
   const date = new Date(value);
@@ -272,28 +272,28 @@ function summarizeVerificationStatus(items: UserVerificationProfileItem[]) {
 function describeProviderWorkspaceError(message: string) {
   const normalized = message.toLowerCase();
   if (normalized.includes("unsupported dns record type")) {
-    return "当前工作区里包含暂不支持的记录类型，请先检查该 Zone 中的记录类型是否受支持。";
+    return "Text，Text Zone Text。";
   }
   if (normalized.includes("invalid request headers")) {
-    return "DNS 服务商拒绝了当前请求头，请检查鉴权方式是否与凭据匹配，例如 Cloudflare 的 API Token / Global API Key 模式是否选对。";
+    return "DNS Text，Text，Text Cloudflare Text API Token / Global API Key Text。";
   }
   if (normalized.includes("authentication") || normalized.includes("unauthorized") || normalized.includes("forbidden")) {
-    return "DNS 服务商鉴权失败，请检查 API Token、邮箱、API Key 或 Secret 是否正确，并确认账号权限足够。";
+    return "DNS Text，Text API Token、Text、API Key Text Secret Text，Text。";
   }
   if (normalized.includes("status 400")) {
-    return "DNS 服务商拒绝了这次请求，请检查凭据格式、鉴权方式和接口权限是否正确。";
+    return "DNS Text，Text、Text。";
   }
   if (normalized.includes("status 401") || normalized.includes("status 403")) {
-    return "DNS 服务商返回未授权，请检查 Provider 凭据是否过期或权限不足。";
+    return "DNS Text，Text Provider Text。";
   }
   if (normalized.includes("status 404")) {
-    return "指定的 Zone 或记录在 DNS 服务商侧不存在，请确认域名已真正接入该 Provider。";
+    return "Text Zone Text DNS Text，TextDomainText Provider。";
   }
   if (normalized.includes("status 429")) {
-    return "DNS 服务商当前触发了频率限制，请稍后再试。";
+    return "DNS Text，Text。";
   }
   if (normalized.includes("status 5")) {
-    return "DNS 服务商暂时不可用，请稍后再试。";
+    return "DNS Text，Text。";
   }
   return message;
 }
@@ -344,7 +344,7 @@ function PaginationControls({
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-background/60 px-3 py-2">
       <p className="text-xs text-muted-foreground">
-        第 {page} / {totalPages} 页 · 共 {total} 条{itemLabel}
+        Text {page} / {totalPages} Text · Text {total} Text{itemLabel}
       </p>
       <div className="flex items-center gap-2">
         <Button
@@ -354,7 +354,7 @@ function PaginationControls({
           variant="outline"
           onClick={() => onPageChange(page - 1)}
         >
-          上一页
+          Text
         </Button>
         <Button
           disabled={page >= totalPages}
@@ -363,7 +363,7 @@ function PaginationControls({
           variant="outline"
           onClick={() => onPageChange(page + 1)}
         >
-          下一页
+          Text
         </Button>
       </div>
     </div>
@@ -393,7 +393,7 @@ function SectionToggle({
         {meta}
         <Button size="sm" type="button" variant="ghost" onClick={onToggle}>
           {expanded ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
-          {expanded ? "收起" : "展开"}
+          {expanded ? "Text" : "Text"}
         </Button>
       </div>
     </div>
@@ -422,35 +422,35 @@ function getProviderCredentialChecklist(provider: string, authType: string) {
 
   if (normalizedProvider === "spaceship") {
     return [
-      "确认已填写 Spaceship 的 API Key。",
-      "确认已填写与该 Key 配套的 API Secret。",
-      "确认当前 Key 已开通 Zone / DNS 读取权限。",
-      "确认目标域名已经真实托管在这个 Spaceship 账号下。",
+      "Text Spaceship Text API Key。",
+      "Text Key Text API Secret。",
+      "Text Key Text Zone / DNS Text。",
+      "TextDomainText Spaceship Text。",
     ];
   }
 
   if (normalizedProvider === "cloudflare" && normalizedAuthType === "api_key") {
     return [
-      "确认鉴权方式选择的是 api_key，而不是 api_token。",
-      "确认已填写 Cloudflare 账号邮箱（Account Email）。",
-      "确认已填写该账号的 Global API Key。",
-      "确认该账号下确实存在目标 Zone，并且允许读取 DNS。",
+      "Text api_key，Text api_token。",
+      "Text Cloudflare Text（Account Email）。",
+      "Text Global API Key。",
+      "Text Zone，Text DNS。",
     ];
   }
 
   if (normalizedProvider === "cloudflare") {
     return [
-      "确认鉴权方式选择的是 api_token，而不是 api_key。",
-      "确认已填写 Cloudflare API Token。",
-      "确认该 Token 至少具备 Zone Read、DNS Read 或 DNS Edit 权限。",
-      "确认目标域名已经接入到当前 Cloudflare 账号。",
+      "Text api_token，Text api_key。",
+      "Text Cloudflare API Token。",
+      "Text Token Text Zone Read、DNS Read Text DNS Edit Text。",
+      "TextDomainText and Text Cloudflare Text。",
     ];
   }
 
   return [
-    "确认当前 Provider 的鉴权方式与凭据类型一致。",
-    "确认凭据没有过期、撤销或被限制来源 IP。",
-    "确认目标域名已接入当前 Provider 账号，并具备读取 Zone 的权限。",
+    "Text Provider Text。",
+    "Text、Text IP。",
+    "TextDomainText Provider Text，Text Zone Text。",
   ];
 }
 
@@ -663,7 +663,7 @@ export function UserDnsPage() {
     pendingWorkspaceRefreshRef.current = window.setTimeout(() => {
       pendingWorkspaceRefreshRef.current = null;
       void refreshUserDomainData().catch((error) => {
-        setProviderError(getAPIErrorMessage(error, "DNS 记录已保存，但重新同步工作区失败。"));
+        setProviderError(getAPIErrorMessage(error, "DNS Text，Text。"));
       });
     }, delayMs);
   }
@@ -722,7 +722,7 @@ export function UserDnsPage() {
     onSuccess: (payload) => {
       setProviderError(null);
       setProviderWorkspaceError(null);
-      setActionNotice(`已载入 ${payload.providerName} 的 Zone 列表。`);
+      setActionNotice(`Text ${payload.providerName} Text Zone Text。`);
       setActiveProviderWorkspace(payload);
       setActiveZoneWorkspace(null);
       setExpandedZoneKey(null);
@@ -733,11 +733,11 @@ export function UserDnsPage() {
       });
     },
     onError: (error, provider) => {
-      const detail = getAPIErrorMessage(error, "拉取 Provider Zones 失败，请先校验凭据。");
+      const detail = getAPIErrorMessage(error, "Text Provider Zones Text，Text。");
       const message = describeProviderWorkspaceError(detail);
       setProviderError(message);
       setProviderWorkspaceError({
-        title: `${provider.displayName} · Zone 加载失败`,
+        title: `${provider.displayName} · Zone Text`,
         message,
         detail,
       });
@@ -764,7 +764,7 @@ export function UserDnsPage() {
       const cooldownUntil = zoneFailureCooldowns[zoneKey] ?? 0;
       if (cooldownUntil > Date.now()) {
         const waitSeconds = Math.max(1, Math.ceil((cooldownUntil - Date.now()) / 1000));
-        throw new Error(`DNS 服务商当前仍在冷却中，请约 ${waitSeconds} 秒后再刷新此 Zone。`);
+        throw new Error(`DNS Text，Text ${waitSeconds} secTextRefreshText Zone。`);
       }
       const [records, changeSets, verifications] = await Promise.all([
         fetchDomainProviderRecords(input.providerId, input.zoneId),
@@ -785,7 +785,7 @@ export function UserDnsPage() {
       });
       setProviderError(null);
       setProviderWorkspaceError(null);
-      setActionNotice(`已载入 ${payload.zoneName} 的 DNS 详情。`);
+      setActionNotice(`Text ${payload.zoneName} Text DNS Text。`);
       setActiveZoneWorkspace(payload);
       setActivePreviewChangeSetId(payload.changeSets.find((item) => item.status !== "applied")?.id ?? payload.changeSets[0]?.id ?? null);
       setExpandedZoneKey(`${payload.providerId}:${payload.zoneId}`);
@@ -797,7 +797,7 @@ export function UserDnsPage() {
       });
     },
     onError: (error, input) => {
-      const detail = getAPIErrorMessage(error, "拉取 Zone Records 失败，请检查 Provider 连接。");
+      const detail = getAPIErrorMessage(error, "Text Zone Records Text，Text Provider Text。");
       const message = describeProviderWorkspaceError(detail);
       if (isProviderRateLimitedError(detail)) {
         const zoneKey = `${input.providerId}:${input.zoneId}`;
@@ -808,7 +808,7 @@ export function UserDnsPage() {
       }
       setProviderError(message);
       setProviderWorkspaceError({
-        title: `${input.zoneName} · DNS 详情加载失败`,
+        title: `${input.zoneName} · DNS Text`,
         message,
         detail,
       });
@@ -825,13 +825,13 @@ export function UserDnsPage() {
     mutationFn: createDomainProvider,
     onSuccess: async () => {
       setProviderError(null);
-      setActionNotice("Provider 账号已添加。");
+      setActionNotice("Provider Text。");
       resetProviderForm();
       setCreateProviderDialogOpen(false);
       await queryClient.invalidateQueries({ queryKey: ["user-domain-providers"], refetchType: "all" });
     },
     onError: (error) => {
-      setProviderError(getAPIErrorMessage(error, "新增 Provider 失败，请检查鉴权信息。"));
+      setProviderError(getAPIErrorMessage(error, "Text Provider Text，Text。"));
     },
   });
   const updateProviderMutation = useMutation({
@@ -839,14 +839,14 @@ export function UserDnsPage() {
       updateDomainProvider(providerAccountId, input),
     onSuccess: async () => {
       setProviderError(null);
-      setActionNotice("Provider 账号已更新。");
+      setActionNotice("Provider Text。");
       resetProviderForm();
       setCreateProviderDialogOpen(false);
       await queryClient.invalidateQueries({ queryKey: ["user-domain-providers"], refetchType: "all" });
       await queryClient.invalidateQueries({ queryKey: ["user-domains"], refetchType: "all" });
     },
     onError: (error) => {
-      setProviderError(getAPIErrorMessage(error, "更新 Provider 失败，请检查字段和绑定关系。"));
+      setProviderError(getAPIErrorMessage(error, "Text Provider Text，Text。"));
     },
   });
 
@@ -855,11 +855,11 @@ export function UserDnsPage() {
     onSuccess: async () => {
       setProviderError(null);
       setProviderWorkspaceError(null);
-      setActionNotice("Provider 校验完成。");
+      setActionNotice("Provider Text。");
       await queryClient.invalidateQueries({ queryKey: ["user-domain-providers"], refetchType: "all" });
     },
     onError: (error) => {
-      setProviderError(getAPIErrorMessage(error, "校验 Provider 失败，请检查凭据。"));
+      setProviderError(getAPIErrorMessage(error, "Text Provider Text，Text。"));
     },
   });
 
@@ -868,7 +868,7 @@ export function UserDnsPage() {
     onSuccess: async (_, providerId) => {
       setProviderError(null);
       setProviderWorkspaceError(null);
-      setActionNotice("Provider 账号已删除。");
+      setActionNotice("Provider Text。");
       queryClient.setQueryData<Awaited<ReturnType<typeof fetchDomainProviders>>>(["user-domain-providers"], (current) =>
         (current ?? []).filter((item) => item.id !== providerId),
       );
@@ -887,7 +887,7 @@ export function UserDnsPage() {
       await queryClient.invalidateQueries({ queryKey: ["user-domains"], refetchType: "all" });
     },
     onError: (error) => {
-      setProviderError(getAPIErrorMessage(error, "删除 Provider 失败，请先解除域名绑定。"));
+      setProviderError(getAPIErrorMessage(error, "Text Provider Text，TextDomainText。"));
     },
   });
 
@@ -911,13 +911,13 @@ export function UserDnsPage() {
       setRootDomain("");
       setSelectedProviderId("");
       setDomainError(null);
-      setActionNotice("根域名已添加。");
+      setActionNotice("TextDomainText。");
       setCreateRootDialogOpen(false);
       await queryClient.invalidateQueries({ queryKey: ["user-domains"], refetchType: "all" });
       await queryClient.invalidateQueries({ queryKey: ["user-dashboard"], refetchType: "all" });
     },
     onError: (error) => {
-      setDomainError(getAPIErrorMessage(error, "添加根域名失败，请检查域名格式。"));
+      setDomainError(getAPIErrorMessage(error, "TextDomainText，TextDomainText。"));
     },
   });
 
@@ -925,13 +925,13 @@ export function UserDnsPage() {
     mutationFn: generateSubdomains,
     onSuccess: async () => {
       setDomainError(null);
-      setActionNotice("子域名已批量生成。");
+      setActionNotice("TextDomainText。");
       setGenerateDialogOpen(false);
       await queryClient.invalidateQueries({ queryKey: ["user-domains"], refetchType: "all" });
       await queryClient.invalidateQueries({ queryKey: ["user-dashboard"], refetchType: "all" });
     },
     onError: (error) => {
-      setDomainError(getAPIErrorMessage(error, "批量生成子域名失败。"));
+      setDomainError(getAPIErrorMessage(error, "TextDomainText。"));
     },
   });
 
@@ -947,7 +947,7 @@ export function UserDnsPage() {
         records: input.records,
       }),
     onSuccess: (changeSet) => {
-      setActionNotice(`已生成 DNS 变更预览：${changeSet.summary}`);
+      setActionNotice(`Text DNS Text：${changeSet.summary}`);
       setProviderError(null);
       setActivePreviewChangeSetId(changeSet.id);
       setActiveZoneWorkspace((current) => {
@@ -962,14 +962,14 @@ export function UserDnsPage() {
       });
     },
     onError: (error) => {
-      setProviderError(getAPIErrorMessage(error, "生成 DNS 自动修复预览失败。"));
+      setProviderError(getAPIErrorMessage(error, "Text DNS Text。"));
     },
   });
 
   const applyChangeSetMutation = useMutation({
     mutationFn: applyDomainProviderChangeSet,
     onSuccess: (changeSet) => {
-      setActionNotice(`已通过 Provider API 应用变更：${changeSet.summary}`);
+      setActionNotice(`Text Provider API Text：${changeSet.summary}`);
       setProviderError(null);
       setActivePreviewChangeSetId(changeSet.id);
       setActiveZoneWorkspace((current) => {
@@ -983,7 +983,7 @@ export function UserDnsPage() {
       });
     },
     onError: (error) => {
-      setProviderError(getAPIErrorMessage(error, "应用 DNS 自动修复失败。"));
+      setProviderError(getAPIErrorMessage(error, "Text DNS Text。"));
     },
   });
 
@@ -1006,7 +1006,7 @@ export function UserDnsPage() {
         variables.zoneId,
         variables.zoneName,
       );
-      setActionNotice(`已保存到 DNS 服务商：${changeSet.summary}`);
+      setActionNotice(`Text and  DNS Text：${changeSet.summary}`);
       setProviderError(null);
       setActivePreviewChangeSetId(changeSet.id);
       setActiveZoneWorkspace((current) => {
@@ -1026,7 +1026,7 @@ export function UserDnsPage() {
       scheduleWorkspaceRefresh();
     },
     onError: (error) => {
-      setProviderError(getAPIErrorMessage(error, "保存 DNS 自动修复失败。"));
+      setProviderError(getAPIErrorMessage(error, "Text DNS Text。"));
     },
   });
 
@@ -1075,7 +1075,7 @@ export function UserDnsPage() {
 
     setActionNotice(null);
     setProviderWorkspaceError(null);
-    setProviderError("Provider 账号已不存在，已自动刷新你的 Provider 列表。");
+    setProviderError("Provider Text，TextRefreshText Provider Text。");
     return null;
   }
 
@@ -1219,7 +1219,7 @@ export function UserDnsPage() {
     setProviderWorkspaceError(null);
 
     if (!domain.providerAccountId) {
-      setDomainError(`域名 ${domain.domain} 尚未绑定 DNS 服务商，请先回域名管理完成绑定。`);
+      setDomainError(`Domain ${domain.domain} Text DNS Text，TextDomainText。`);
       setActiveZoneWorkspace(null);
       setExpandedZoneKey(null);
       setActivePreviewChangeSetId(null);
@@ -1251,7 +1251,7 @@ export function UserDnsPage() {
 
       if (!targetZone) {
         setDomainError(
-          `已载入 ${providerName} 的 Zone 列表，但没有匹配到 ${domain.rootDomain} 或 ${domain.domain}。请先确认该域名真实托管在当前 Provider 账号下。`,
+          `Text ${providerName} Text Zone Text，Text and  ${domain.rootDomain} Text ${domain.domain}。TextDomainText Provider Text。`,
         );
         setActiveZoneWorkspace(null);
         setExpandedZoneKey(null);
@@ -1270,7 +1270,7 @@ export function UserDnsPage() {
       );
 
       setDomainError(null);
-      setActionNotice(`已按域名 ${domain.domain} 定位到 Zone ${targetZone.name}。`);
+      setActionNotice(`TextDomain ${domain.domain} Text and  Zone ${targetZone.name}。`);
       setActiveZoneWorkspace({
         providerId: domain.providerAccountId,
         zoneId: targetZone.id,
@@ -1284,7 +1284,7 @@ export function UserDnsPage() {
         changeSets.find((item) => item.status !== "applied")?.id ?? changeSets[0]?.id ?? null,
       );
     } catch (error) {
-      setDomainError(getAPIErrorMessage(error, "暂时无法加载该域名的 DNS 工作区，请先检查 Provider 连接。"));
+      setDomainError(getAPIErrorMessage(error, "TextDomainText DNS Text，Text Provider Text。"));
     }
   }, [activeProviderWorkspace, providerMap]);
 
@@ -1372,7 +1372,7 @@ export function UserDnsPage() {
 
       if (!requestedDomain.providerAccountId) {
         autoWorkspaceRequestRef.current = `domain:${requestedDomain.id}:unbound`;
-        setDomainError(`域名 ${requestedDomain.domain} 尚未绑定 DNS 服务商，请先回域名管理完成绑定。`);
+        setDomainError(`Domain ${requestedDomain.domain} Text DNS Text，TextDomainText。`);
         return;
       }
 
@@ -1440,19 +1440,19 @@ export function UserDnsPage() {
         action={
           <div className="flex flex-wrap gap-2">
             <Button asChild variant="outline">
-              <Link to="/dashboard/domains">域名管理</Link>
+              <Link to="/dashboard/domains">DomainText</Link>
             </Button>
             <Button onClick={openCreateProviderDialog} variant="outline">
-              新增 Provider
+              Text Provider
             </Button>
             <Button onClick={() => void refreshUserDomainData()} variant="outline">
               <RefreshCcw className={isRefreshingDomainData ? "size-4 animate-spin" : "size-4"} />
-              刷新
+              Refresh
             </Button>
           </div>
         }
-        description="单独处理 Zone、Records、验证状态与 Change Set，不再和域名资产管理混在同一页。"
-        title="DNS 配置"
+        description="Text Zone、Records、Text Change Set，TextDomainText。"
+        title="DNS Text"
       >
         <AlertDialog
           open={providerDeleteDialog !== null}
@@ -1464,15 +1464,15 @@ export function UserDnsPage() {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>删除 DNS 服务商账号？</AlertDialogTitle>
+              <AlertDialogTitle>Text DNS Text？</AlertDialogTitle>
               <AlertDialogDescription>
                 {providerDeleteDialog
-                  ? `确认删除 Provider ${providerDeleteDialog.name}？删除后将无法继续读取 Zone，也无法继续通过该账号管理 DNS。`
+                  ? `Text Provider ${providerDeleteDialog.name}？Text Zone，Text DNS。`
                   : ""}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>取消</AlertDialogCancel>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 onClick={async () => {
                   if (!providerDeleteDialog) {
@@ -1487,7 +1487,7 @@ export function UserDnsPage() {
                   setProviderDeleteDialog(null);
                 }}
               >
-                确认删除
+                Text
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -1511,17 +1511,17 @@ export function UserDnsPage() {
           <Card className="border-border/60 bg-card/85 shadow-none">
             <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
               <div className="space-y-1">
-                <div className="text-sm font-medium">当前上下文</div>
+                <div className="text-sm font-medium">Text</div>
                 <p className="text-xs text-muted-foreground">
                   {requestedDomain
-                    ? `已按域名 ${requestedDomain.domain} 定位 DNS 工作区。`
+                    ? `TextDomain ${requestedDomain.domain} Text DNS Text。`
                     : requestedProvider
-                      ? `已按 Provider ${requestedProvider.displayName} 定位 DNS 工作区。`
-                      : `当前查看 ${activeZoneWorkspace?.zoneName ?? activeProviderWorkspace?.providerName ?? "DNS 工作区"}。`}
+                      ? `Text Provider ${requestedProvider.displayName} Text DNS Text。`
+                      : `Text ${activeZoneWorkspace?.zoneName ?? activeProviderWorkspace?.providerName ?? "DNS Text"}。`}
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
-                {requestedDomain ? <WorkspaceBadge variant="outline">域名：{requestedDomain.domain}</WorkspaceBadge> : null}
+                {requestedDomain ? <WorkspaceBadge variant="outline">Domain：{requestedDomain.domain}</WorkspaceBadge> : null}
                 {requestedProvider ? <WorkspaceBadge variant="outline">Provider：{requestedProvider.displayName}</WorkspaceBadge> : null}
                 {activeZoneWorkspace ? <WorkspaceBadge variant="outline">Zone：{activeZoneWorkspace.zoneName}</WorkspaceBadge> : null}
               </div>
@@ -1532,15 +1532,15 @@ export function UserDnsPage() {
           <CardContent className="space-y-3 py-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="space-y-1">
-                <div className="text-sm font-medium">操作提示</div>
+                <div className="text-sm font-medium">Text</div>
                 <p className="text-xs text-muted-foreground">
-                  先展开 Provider，再进入目标 Zone 查看记录和验证结果；根域记录通常用 `@`，子域记录只填前缀即可。
+                  Text Provider，Text Zone Text；Text `@`，Text。
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <WorkspaceBadge variant="outline">1. 选择 Provider</WorkspaceBadge>
-                <WorkspaceBadge variant="outline">2. 查看验证</WorkspaceBadge>
-                <WorkspaceBadge variant="outline">3. 应用修复</WorkspaceBadge>
+                <WorkspaceBadge variant="outline">1. Text Provider</WorkspaceBadge>
+                <WorkspaceBadge variant="outline">2. Text</WorkspaceBadge>
+                <WorkspaceBadge variant="outline">3. Text</WorkspaceBadge>
               </div>
             </div>
           </CardContent>
@@ -1557,23 +1557,23 @@ export function UserDnsPage() {
         >
           <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle>{isEditingProvider ? "编辑 Provider" : "新增 Provider"}</DialogTitle>
+              <DialogTitle>{isEditingProvider ? "Text Provider" : "Text Provider"}</DialogTitle>
               <DialogDescription>
                 {isEditingProvider
                   ? providerCoreFieldsLocked
-                    ? "当前 Provider 已绑定域名，可继续更新显示名称、凭据、状态和权限，但不能改服务商类型或鉴权方式。"
-                    : "当前 Provider 未绑定域名，服务商类型、鉴权方式、凭据与权限都可以直接修改。"
-                  : "为你的私有域名添加 DNS Provider 账号，后续根域名可直接绑定。"}
+                    ? "Text Provider TextDomain，Text、Text、Text，Text。"
+                    : "Text Provider TextDomain，Text、Text、Text。"
+                  : "TextDomainText DNS Provider Text，TextDomainText。"}
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 md:grid-cols-2">
               <WorkspaceField label="Provider">
                 <OptionCombobox
                   ariaLabel="Provider"
-                  emptyLabel="没有可选 Provider"
+                  emptyLabel="Text Provider"
                   options={[{ value: "cloudflare", label: "Cloudflare" }, { value: "spaceship", label: "Spaceship" }]}
-                  placeholder="选择 Provider"
-                  searchPlaceholder="搜索 Provider"
+                  placeholder="Text Provider"
+                  searchPlaceholder="Text Provider"
                   disabled={providerCoreFieldsLocked}
                   value={providerDraft.provider}
                   onValueChange={(value) => {
@@ -1591,13 +1591,13 @@ export function UserDnsPage() {
                   }}
                 />
               </WorkspaceField>
-              <WorkspaceField label="显示名称">
-                <Input value={providerDraft.displayName} onChange={(event) => setProviderDraft((current) => ({ ...current, displayName: event.target.value }))} placeholder="例如 My Cloudflare" />
+              <WorkspaceField label="Text">
+                <Input value={providerDraft.displayName} onChange={(event) => setProviderDraft((current) => ({ ...current, displayName: event.target.value }))} placeholder="Text My Cloudflare" />
               </WorkspaceField>
-              <WorkspaceField label="鉴权方式">
+              <WorkspaceField label="Text">
                 <OptionCombobox
-                  ariaLabel="鉴权方式"
-                  emptyLabel="没有可选鉴权方式"
+                  ariaLabel="Text"
+                  emptyLabel="Text"
                   options={
                     providerDraft.provider === "spaceship"
                       ? [{ value: "api_key", label: "API Key + API Secret" }]
@@ -1606,8 +1606,8 @@ export function UserDnsPage() {
                           { value: "api_key", label: "Global API Key + Email" },
                         ]
                   }
-                  placeholder="选择鉴权方式"
-                  searchPlaceholder="搜索鉴权方式"
+                  placeholder="Text"
+                  searchPlaceholder="Text"
                   disabled={providerCoreFieldsLocked}
                   value={providerDraft.authType}
                   onValueChange={(value) => {
@@ -1619,13 +1619,13 @@ export function UserDnsPage() {
                   }}
                 />
               </WorkspaceField>
-              <WorkspaceField label="权限">
+              <WorkspaceField label="Text">
                 <MultiOptionCombobox
-                  ariaLabel="权限"
-                  emptyLabel="没有可选权限"
+                  ariaLabel="Text"
+                  emptyLabel="Text"
                   options={getProviderPermissionOptions(providerDraft.provider)}
-                  placeholder="选择需要的权限"
-                  searchPlaceholder="继续搜索权限"
+                  placeholder="Text"
+                  searchPlaceholder="Text"
                   values={providerDraft.permissionValues}
                   onValuesChange={(values) =>
                     setProviderDraft((current) => ({
@@ -1640,7 +1640,7 @@ export function UserDnsPage() {
                 <div className="text-sm font-medium">{getProviderAuthModeMeta(providerDraft.provider, providerDraft.authType).title}</div>
                 <div className="mt-1 text-sm text-muted-foreground">
                   {getProviderAuthModeMeta(providerDraft.provider, providerDraft.authType).description}
-                  {isEditingProvider ? " 留空则沿用当前已保存的凭据。" : ""}
+                  {isEditingProvider ? " Text。" : ""}
                 </div>
               </div>
             <div className="grid gap-4 md:grid-cols-2">
@@ -1657,7 +1657,7 @@ export function UserDnsPage() {
               ))}
             </div>
             <DialogFooter>
-              <DialogClose asChild><Button variant="outline">取消</Button></DialogClose>
+              <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
               <Button
                 disabled={
                   !providerDraft.displayName.trim() ||
@@ -1692,10 +1692,10 @@ export function UserDnsPage() {
                 }}
               >
                 {createProviderMutation.isPending || updateProviderMutation.isPending
-                  ? "创建中..."
+                  ? "Text..."
                   : isEditingProvider
-                    ? "保存 Provider"
-                    : "创建 Provider"}
+                    ? "Text Provider"
+                    : "Text Provider"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -1704,27 +1704,27 @@ export function UserDnsPage() {
         <Dialog onOpenChange={setCreateRootDialogOpen} open={isCreateRootDialogOpen}>
           <DialogContent className="sm:max-w-xl">
             <DialogHeader>
-              <DialogTitle>添加根域名</DialogTitle>
-              <DialogDescription>录入新的私有根域名，并可直接绑定到已添加的 Provider。</DialogDescription>
+              <DialogTitle>TextDomain</DialogTitle>
+              <DialogDescription>TextDomain，Text and Text Provider。</DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
-              <WorkspaceField label="根域名">
+              <WorkspaceField label="TextDomain">
                 <Input onChange={(event) => setRootDomain(event.target.value)} placeholder="example.com" value={rootDomain} />
               </WorkspaceField>
-              <WorkspaceField label="绑定 Provider">
+              <WorkspaceField label="Text Provider">
                 <OptionCombobox
-                  ariaLabel="绑定 Provider"
-                  emptyLabel="没有可用 Provider"
+                  ariaLabel="Text Provider"
+                  emptyLabel="Text Provider"
                   options={providerOptions}
-                  placeholder="可选，选择一个 Provider"
-                  searchPlaceholder="搜索 Provider"
+                  placeholder="Text，Text Provider"
+                  searchPlaceholder="Text Provider"
                   value={selectedProviderId || undefined}
                   onValueChange={(value) => setSelectedProviderId(value || "")}
                 />
               </WorkspaceField>
             </div>
             <DialogFooter>
-              <DialogClose asChild><Button variant="outline">取消</Button></DialogClose>
+              <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
               <Button
                 disabled={!rootDomain.trim()}
                 onClick={() => createDomainMutation.mutate({
@@ -1737,7 +1737,7 @@ export function UserDnsPage() {
                   providerAccountId: selectedProviderId ? Number(selectedProviderId) : undefined,
                   weight: 100,
                 })}
-              >添加根域名</Button>
+              >TextDomain</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -1745,27 +1745,27 @@ export function UserDnsPage() {
         <Dialog onOpenChange={setGenerateDialogOpen} open={isGenerateDialogOpen}>
           <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle>批量生成子域名</DialogTitle>
-              <DialogDescription>从已有根域名批量生成多级子域名，适合 MX、relay、edge 等前缀。</DialogDescription>
+              <DialogTitle>TextDomain</DialogTitle>
+              <DialogDescription>TextDomainTextDomain，Text MX、relay、edge Text。</DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
-              <WorkspaceField label="选择根域名">
+              <WorkspaceField label="TextDomain">
                 <OptionCombobox
-                  ariaLabel="选择根域名"
-                  emptyLabel="没有可选根域名"
+                  ariaLabel="TextDomain"
+                  emptyLabel="TextDomain"
                   options={rootDomains.map((item) => ({ value: String(item.id), label: item.domain, keywords: [item.providerDisplayName || ""] }))}
-                  placeholder="选择根域名"
-                  searchPlaceholder="搜索根域名"
+                  placeholder="TextDomain"
+                  searchPlaceholder="TextDomain"
                   value={selectedBaseDomainId === "" ? undefined : String(selectedBaseDomainId)}
                   onValueChange={(value) => setSelectedBaseDomainId(value ? Number(value) : "")}
                 />
               </WorkspaceField>
-              <WorkspaceField label="多级前缀">
-                <Textarea rows={6} onChange={(event) => setPrefixInput(event.target.value)} value={prefixInput} placeholder={"一行一个前缀，例如：\nmx\nmx.edge\nrelay.cn.hk"} />
+              <WorkspaceField label="Text">
+                <Textarea rows={6} onChange={(event) => setPrefixInput(event.target.value)} value={prefixInput} placeholder={"Text，Example: \nmx\nmx.edge\nrelay.cn.hk"} />
               </WorkspaceField>
             </div>
             <DialogFooter>
-              <DialogClose asChild><Button variant="outline">取消</Button></DialogClose>
+              <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
               <Button
                 disabled={selectedBaseDomainId === ""}
                 onClick={() => generateMutation.mutate({
@@ -1778,7 +1778,7 @@ export function UserDnsPage() {
                   healthStatus: "unknown",
                   weight: 90,
                 })}
-              >批量生成子域名</Button>
+              >TextDomain</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -1791,10 +1791,10 @@ export function UserDnsPage() {
             <CardContent className="space-y-4 py-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <div className="text-sm font-medium">Provider 账号</div>
-                  <p className="text-xs text-muted-foreground">你的私有 DNS Provider 列表，根域名可以直接绑定到这些账号。</p>
+                  <div className="text-sm font-medium">Provider Text</div>
+                  <p className="text-xs text-muted-foreground">Text DNS Provider Text，TextDomainText and Text。</p>
                 </div>
-                <WorkspaceBadge>{(providersQuery.data ?? []).length} 个</WorkspaceBadge>
+                <WorkspaceBadge>{(providersQuery.data ?? []).length} Text</WorkspaceBadge>
               </div>
               {(providersQuery.data ?? []).length ? (
                 <div className="space-y-2">
@@ -1815,21 +1815,21 @@ export function UserDnsPage() {
                               <WorkspaceBadge variant="outline">{provider.provider}</WorkspaceBadge>
                               <WorkspaceBadge variant="outline">{provider.status}</WorkspaceBadge>
                             </div>
-                            <p className="text-xs text-muted-foreground">{provider.authType} · {(provider.capabilities ?? []).join(" / ") || "未配置权限"}</p>
+                            <p className="text-xs text-muted-foreground">{provider.authType} · {(provider.capabilities ?? []).join(" / ") || "Text"}</p>
                             {activeProviderWorkspace?.providerId === provider.id ? (
                               <div className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
-                                <span>已载入 {activeProviderWorkspace.zones.length} 个 Zone</span>
+                                <span>Text {activeProviderWorkspace.zones.length} Text Zone</span>
                                 {activeZoneWorkspace?.providerId === provider.id ? (
                                   <>
                                     <span>·</span>
-                                    <span>{activeZoneWorkspace.records.length} 条记录</span>
+                                    <span>{activeZoneWorkspace.records.length} Text</span>
                                     <span>·</span>
-                                    <span>{activeZoneWorkspace.changeSets.length} 个变更集</span>
+                                    <span>{activeZoneWorkspace.changeSets.length} Text</span>
                                   </>
                                 ) : null}
                               </div>
                             ) : (
-                              <div className="text-[11px] text-muted-foreground">折叠后仅保留账号摘要，需要时再展开查看 Zone 与记录。</div>
+                              <div className="text-[11px] text-muted-foreground">Text，Text Zone Text。</div>
                             )}
                           </div>
                         </button>
@@ -1847,16 +1847,16 @@ export function UserDnsPage() {
                             }}
                           >
                             <RefreshCcw className="size-4" />
-                            {validatingProviderId === provider.id ? "校验中..." : "校验"}
+                            {validatingProviderId === provider.id ? "Text..." : "Text"}
                           </Button>
                           <Button
-                            aria-label={`${provider.displayName} 编辑`}
+                            aria-label={`${provider.displayName} Text`}
                             size="sm"
                             variant="ghost"
                             disabled={deletingProviderId === provider.id}
                             onClick={() => openEditProviderDialog(provider)}
                           >
-                            编辑
+                            Text
                           </Button>
                           <Button
                             size="sm"
@@ -1877,7 +1877,7 @@ export function UserDnsPage() {
                               });
                             }}
                           >
-                            {loadingZonesProviderId === provider.id ? "载入中..." : "查看 Zones"}
+                            {loadingZonesProviderId === provider.id ? "Text..." : "Text Zones"}
                           </Button>
                           <Button
                             size="sm"
@@ -1892,7 +1892,7 @@ export function UserDnsPage() {
                             }}
                           >
                             <Trash2 className="size-4" />
-                            {deletingProviderId === provider.id ? "删除中..." : "删除"}
+                            {deletingProviderId === provider.id ? "Text..." : "Text"}
                           </Button>
                         </div>
                       </div>
@@ -1903,9 +1903,9 @@ export function UserDnsPage() {
                               <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
                                   <div className="text-sm font-medium">{activeProviderWorkspace.providerName} · Zones</div>
-                                  <p className="text-xs text-muted-foreground">当前 Provider 返回的可用 Zone，以及每个 Zone 的真实 Records / 验证状态。</p>
+                                  <p className="text-xs text-muted-foreground">Text Provider Text Zone，Text Zone Text Records / Text。</p>
                                 </div>
-                                <WorkspaceBadge variant="outline">{activeProviderWorkspace.zones.length} 个 Zone</WorkspaceBadge>
+                                <WorkspaceBadge variant="outline">{activeProviderWorkspace.zones.length} Text Zone</WorkspaceBadge>
                               </div>
 
                               {providerWorkspaceError ? (
@@ -1923,12 +1923,12 @@ export function UserDnsPage() {
                                       disabled={providerZoneMutation.isPending || providerZoneDetailMutation.isPending}
                                       onClick={retryLastProviderWorkspaceAttempt}
                                     >
-                                      重试
+                                      Text
                                     </Button>
                                   </div>
                                   <p className="mt-1 leading-6">{providerWorkspaceError.message}</p>
                                   <div className="mt-3 rounded-lg border border-amber-500/20 bg-background/60 p-3 text-xs text-foreground/90 dark:bg-background/20">
-                                    <div className="font-medium">建议检查</div>
+                                    <div className="font-medium">Text</div>
                                     <ul className="mt-2 space-y-1.5">
                                       {getProviderCredentialChecklist(activeProviderWorkspace.provider, activeProviderWorkspace.authType).map((item) => (
                                         <li key={item} className="flex gap-2">
@@ -1940,12 +1940,12 @@ export function UserDnsPage() {
                                   </div>
                                   {providerWorkspaceError.detail && providerWorkspaceError.detail !== providerWorkspaceError.message ? (
                                     <p className="mt-2 text-xs text-amber-800/80 dark:text-amber-200/80">
-                                      原始返回：{providerWorkspaceError.detail}
+                                      Text：{providerWorkspaceError.detail}
                                     </p>
                                   ) : null}
                                   <div className="mt-3 flex flex-wrap gap-2">
                                     <Button size="sm" variant="outline" disabled={validateProviderMutation.isPending} onClick={validateActiveProviderWorkspace}>
-                                      {validateProviderMutation.isPending ? "校验中..." : "先校验 Provider"}
+                                      {validateProviderMutation.isPending ? "Text..." : "Text Provider"}
                                     </Button>
                                   </div>
                                 </NoticeBanner>
@@ -1982,21 +1982,21 @@ export function UserDnsPage() {
                                               <div className="text-xs text-muted-foreground">Zone ID: {zone.id}</div>
                                               {isLoaded ? (
                                                 <div className="flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-                                                  <span>{activeZoneWorkspace.records.length} 条记录</span>
+                                                  <span>{activeZoneWorkspace.records.length} Text</span>
                                                   <span>·</span>
-                                                  <span>{activeZoneWorkspace.changeSets.length} 个变更集</span>
+                                                  <span>{activeZoneWorkspace.changeSets.length} Text</span>
                                                   <span>·</span>
-                                                  <span>{activeZoneWorkspace.verifications.length} 条验证</span>
+                                                  <span>{activeZoneWorkspace.verifications.length} Text</span>
                                                 </div>
                                               ) : (
-                                                <div className="text-[11px] text-muted-foreground">按需展开查看真实记录、验证和变更集。</div>
+                                                <div className="text-[11px] text-muted-foreground">Text、Text。</div>
                                               )}
                                             </div>
                                           </button>
                                           <div className="flex flex-wrap items-center gap-2 text-[0.82rem] text-muted-foreground md:justify-end">
                                             <WorkspaceBadge variant="outline">{zone.status}</WorkspaceBadge>
                                             {cooldownSeconds > 0 ? (
-                                              <WorkspaceBadge variant="outline">冷却 {cooldownSeconds}s</WorkspaceBadge>
+                                              <WorkspaceBadge variant="outline">Text {cooldownSeconds}s</WorkspaceBadge>
                                             ) : null}
                                             <Button
                                               size="sm"
@@ -2012,10 +2012,10 @@ export function UserDnsPage() {
                                               }}
                                             >
                                               {isLoadingThisZone
-                                                ? "载入中..."
+                                                ? "Text..."
                                                 : cooldownSeconds > 0
-                                                  ? `冷却 ${cooldownSeconds}s`
-                                                  : "查看记录"}
+                                                  ? `Text ${cooldownSeconds}s`
+                                                  : "Text"}
                                             </Button>
                                           </div>
                                         </div>
@@ -2026,12 +2026,12 @@ export function UserDnsPage() {
                                               <div className="space-y-3 rounded-xl border border-border/60 bg-background/70 p-3">
                                                 <div className="flex flex-wrap items-center justify-between gap-3">
                                                   <div>
-                                                    <div className="text-sm font-medium">{activeZoneWorkspace.zoneName} · DNS 详情</div>
-                                                    <p className="text-xs text-muted-foreground">这里展示真实 Records、最近 Change Set 历史和自动验证结果。</p>
+                                                    <div className="text-sm font-medium">{activeZoneWorkspace.zoneName} · DNS Text</div>
+                                                    <p className="text-xs text-muted-foreground">Text Records、Text Change Set Text。</p>
                                                   </div>
                                                   <div className="flex flex-wrap gap-2">
-                                                    <WorkspaceBadge variant="outline">{activeZoneWorkspace.records.length} 条记录</WorkspaceBadge>
-                                                    <WorkspaceBadge variant="outline">{activeZoneWorkspace.changeSets.length} 个变更集</WorkspaceBadge>
+                                                    <WorkspaceBadge variant="outline">{activeZoneWorkspace.records.length} Text</WorkspaceBadge>
+                                                    <WorkspaceBadge variant="outline">{activeZoneWorkspace.changeSets.length} Text</WorkspaceBadge>
                                                     <Button
                                                       size="sm"
                                                       variant="ghost"
@@ -2045,7 +2045,7 @@ export function UserDnsPage() {
                                                       }}
                                                     >
                                                       <RefreshCcw className={loadingZoneDetailKey === `${activeZoneWorkspace.providerId}:${activeZoneWorkspace.zoneId}` ? "size-4 animate-spin" : "size-4"} />
-                                                      刷新当前 Zone
+                                                      RefreshText Zone
                                                     </Button>
                                                   </div>
                                                 </div>
@@ -2054,14 +2054,14 @@ export function UserDnsPage() {
                                                   <SectionToggle
                                                     expanded={recordsExpanded}
                                                     title="DNS Records"
-                                                    description="按需展开查看当前 Zone 的真实 DNS 记录，长值会完整换行显示。"
+                                                    description="Text Zone Text DNS Text，Text。"
                                                     meta={
                                                       <>
                                                         <WorkspaceBadge variant="outline">
-                                                          {activeZoneWorkspace.records.length} 条记录
+                                                          {activeZoneWorkspace.records.length} Text
                                                         </WorkspaceBadge>
                                                         <WorkspaceBadge variant="outline">
-                                                          第 {paginatedZoneRecords.page} / {paginatedZoneRecords.totalPages} 页
+                                                          Text {paginatedZoneRecords.page} / {paginatedZoneRecords.totalPages} Text
                                                         </WorkspaceBadge>
                                                       </>
                                                     }
@@ -2075,9 +2075,9 @@ export function UserDnsPage() {
                                                           <table className="min-w-[720px] border-collapse text-left text-sm">
                                                             <thead className="bg-background/80 text-muted-foreground">
                                                               <tr>
-                                                                <th className="px-3 py-2 font-medium">类型</th>
-                                                                <th className="px-3 py-2 font-medium">名称</th>
-                                                                <th className="px-3 py-2 font-medium">值</th>
+                                                                <th className="px-3 py-2 font-medium">Text</th>
+                                                                <th className="px-3 py-2 font-medium">Text</th>
+                                                                <th className="px-3 py-2 font-medium">Text</th>
                                                                 <th className="px-3 py-2 font-medium">TTL</th>
                                                               </tr>
                                                             </thead>
@@ -2119,7 +2119,7 @@ export function UserDnsPage() {
                                                         />
                                                       </>
                                                     ) : (
-                                                      <WorkspaceEmpty title="暂无 Records" description="当前 Zone 还没有可读取的 DNS Records。" />
+                                                      <WorkspaceEmpty title="Text Records" description="Text Zone Text DNS Records。" />
                                                     )
                                                   ) : null}
                                                 </div>
@@ -2130,7 +2130,7 @@ export function UserDnsPage() {
                                                   <div className="space-y-2 rounded-xl border border-border/60 bg-card/50 p-3">
                                                     <div className="flex items-center justify-between gap-3">
                                                       <div className="flex items-center gap-2">
-                                                        <div className="text-sm font-medium">自动验证</div>
+                                                        <div className="text-sm font-medium">Text</div>
                                                         <Button
                                                           size="sm"
                                                           variant="outline"
@@ -2143,9 +2143,9 @@ export function UserDnsPage() {
                                                         const summary = summarizeVerificationStatus(activeZoneWorkspace.verifications);
                                                         return (
                                                           <div className="flex items-center gap-2">
-                                                            <WorkspaceBadge variant="outline">通过 {summary.verified}</WorkspaceBadge>
-                                                            <WorkspaceBadge variant="outline">漂移 {summary.drifted}</WorkspaceBadge>
-                                                            <WorkspaceBadge variant="outline">待处理 {summary.pending}</WorkspaceBadge>
+                                                            <WorkspaceBadge variant="outline">Text {summary.verified}</WorkspaceBadge>
+                                                            <WorkspaceBadge variant="outline">Text {summary.drifted}</WorkspaceBadge>
+                                                            <WorkspaceBadge variant="outline">Text {summary.pending}</WorkspaceBadge>
                                                             {isAutoRefreshing ? (
                                                               <span className="flex items-center gap-1 text-xs text-muted-foreground">
                                                                 <RefreshCcw className="size-3 animate-spin" />
@@ -2173,18 +2173,18 @@ export function UserDnsPage() {
                                                         />
                                                       ))
                                                     ) : (
-                                                      <WorkspaceEmpty title="暂无验证结果" description="当前 Zone 还没有可展示的自动验证结果。" />
+                                                      <WorkspaceEmpty title="Text" description="Text Zone Text。" />
                                                     )}
                                                   </div>
 
                                                   <div className="space-y-2 rounded-xl border border-border/60 bg-card/50 p-3">
-                                                    <div className="text-sm font-medium">最近 Change Set</div>
+                                                    <div className="text-sm font-medium">Text Change Set</div>
                                                     {activeZoneWorkspace.changeSets.length ? (
                                                       activeZoneWorkspace.changeSets.slice(0, 5).map((item) => (
                                                         <WorkspaceListRow
                                                           key={item.id}
                                                           title={`#${item.id} · ${item.summary}`}
-                                                          description={`${item.operations.length} 条操作 · ${item.provider}`}
+                                                          description={`${item.operations.length} Text · ${item.provider}`}
                                                           meta={
                                                             <>
                                                               <WorkspaceBadge variant="outline">{item.status}</WorkspaceBadge>
@@ -2194,7 +2194,7 @@ export function UserDnsPage() {
                                                         />
                                                       ))
                                                     ) : (
-                                                      <WorkspaceEmpty title="暂无变更集" description="这个 Zone 还没有保存过 DNS 变更记录。" />
+                                                      <WorkspaceEmpty title="Text" description="Text Zone Text DNS Text。" />
                                                     )}
                                                   </div>
                                                 </div>
@@ -2202,13 +2202,13 @@ export function UserDnsPage() {
                                                 <div className="space-y-3 rounded-xl border border-border/60 bg-card/50 p-3">
                                                   <div className="flex flex-wrap items-center justify-between gap-3">
                                                     <div>
-                                                      <div className="text-sm font-medium">DNS 配置方式</div>
-                                                      <p className="text-xs text-muted-foreground">你可以手动配置建议记录，或直接调用已绑定 Provider 的官方 API 自动配置 / 修复记录。</p>
+                                                      <div className="text-sm font-medium">DNS Text</div>
+                                                      <p className="text-xs text-muted-foreground">Text，Text Provider Text API Text / Text。</p>
                                                     </div>
                                                     <div className="inline-flex rounded-lg border border-border/60 bg-background/80 p-1">
                                                       {[
-                                                        { value: "manual" as const, label: "手动配置" },
-                                                        { value: "provider_api" as const, label: "自动配置" },
+                                                        { value: "manual" as const, label: "Text" },
+                                                        { value: "provider_api" as const, label: "Text" },
                                                       ].map((option) => {
                                                         const zoneKey = `${activeZoneWorkspace.providerId}:${activeZoneWorkspace.zoneId}`;
                                                         const selectedMode = zoneConfigMode[zoneKey] ?? "manual";
@@ -2238,19 +2238,19 @@ export function UserDnsPage() {
                                                   {(zoneConfigMode[`${activeZoneWorkspace.providerId}:${activeZoneWorkspace.zoneId}`] ?? "manual") === "manual" ? (
                                                     <div className="space-y-3">
                                                       <div className="flex flex-wrap items-center justify-between gap-2">
-                                                        <div className="text-sm font-medium">建议手动记录</div>
-                                                        <WorkspaceBadge variant="outline">{recommendedRepairRecords.length} 条建议</WorkspaceBadge>
+                                                        <div className="text-sm font-medium">Text</div>
+                                                        <WorkspaceBadge variant="outline">{recommendedRepairRecords.length} Text</WorkspaceBadge>
                                                       </div>
                                                       {recommendedRepairRecords.length ? (
                                                         <div className="overflow-x-auto rounded-xl border border-border/60">
                                                           <table className="min-w-[760px] border-collapse text-left text-sm">
                                                             <thead className="bg-background/80 text-muted-foreground">
                                                               <tr>
-                                                                <th className="px-3 py-2 font-medium">类型</th>
-                                                                <th className="px-3 py-2 font-medium">主机记录</th>
-                                                                <th className="px-3 py-2 font-medium">记录值</th>
+                                                                <th className="px-3 py-2 font-medium">Text</th>
+                                                                <th className="px-3 py-2 font-medium">Text</th>
+                                                                <th className="px-3 py-2 font-medium">Text</th>
                                                                 <th className="px-3 py-2 font-medium">TTL</th>
-                                                                <th className="px-3 py-2 font-medium">优先级</th>
+                                                                <th className="px-3 py-2 font-medium">Text</th>
                                                               </tr>
                                                             </thead>
                                                             <tbody>
@@ -2270,7 +2270,7 @@ export function UserDnsPage() {
                                                                       <DnsCopyButton value={record.value} />
                                                                     </span>
                                                                   </td>
-                                                                  <td className="px-3 py-3 text-xs text-muted-foreground">{record.ttl || "自动"}</td>
+                                                                  <td className="px-3 py-3 text-xs text-muted-foreground">{record.ttl || "Text"}</td>
                                                                   <td className="px-3 py-3 text-xs text-muted-foreground">{record.priority || "-"}</td>
                                                                 </tr>
                                                               ))}
@@ -2278,15 +2278,15 @@ export function UserDnsPage() {
                                                           </table>
                                                         </div>
                                                       ) : (
-                                                        <WorkspaceEmpty title="当前无需手动修复" description="自动验证没有发现需要补的记录，或者这个 Zone 还没有产生 repair records。" />
+                                                        <WorkspaceEmpty title="Text" description="Text，Text Zone Text repair records。" />
                                                       )}
                                                     </div>
                                                   ) : (
                                                     <div className="space-y-3">
                                                       <div className="flex flex-wrap items-center justify-between gap-2">
                                                         <div>
-                                                          <div className="text-sm font-medium">Provider API 自动修复</div>
-                                                          <p className="text-xs text-muted-foreground">系统会基于验证结果里的 repair records 生成自动配置预览，再调用官方 DNS Provider API 执行。</p>
+                                                          <div className="text-sm font-medium">Provider API Text</div>
+                                                          <p className="text-xs text-muted-foreground">Text repair records Text，Text DNS Provider API Text。</p>
                                                         </div>
                                                         <div className="flex flex-wrap gap-2">
                                                           <Button
@@ -2301,7 +2301,7 @@ export function UserDnsPage() {
                                                               })
                                                             }
                                                           >
-                                                            {saveRecommendedRecordsMutation.isPending ? "保存中..." : "保存到服务商"}
+                                                            {saveRecommendedRecordsMutation.isPending ? "Text..." : "Text and Text"}
                                                           </Button>
                                                           <Button
                                                             size="sm"
@@ -2316,7 +2316,7 @@ export function UserDnsPage() {
                                                               })
                                                             }
                                                           >
-                                                            {previewChangeSetMutation.isPending ? "生成中..." : "预览自动配置"}
+                                                            {previewChangeSetMutation.isPending ? "Text..." : "Text"}
                                                           </Button>
                                                           <Button
                                                             size="sm"
@@ -2329,25 +2329,25 @@ export function UserDnsPage() {
                                                               applyChangeSetMutation.mutate(activePreviewChangeSet.id);
                                                             }}
                                                           >
-                                                            {applyChangeSetMutation.isPending ? "应用中..." : "一键应用"}
+                                                            {applyChangeSetMutation.isPending ? "Text..." : "Text"}
                                                           </Button>
                                                         </div>
                                                       </div>
 
                                                       {recommendedRepairRecords.length === 0 ? (
-                                                        <WorkspaceEmpty title="没有可自动修复的记录" description="先让系统跑出 verification repair records，或手动核对当前 Zone 配置。" />
+                                                        <WorkspaceEmpty title="Text" description="Text verification repair records，Text Zone Text。" />
                                                       ) : null}
 
                                                       {activePreviewChangeSet ? (
                                                         <div className="space-y-3 rounded-xl border border-border/60 bg-background/70 p-3">
                                                           <div className="flex flex-wrap items-center justify-between gap-2">
                                                             <div>
-                                                              <div className="text-sm font-medium">变更预览 #{activePreviewChangeSet.id}</div>
+                                                              <div className="text-sm font-medium">Text #{activePreviewChangeSet.id}</div>
                                                               <p className="text-xs text-muted-foreground">{activePreviewChangeSet.summary}</p>
                                                             </div>
                                                             <div className="flex flex-wrap gap-2">
                                                               <WorkspaceBadge variant="outline">{activePreviewChangeSet.status}</WorkspaceBadge>
-                                                              <WorkspaceBadge variant="outline">{activePreviewChangeSet.operations.length} 条操作</WorkspaceBadge>
+                                                              <WorkspaceBadge variant="outline">{activePreviewChangeSet.operations.length} Text</WorkspaceBadge>
                                                             </div>
                                                           </div>
                                                           <div className="space-y-2">
@@ -2359,7 +2359,7 @@ export function UserDnsPage() {
                                                                   description={
                                                                     operation.after?.value ??
                                                                     operation.before?.value ??
-                                                                    "无记录值"
+                                                                    "Text"
                                                                   }
                                                                   descriptionClassName="font-mono text-xs break-all whitespace-normal"
                                                                   meta={
@@ -2371,19 +2371,19 @@ export function UserDnsPage() {
                                                                 />
                                                               ))
                                                             ) : (
-                                                              <WorkspaceEmpty title="没有变更" description="当前建议记录与 Provider 现状一致，无需自动修复。" />
+                                                              <WorkspaceEmpty title="Text" description="Text Provider Text，Text。" />
                                                             )}
                                                           </div>
                                                         </div>
                                                       ) : (
-                                                        <WorkspaceEmpty title="还没有自动配置预览" description="点击“预览自动配置”后，这里会展示即将调用官方 Provider API 执行的操作。" />
+                                                        <WorkspaceEmpty title="Text" description="Text“Text”Text，Text Provider API Text。" />
                                                       )}
                                                     </div>
                                                   )}
                                                 </div>
                                               </div>
                                             ) : (
-                                              <WorkspaceEmpty title="尚未加载 Zone 详情" description="点击“查看记录”后，这里会展开当前 Zone 的记录、验证与变更集。" />
+                                              <WorkspaceEmpty title="Text Zone Text" description="Text“Text”Text，Text Zone Text、Text。" />
                                             )}
                                           </div>
                                         ) : null}
@@ -2392,11 +2392,11 @@ export function UserDnsPage() {
                                   })}
                                 </div>
                               ) : (
-                                <WorkspaceEmpty title="暂无 Zone" description="这个 Provider 当前没有返回可用 Zone，先检查账号权限或接入的域名。" />
+                                <WorkspaceEmpty title="Text Zone" description="Text Provider Text Zone，TextDomain。" />
                               )}
                             </div>
                           ) : (
-                            <WorkspaceEmpty title="尚未加载工作区" description="点“查看 Zones”后，这里会展开当前 Provider 的 Zone、记录和验证工作区。" />
+                            <WorkspaceEmpty title="Text" description="Text“Text Zones”Text，Text Provider Text Zone、Text。" />
                           )}
                         </div>
                       ) : null}
@@ -2404,13 +2404,13 @@ export function UserDnsPage() {
                   ))}
                 </div>
               ) : (
-                <WorkspaceEmpty title="还没有 Provider" description="先添加一个 Cloudflare 或 Spaceship 账号，再绑定根域名。" />
+                <WorkspaceEmpty title="Text Provider" description="Text Cloudflare Text Spaceship Text，TextDomain。" />
               )}
             </CardContent>
           </Card>
 
           <NoticeBanner variant="info">
-            待验证域名、绑定状态和“配置 DNS”入口已移动到 `域名管理` 页面；这里现在只保留 DNS 服务商、Zone、Records 和变更工作区。
+            TextDomain、Text“Text DNS”Text and  `DomainText` Text；Text DNS Text、Zone、Records Text。
           </NoticeBanner>
         </div>
 

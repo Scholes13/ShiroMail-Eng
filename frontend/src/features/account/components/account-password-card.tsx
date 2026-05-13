@@ -35,7 +35,7 @@ export function AccountPasswordCard({
       return;
     }
     if (currentPassword === newPassword) {
-      setError("新密码不能与当前密码相同。");
+      setError("Text。");
       return;
     }
     try {

@@ -28,7 +28,7 @@ export function MailboxCard({ mailbox, active, onSelect, formatDate, formatRemai
           <div className="flex items-start justify-between gap-3">
             <div className="space-y-1">
               <div className="text-sm font-medium">{mailbox.address}</div>
-              <p className="text-xs text-muted-foreground">{mailbox.status === "active" ? "活跃中" : "已释放"}</p>
+              <p className="text-xs text-muted-foreground">{mailbox.status === "active" ? "Text" : "Text"}</p>
             </div>
             <div className="flex items-center gap-2">
               <span
@@ -54,8 +54,8 @@ export function MailboxCard({ mailbox, active, onSelect, formatDate, formatRemai
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            <span>{mailbox.permanent ? "永久邮箱" : `剩余 ${formatRemainingHours(mailbox.expiresAt)}`}</span>
-            <span>更新于 {formatDate(mailbox.updatedAt)}</span>
+            <span>{mailbox.permanent ? "PermanentText" : `Text ${formatRemainingHours(mailbox.expiresAt)}`}</span>
+            <span>Text {formatDate(mailbox.updatedAt)}</span>
           </div>
         </CardContent>
       </Card>

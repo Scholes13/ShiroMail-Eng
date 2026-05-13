@@ -217,10 +217,10 @@ export function LandingPage() {
               </div>
               <div className="text-[11px] leading-5 text-muted-foreground">
                 {siteStatsQuery.isLoading
-                  ? "正在同步实时数据..."
+                  ? "Text..."
                   : formattedStatsUpdatedAt
-                    ? `最近更新：${formattedStatsUpdatedAt}`
-                    : "暂时无法获取实时数据"}
+                    ? `Text：${formattedStatsUpdatedAt}`
+                    : "Text"}
               </div>
 
               <div className="space-y-2">

@@ -7,17 +7,17 @@ function DialogComboboxFixture({ onChange }: { onChange: (value: string) => void
   return (
     <Dialog open>
       <DialogContent>
-        <DialogTitle>选择域名</DialogTitle>
+        <DialogTitle>TextDomain</DialogTitle>
         <OptionCombobox
-          ariaLabel="域名"
-          emptyLabel="没有匹配域名"
+          ariaLabel="Domain"
+          emptyLabel="TextDomain"
           onValueChange={onChange}
           options={[
             { value: "1", label: "alpha.test" },
             { value: "2", label: "beta.test" },
           ]}
-          placeholder="选择域名"
-          searchPlaceholder="搜索域名"
+          placeholder="TextDomain"
+          searchPlaceholder="TextDomain"
           value="1"
         />
       </DialogContent>
@@ -31,7 +31,7 @@ describe("OptionCombobox in Dialog", () => {
 
     render(<DialogComboboxFixture onChange={onValueChange} />);
 
-    fireEvent.click(screen.getByRole("combobox", { name: "域名" }));
+    fireEvent.click(screen.getByRole("combobox", { name: "Domain" }));
     fireEvent.click(await screen.findByRole("option", { name: "beta.test" }));
 
     expect(onValueChange).toHaveBeenCalledWith("2");

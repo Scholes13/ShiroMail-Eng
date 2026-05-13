@@ -104,7 +104,7 @@ export function AdminMonitoringPage() {
               size="sm"
               variant="outline"
             >
-              导出统计 CSV
+              Text CSV
             </Button>
             <Badge className="rounded-full" variant="outline">
               <Activity className="mr-1 size-3.5" />

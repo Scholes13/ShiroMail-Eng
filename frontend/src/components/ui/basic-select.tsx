@@ -122,7 +122,7 @@ function BasicSelect({
           readOnly
         />
         <ComboboxContent>
-          <ComboboxEmpty>暂无可选项</ComboboxEmpty>
+          <ComboboxEmpty>Text</ComboboxEmpty>
           <ComboboxList>
             {(item: BasicSelectOption) => (
               <ComboboxItem

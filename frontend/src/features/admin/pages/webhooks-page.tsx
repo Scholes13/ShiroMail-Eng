@@ -82,7 +82,7 @@ export function AdminWebhooksPage() {
     },
     onSuccess: async () => {
       setMutationError(null);
-      setActionNotice(editingId ? "Webhook 已更新。" : "Webhook 已创建。");
+      setActionNotice(editingId ? "Webhook Text。" : "Webhook Text。");
       setDraft({
         userId: "",
         name: "",
@@ -99,8 +99,8 @@ export function AdminWebhooksPage() {
         getAPIErrorMessage(
           error,
           editingId
-            ? "保存 Webhook 失败，请检查地址、事件和会话状态后重试。"
-            : "创建 Webhook 失败，请检查地址、事件和会话状态后重试。",
+            ? "Text Webhook Text，Text、Text。"
+            : "Text Webhook Text，Text、Text。",
         ),
       );
     },
@@ -110,12 +110,12 @@ export function AdminWebhooksPage() {
     mutationFn: ({ id, enabled }: { id: number; enabled: boolean }) =>
       toggleAdminWebhook(id, enabled),
     onSuccess: async () => {
-      setActionNotice("Webhook 状态已更新。");
+      setActionNotice("Webhook Text。");
       await queryClient.invalidateQueries({ queryKey: ["admin-webhooks"] });
       await queryClient.invalidateQueries({ queryKey: ["admin-overview"] });
     },
     onError: (error) => {
-      setMutationError(getAPIErrorMessage(error, "切换 Webhook 状态失败，请稍后重试。"));
+      setMutationError(getAPIErrorMessage(error, "Text Webhook Text，Text。"));
     },
   });
 
@@ -165,15 +165,15 @@ export function AdminWebhooksPage() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>停用 Webhook？</AlertDialogTitle>
+            <AlertDialogTitle>Disable Webhook？</AlertDialogTitle>
             <AlertDialogDescription>
               {pendingDisableItem
-                ? `确认停用 Webhook ${pendingDisableItem.name}？停用后 user #${pendingDisableItem.userId} 的事件将不再投递到 ${pendingDisableItem.targetUrl}。`
+                ? `TextDisable Webhook ${pendingDisableItem.name}？DisableText user #${pendingDisableItem.userId} Text and  ${pendingDisableItem.targetUrl}。`
                 : ""}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>取消</AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 if (!pendingDisableItem) {
@@ -183,14 +183,14 @@ export function AdminWebhooksPage() {
                 setPendingDisableItem(null);
               }}
             >
-              确认停用
+              TextDisable
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
       <WorkspacePanel
-        action={<Button onClick={startCreate}>新增 Webhook</Button>}
-        description="全局查看 webhook 地址、事件和启停状态。"
+        action={<Button onClick={startCreate}>Text Webhook</Button>}
+        description="Text webhook Text、Text。"
         title="Webhook"
       >
         {actionNotice ? (
@@ -209,37 +209,37 @@ export function AdminWebhooksPage() {
         >
           <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle>{editingId ? "编辑 Webhook" : "新增 Webhook"}</DialogTitle>
+              <DialogTitle>{editingId ? "Text Webhook" : "Text Webhook"}</DialogTitle>
               <DialogDescription>
                 {editingId
-                  ? "修改目标地址与事件列表，保存后会立即同步到管理员视图。"
-                  : "为指定用户创建新的事件回调地址，提交后会立即同步到管理员视图。"}
+                  ? "Text，Text and Text。"
+                  : "TextCallback URL，Text and Text。"}
               </DialogDescription>
             </DialogHeader>
 
             <div className="grid gap-4 xl:grid-cols-2">
-              <WorkspaceField label="所属用户 ID">
+              <WorkspaceField label="Text ID">
                 <Input
                   disabled={editingId !== null}
                   min="1"
                   onChange={(event) =>
                     setDraft((current) => ({ ...current, userId: event.target.value }))
                   }
-                  placeholder="输入用户 ID"
+                  placeholder="Text ID"
                   type="number"
                   value={draft.userId}
                 />
               </WorkspaceField>
-              <WorkspaceField label="Webhook 名称">
+              <WorkspaceField label="Webhook Text">
                 <Input
                   onChange={(event) =>
                     setDraft((current) => ({ ...current, name: event.target.value }))
                   }
-                  placeholder="Webhook 名称"
+                  placeholder="Webhook Text"
                   value={draft.name}
                 />
               </WorkspaceField>
-              <WorkspaceField label="回调地址">
+              <WorkspaceField label="Callback URL">
                 <Input
                   onChange={(event) =>
                     setDraft((current) => ({ ...current, targetUrl: event.target.value }))
@@ -248,7 +248,7 @@ export function AdminWebhooksPage() {
                   value={draft.targetUrl}
                 />
               </WorkspaceField>
-              <WorkspaceField label="事件列表">
+              <WorkspaceField label="Text">
                 <Input
                   onChange={(event) =>
                     setDraft((current) => ({ ...current, events: event.target.value }))
@@ -266,7 +266,7 @@ export function AdminWebhooksPage() {
                 </NoticeBanner>
               ) : null}
               <DialogClose asChild>
-                <Button variant="outline">取消</Button>
+                <Button variant="outline">Cancel</Button>
               </DialogClose>
               <Button
                 disabled={
@@ -276,11 +276,11 @@ export function AdminWebhooksPage() {
               >
                 {createMutation.isPending
                   ? editingId
-                    ? "保存中..."
-                    : "创建中..."
+                    ? "Text..."
+                    : "Text..."
                   : editingId
-                    ? "保存修改"
-                    : "创建 Webhook"}
+                    ? "Text"
+                    : "Text Webhook"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -309,7 +309,7 @@ export function AdminWebhooksPage() {
                     <WorkspaceBadge>{item.enabled ? "enabled" : "disabled"}</WorkspaceBadge>
                     <span>{formatDateTime(item.updatedAt)}</span>
                     <Button onClick={() => startEdit(item)} size="sm" variant="secondary">
-                      编辑
+                      Text
                     </Button>
                     <Button
                       onClick={() => {
@@ -322,7 +322,7 @@ export function AdminWebhooksPage() {
                       size="sm"
                       variant="outline"
                     >
-                      {item.enabled ? "停用" : "启用"}
+                      {item.enabled ? "Disable" : "Enable"}
                     </Button>
                   </>
                 }
@@ -332,8 +332,8 @@ export function AdminWebhooksPage() {
           </div>
         ) : (
           <WorkspaceEmpty
-            description="全局 Webhook 建立后，这里会显示目标地址、事件与启停状态。"
-            title="暂无 Webhook"
+            description="Text Webhook Text，Text、Text。"
+            title="Text Webhook"
           />
         )}
       </WorkspacePanel>

@@ -157,7 +157,7 @@ describe("AdminApiKeysPage", () => {
     expect((await screen.findAllByText("mailboxes.read")).length).toBeGreaterThan(0);
     expect((await screen.findAllByText("domains.verify")).length).toBeGreaterThan(0);
     expect(await screen.findByText("private_only")).toBeInTheDocument();
-    expect(await screen.findByText("绑定 0")).toBeInTheDocument();
+    expect(await screen.findByText("Text 0")).toBeInTheDocument();
   });
 
   it("creates admin api keys inside a dialog", async () => {
@@ -174,21 +174,21 @@ describe("AdminApiKeysPage", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.queryByPlaceholderText("输入用户 ID")).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText("Text ID")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "新增 API Key" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text API Key" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "新增 API Key" });
+    const dialog = await screen.findByRole("dialog", { name: "Text API Key" });
     const dialogQueries = within(dialog);
 
     fireEvent.change(
-      dialogQueries.getByPlaceholderText("输入密钥名称，如 Admin Worker / Audit Bot"),
+      dialogQueries.getByPlaceholderText("Text，Text Admin Worker / Audit Bot"),
       {
         target: { value: "ops-bot" },
       },
     );
 
-    fireEvent.click(dialogQueries.getByRole("button", { name: "创建密钥" }));
+    fireEvent.click(dialogQueries.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(createAdminApiKey).mock.calls[0]?.[0]).toEqual({
@@ -225,20 +225,20 @@ describe("AdminApiKeysPage", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.click(await screen.findByRole("button", { name: "轮换" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
     await waitFor(() => {
       expect(vi.mocked(rotateAdminApiKey).mock.calls[0]?.[0]).toBe(1);
     });
 
-    const revealDialog = await screen.findByRole("dialog", { name: "已轮换 API 密钥" });
+    const revealDialog = await screen.findByRole("dialog", { name: "Text API Text" });
     expect(revealDialog).toBeInTheDocument();
     expect(await screen.findByDisplayValue("sk_live_rotated")).toBeInTheDocument();
-    fireEvent.click(within(revealDialog).getByRole("button", { name: "关闭" }));
+    fireEvent.click(within(revealDialog).getByRole("button", { name: "Text" }));
 
-    fireEvent.click(await screen.findByRole("button", { name: "撤销" }));
-    expect(await screen.findByRole("dialog", { name: "确认撤销 API 密钥" })).toBeInTheDocument();
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
+    expect(await screen.findByRole("dialog", { name: "Text API Text" })).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "确认撤销" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(revokeAdminApiKey).mock.calls[0]?.[0]).toBe(1);
@@ -261,19 +261,19 @@ describe("AdminApiKeysPage", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "新增 API Key" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text API Key" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "新增 API Key" });
+    const dialog = await screen.findByRole("dialog", { name: "Text API Key" });
     const dialogQueries = within(dialog);
 
     fireEvent.change(
-      dialogQueries.getByPlaceholderText("输入密钥名称，如 Admin Worker / Audit Bot"),
+      dialogQueries.getByPlaceholderText("Text，Text Admin Worker / Audit Bot"),
       {
         target: { value: "ops-bot" },
       },
     );
 
-    fireEvent.click(dialogQueries.getByRole("button", { name: "创建密钥" }));
+    fireEvent.click(dialogQueries.getByRole("button", { name: "Text" }));
 
     expect(await dialogQueries.findByText("invalid scope policy")).toBeInTheDocument();
   });
@@ -317,9 +317,9 @@ describe("AdminApiKeysPage", () => {
 
     expect(await screen.findByText("worker-active")).toBeInTheDocument();
     expect(screen.queryByText("worker-revoked")).not.toBeInTheDocument();
-    fireEvent.click((await screen.findAllByRole("button", { name: "撤销" }))[0]);
+    fireEvent.click((await screen.findAllByRole("button", { name: "Text" }))[0]);
 
-    expect(await screen.findByRole("dialog", { name: "确认撤销 API 密钥" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "Text API Text" })).toBeInTheDocument();
     expect(await screen.findByDisplayValue("worker-active")).toBeInTheDocument();
   });
 });

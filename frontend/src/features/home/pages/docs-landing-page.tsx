@@ -11,33 +11,33 @@ import {
 
 const docsSections = [
   {
-    title: "认证与账户",
-    body: "注册、登录、OAuth、邮箱验证、密码重置和 TOTP 两步验证。",
+    title: "Text",
+    body: "Text、Text、OAuth、Text、Text TOTP Text。",
     icon: ShieldCheck,
   },
   {
-    title: "邮箱与消息",
-    body: "邮箱创建、续期、释放、消息详情、附件下载与 EML 原文下载。",
+    title: "Text",
+    body: "Text、Text、Text、Text、Text EML Text。",
     icon: Mail,
   },
   {
-    title: "域名与 DNS",
-    body: "根域名接入、子域名生成、服务商绑定、DNS 校验与变更应用。",
+    title: "DomainText DNS",
+    body: "TextDomainText、TextDomainText、Text、DNS Text。",
     icon: Globe,
   },
   {
-    title: "API Key 与 Webhook",
-    body: "用户 API Key、域名绑定策略、Webhook 配置与控制台补充接口。",
+    title: "API Key Text Webhook",
+    body: "Text API Key、DomainText、Webhook Text。",
     icon: KeyRound,
   },
   {
-    title: "SMTP 诊断",
-    body: "测试发信、结构化错误码、reject 计数与 inbound spool 观察。",
+    title: "SMTP Text",
+    body: "Text、Text、reject Text inbound spool Text。",
     icon: Activity,
   },
   {
-    title: "控制台文档",
-    body: "普通用户与管理员共用一套数据源，文档中心内容可在后台实时维护。",
+    title: "Text",
+    body: "Text，Text。",
     icon: BookOpen,
   },
 ];
@@ -49,13 +49,13 @@ export function DocsLandingPage() {
     <PublicShell>
       <PublicPageHero
         eyebrow="Docs"
-        title="公开文档与 API 文档都按当前代码和接口整理"
-        description="这里汇总核心能力与接口分组。"
+        title="Text API Text"
+        description="Text。"
       />
 
       <PublicSection
-        description="先看能力边界，再按接口分组进入接入实现。"
-        title="当前可用能力"
+        description="Text，Text。"
+        title="Text"
       >
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {docsSections.map((section) => (
@@ -65,8 +65,8 @@ export function DocsLandingPage() {
       </PublicSection>
 
       <PublicInfoCard
-        description="以下能力均对应实际页面或接口。"
-        title="运行时范围"
+        description="Text。"
+        title="Text"
       >
         <PublicChecklist items={runtimeCapabilities} marker="index" />
       </PublicInfoCard>
@@ -98,8 +98,8 @@ export function DocsLandingPage() {
       </PublicInfoCard>
 
       <PublicSection
-        description="接口路径、鉴权方式和作用都来自当前后端路由注册。"
-        title="API 参考"
+        description="Text、Text。"
+        title="API Text"
       >
         <div className="space-y-4">
           {apiReferenceSections.map((section) => (
@@ -115,8 +115,8 @@ export function DocsLandingPage() {
                     <tr className="text-left text-xs uppercase tracking-[0.14em] text-muted-foreground">
                       <th className="border-b border-border/60 px-3 py-2">Method</th>
                       <th className="border-b border-border/60 px-3 py-2">Path</th>
-                      <th className="border-b border-border/60 px-3 py-2">鉴权</th>
-                      <th className="border-b border-border/60 px-3 py-2">说明</th>
+                      <th className="border-b border-border/60 px-3 py-2">Text</th>
+                      <th className="border-b border-border/60 px-3 py-2">Text</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -137,7 +137,7 @@ export function DocsLandingPage() {
       </PublicSection>
 
       <PublicSection
-        description="下面这几段是当前后端实际返回的 SMTP 诊断形状，适合直接给运维、前端或大模型理解。"
+        description="Text SMTP Text，Text、Text。"
         title="SMTP Diagnostics Examples"
       >
         <div className="space-y-4">
@@ -156,7 +156,7 @@ export function DocsLandingPage() {
       </PublicSection>
 
       <PublicSection
-        description="这一组字段就是 SMTP 诊断相关接口里最关键的语义层，读懂后基本就能直接接 UI、脚本或 LLM。"
+        description="Text SMTP Text，Text UI、Text LLM。"
         title="SMTP Diagnostics Field Guide"
       >
         <div className="grid gap-4 md:grid-cols-2">

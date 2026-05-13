@@ -19,13 +19,13 @@ export function validateRequiredText(
 ) {
   const normalized = normalizeText(value);
   if (!normalized) {
-    return `${label}不能为空。`;
+    return `${label} is required。`;
   }
   if (options?.minLength && normalized.length < options.minLength) {
-    return `${label}至少需要 ${options.minLength} 个字符。`;
+    return `${label} must be at least ${options.minLength}  characters。`;
   }
   if (options?.maxLength && normalized.length > options.maxLength) {
-    return `${label}不能超过 ${options.maxLength} 个字符。`;
+    return `${label} must be at most ${options.maxLength}  characters。`;
   }
   return null;
 }
@@ -33,34 +33,34 @@ export function validateRequiredText(
 export function validateEmailAddress(value: string | null | undefined) {
   const normalized = normalizeText(value);
   if (!normalized) {
-    return "邮箱地址不能为空。";
+    return "Text is required。";
   }
   if (!emailPattern.test(normalized)) {
-    return "邮箱地址格式不正确。";
+    return "Invalid email address.";
   }
   return null;
 }
 
-export function validateHTTPUrl(value: string | null | undefined, label = "回调地址") {
+export function validateHTTPUrl(value: string | null | undefined, label = "Callback URL") {
   const normalized = normalizeText(value);
   if (!normalized) {
-    return `${label}不能为空。`;
+    return `${label} is required。`;
   }
   try {
     const parsed = new URL(normalized);
     if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-      return `${label}必须使用 http:// 或 https://。`;
+      return `${label} must use http:// or https://.`;
     }
     return null;
   } catch {
-    return `${label}格式不正确。`;
+    return `${label} has an invalid format.`;
   }
 }
 
-export function validateHTTPOrRootUrl(value: string | null | undefined, label = "链接地址") {
+export function validateHTTPOrRootUrl(value: string | null | undefined, label = "Link URL") {
   const normalized = normalizeText(value);
   if (!normalized) {
-    return `${label}不能为空。`;
+    return `${label} is required。`;
   }
   if (normalized.startsWith("/")) {
     return null;
@@ -68,10 +68,10 @@ export function validateHTTPOrRootUrl(value: string | null | undefined, label = 
   return validateHTTPUrl(normalized, label);
 }
 
-export function validateImageSourceUrl(value: string | null | undefined, label = "图片地址") {
+export function validateImageSourceUrl(value: string | null | undefined, label = "Image URL") {
   const normalized = normalizeText(value);
   if (!normalized) {
-    return `${label}不能为空。`;
+    return `${label} is required。`;
   }
   if (normalized.startsWith("/")) {
     return null;
@@ -96,10 +96,10 @@ export function normalizeCommaSeparatedList(value: string | null | undefined) {
 export function validateSelection(label: string, value: string | null | undefined, allowedValues?: string[]) {
   const normalized = normalizeText(value);
   if (!normalized) {
-    return `请选择${label}。`;
+    return `Please select ${label}。`;
   }
   if (allowedValues && !allowedValues.includes(normalized)) {
-    return `${label}无效，请重新选择。`;
+    return `${label} is invalid. Please select again.`;
   }
   return null;
 }
@@ -110,18 +110,18 @@ export function validateMailboxLocalPart(value: string | null | undefined) {
     return null;
   }
   if (!mailboxLocalPartPattern.test(normalized)) {
-    return "邮箱前缀仅支持 2-64 位小写字母、数字、点、下划线或短横线，且必须以字母或数字开头。";
+    return "Mailbox prefix must be 2-64 lowercase letters, numbers, dots, underscores, or hyphens, and start with a letter or number.";
   }
   return null;
 }
 
-export function validateOneTimeCode(value: string | null | undefined, label = "验证码") {
+export function validateOneTimeCode(value: string | null | undefined, label = "verification code") {
   const normalized = normalizeText(value);
   if (!normalized) {
-    return `${label}不能为空。`;
+    return `${label} is required。`;
   }
   if (!/^\d{6}$/.test(normalized)) {
-    return `${label}必须是 6 位数字。`;
+    return `${label} must be a 6-digit number.`;
   }
   return null;
 }
@@ -135,10 +135,10 @@ export function validateIntegerRange(
   },
 ) {
   if (!Number.isInteger(value)) {
-    return `${label}必须是整数。`;
+    return `${label} must be an integer.`;
   }
   if (value < options.min || value > options.max) {
-    return `${label}必须在 ${options.min} 到 ${options.max} 之间。`;
+    return `${label} must be between ${options.min}  and  ${options.max} 。`;
   }
   return null;
 }

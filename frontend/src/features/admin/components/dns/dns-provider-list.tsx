@@ -42,8 +42,8 @@ export function DnsProviderList({
   if (!providers.length) {
     return (
       <WorkspaceEmpty
-        title="暂无 Provider 账号"
-        description="先新增 DNS 服务商账号，再继续查看 Zone 和 Zone 工作区。"
+        title="Text Provider Text"
+        description="Text DNS Text，Text Zone Text Zone Text。"
       />
     );
   }
@@ -65,7 +65,7 @@ export function DnsProviderList({
               </span>
               <span>{provider.capabilities.join(", ")}</span>
               <Button
-                aria-label={`${provider.displayName} 校验连接`}
+                aria-label={`${provider.displayName} Text`}
                 disabled={
                   validatingProviderID === provider.id ||
                   loadingZonesProviderID === provider.id ||
@@ -75,10 +75,10 @@ export function DnsProviderList({
                 variant="outline"
                 onClick={() => onValidate(provider)}
               >
-                {validatingProviderID === provider.id ? "校验中..." : "校验连接"}
+                {validatingProviderID === provider.id ? "Text..." : "Text"}
               </Button>
               <Button
-                aria-label={`${provider.displayName} 编辑`}
+                aria-label={`${provider.displayName} Text`}
                 disabled={
                   deletingProviderID === provider.id ||
                   validatingProviderID === provider.id ||
@@ -88,10 +88,10 @@ export function DnsProviderList({
                 variant="ghost"
                 onClick={() => onEdit(provider)}
               >
-                编辑
+                Text
               </Button>
               <Button
-                aria-label={`${provider.displayName} 查看 Zones`}
+                aria-label={`${provider.displayName} Text Zones`}
                 disabled={
                   validatingProviderID === provider.id ||
                   loadingZonesProviderID === provider.id ||
@@ -101,10 +101,10 @@ export function DnsProviderList({
                 variant="ghost"
                 onClick={() => onLoadZones(provider)}
               >
-                {loadingZonesProviderID === provider.id ? "载入中..." : "查看 Zones"}
+                {loadingZonesProviderID === provider.id ? "Text..." : "Text Zones"}
               </Button>
               <Button
-                aria-label={`${provider.displayName} 删除`}
+                aria-label={`${provider.displayName} Text`}
                 disabled={
                   deletingProviderID === provider.id ||
                   validatingProviderID === provider.id ||
@@ -114,14 +114,14 @@ export function DnsProviderList({
                 variant="ghost"
                 onClick={() => onDelete(provider)}
               >
-                {deletingProviderID === provider.id ? "删除中..." : "删除"}
+                {deletingProviderID === provider.id ? "Text..." : "Text"}
               </Button>
             </>
           }
         />
       ))}
       <PaginationControls
-        itemLabel="Provider 账号"
+        itemLabel="Provider Text"
         page={page}
         pageSize={ADMIN_PROVIDERS_PAGE_SIZE}
         total={total}

@@ -88,12 +88,12 @@ describe("UserWebhooksPage", () => {
       screen.queryByPlaceholderText("https://sandbox.local/webhooks/order"),
     ).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "创建 Webhook" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text Webhook" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "创建 Webhook" });
+    const dialog = await screen.findByRole("dialog", { name: "Text Webhook" });
     const dialogQueries = within(dialog);
 
-    fireEvent.change(dialogQueries.getByPlaceholderText("Webhook 名称"), {
+    fireEvent.change(dialogQueries.getByPlaceholderText("Webhook Text"), {
       target: { value: "secondary" },
     });
     fireEvent.change(
@@ -108,7 +108,7 @@ describe("UserWebhooksPage", () => {
         target: { value: "mailbox.released" },
       },
     );
-    fireEvent.click(dialogQueries.getByRole("button", { name: "创建 Webhook" }));
+    fireEvent.click(dialogQueries.getByRole("button", { name: "Text Webhook" }));
 
     await waitFor(() => {
       expect(vi.mocked(createWebhook).mock.calls[0]?.[0]).toEqual({
@@ -135,12 +135,12 @@ describe("UserWebhooksPage", () => {
       </MemoryRouter>,
     );
 
-    fireEvent.click(await screen.findByRole("button", { name: "编辑" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "编辑 Webhook" });
+    const dialog = await screen.findByRole("dialog", { name: "Text Webhook" });
     const dialogQueries = within(dialog);
 
-    fireEvent.change(dialogQueries.getByPlaceholderText("Webhook 名称"), {
+    fireEvent.change(dialogQueries.getByPlaceholderText("Webhook Text"), {
       target: { value: "primary-updated" },
     });
     fireEvent.change(
@@ -157,7 +157,7 @@ describe("UserWebhooksPage", () => {
         target: { value: "message.received, mailbox.released" },
       },
     );
-    fireEvent.click(dialogQueries.getByRole("button", { name: "保存修改" }));
+    fireEvent.click(dialogQueries.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(updateWebhook).mock.calls[0]?.[0]).toBe(1);

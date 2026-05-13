@@ -67,18 +67,18 @@ export function MailSettingsForm({
               }
             />
           </WorkspaceField>
-          <WorkspaceField label="监听地址">
+          <WorkspaceField label="Text">
             <Input
-              aria-label="监听地址"
+              aria-label="Text"
               value={smtp.listenAddr}
               onChange={(event) =>
                 onSMTPChange({ ...smtp, listenAddr: event.target.value })
               }
             />
           </WorkspaceField>
-          <WorkspaceField label="最大消息字节">
+          <WorkspaceField label="Text">
             <Input
-              aria-label="最大消息字节"
+              aria-label="Text"
               type="number"
               value={String(smtp.maxMessageBytes)}
               onChange={(event) =>
@@ -91,7 +91,7 @@ export function MailSettingsForm({
           </WorkspaceField>
           <div className="flex items-end">
             <CheckboxField
-              label="启用 SMTP 收件"
+              label="Enable SMTP Text"
               checked={smtp.enabled}
               onCheckedChange={(enabled) => onSMTPChange({ ...smtp, enabled })}
             />
@@ -102,15 +102,15 @@ export function MailSettingsForm({
       {showDelivery ? (
         <>
           <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-            <WorkspaceField label="发信 SMTP Host">
-              <Input aria-label="发信 SMTP Host" value={delivery.host} onChange={(event) => onDeliveryChange({ ...delivery, host: event.target.value })} />
+            <WorkspaceField label="Text SMTP Host">
+              <Input aria-label="Text SMTP Host" value={delivery.host} onChange={(event) => onDeliveryChange({ ...delivery, host: event.target.value })} />
             </WorkspaceField>
-            <WorkspaceField label="发信端口">
-              <Input aria-label="发信端口" type="number" value={String(delivery.port)} onChange={(event) => onDeliveryChange({ ...delivery, port: Number(event.target.value || 0) })} />
+            <WorkspaceField label="Text">
+              <Input aria-label="Text" type="number" value={String(delivery.port)} onChange={(event) => onDeliveryChange({ ...delivery, port: Number(event.target.value || 0) })} />
             </WorkspaceField>
-            <WorkspaceField label="传输模式">
+            <WorkspaceField label="Text">
               <BasicSelect
-                aria-label="传输模式"
+                aria-label="Text"
                 value={delivery.transportMode}
                 onChange={(event) => onDeliveryChange({ ...delivery, transportMode: event.target.value })}
               >
@@ -119,30 +119,30 @@ export function MailSettingsForm({
                 <option value="smtps">SMTPS</option>
               </BasicSelect>
             </WorkspaceField>
-            <WorkspaceField label="发信账号">
-              <Input aria-label="发信账号" value={delivery.username} onChange={(event) => onDeliveryChange({ ...delivery, username: event.target.value })} />
+            <WorkspaceField label="Text">
+              <Input aria-label="Text" value={delivery.username} onChange={(event) => onDeliveryChange({ ...delivery, username: event.target.value })} />
             </WorkspaceField>
-            <WorkspaceField label="发件邮箱">
-              <Input aria-label="发件邮箱" value={delivery.fromAddress} onChange={(event) => onDeliveryChange({ ...delivery, fromAddress: event.target.value })} />
+            <WorkspaceField label="Text">
+              <Input aria-label="Text" value={delivery.fromAddress} onChange={(event) => onDeliveryChange({ ...delivery, fromAddress: event.target.value })} />
             </WorkspaceField>
-            <WorkspaceField label="发件人名称">
-              <Input aria-label="发件人名称" value={delivery.fromName} onChange={(event) => onDeliveryChange({ ...delivery, fromName: event.target.value })} />
+            <WorkspaceField label="SenderText">
+              <Input aria-label="SenderText" value={delivery.fromName} onChange={(event) => onDeliveryChange({ ...delivery, fromName: event.target.value })} />
             </WorkspaceField>
             <div className="md:col-span-2">
-              <WorkspaceField label="SMTP 密码 / App Password">
-                <Input aria-label="SMTP 密码 / App Password" type="password" value={delivery.password} onChange={(event) => onDeliveryChange({ ...delivery, password: event.target.value })} />
+              <WorkspaceField label="SMTP Text / App Password">
+                <Input aria-label="SMTP Text / App Password" type="password" value={delivery.password} onChange={(event) => onDeliveryChange({ ...delivery, password: event.target.value })} />
               </WorkspaceField>
             </div>
             <div className="flex items-end">
               <CheckboxField
-                label="启用账户邮件发信"
+                label="EnableText"
                 checked={delivery.enabled}
                 onCheckedChange={(enabled) => onDeliveryChange({ ...delivery, enabled })}
               />
             </div>
             <div className="flex items-end">
               <CheckboxField
-                label="跳过 TLS 证书校验"
+                label="Text TLS Text"
                 checked={delivery.insecureSkipVerify}
                 onCheckedChange={(insecureSkipVerify) => onDeliveryChange({ ...delivery, insecureSkipVerify })}
               />
@@ -154,9 +154,9 @@ export function MailSettingsForm({
       {showInbound ? (
         <>
           <div className="grid gap-3 md:grid-cols-3">
-            <WorkspaceField label="原文保留天数">
+            <WorkspaceField label="Text">
               <Input
-                aria-label="原文保留天数"
+                aria-label="Text"
                 type="number"
                 value={String(inbound.retainRawDays)}
                 onChange={(event) =>
@@ -167,9 +167,9 @@ export function MailSettingsForm({
                 }
               />
             </WorkspaceField>
-            <WorkspaceField label="附件大小 MB">
+            <WorkspaceField label="Text MB">
               <Input
-                aria-label="附件大小 MB"
+                aria-label="Text MB"
                 type="number"
                 value={String(inbound.maxAttachmentSizeMB)}
                 onChange={(event) =>
@@ -184,28 +184,28 @@ export function MailSettingsForm({
 
           <div className="grid gap-2 md:grid-cols-2">
             <CheckboxField
-              label="仅允许已创建邮箱接收"
+              label="TextCreated mailboxText"
               checked={inbound.requireExistingMailbox}
               onCheckedChange={(requireExistingMailbox) =>
                 onInboundChange({ ...inbound, requireExistingMailbox })
               }
             />
             <CheckboxField
-              label="允许 catch-all"
+              label="Text catch-all"
               checked={inbound.allowCatchAll}
               onCheckedChange={(allowCatchAll) =>
                 onInboundChange({ ...inbound, allowCatchAll })
               }
             />
             <CheckboxField
-              label="拒绝可执行附件"
+              label="Text"
               checked={inbound.rejectExecutableFiles}
               onCheckedChange={(rejectExecutableFiles) =>
                 onInboundChange({ ...inbound, rejectExecutableFiles })
               }
             />
             <CheckboxField
-              label="启用垃圾邮件扫描预览"
+              label="EnableText"
               checked={inbound.enableSpamScanningPreview}
               onCheckedChange={(enableSpamScanningPreview) =>
                 onInboundChange({ ...inbound, enableSpamScanningPreview })

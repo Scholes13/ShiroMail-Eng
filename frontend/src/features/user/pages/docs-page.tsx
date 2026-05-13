@@ -9,7 +9,7 @@ export function UserDocsPage() {
 
   return (
     <WorkspacePage>
-      <WorkspacePanel description="这里同时展示站内文档条目与当前程序已经开放的核心 API 分组。" title="文档中心">
+      <WorkspacePanel description="Text API Text。" title="Text">
         <div className="space-y-4">
           {apiReferenceSections.map((section) => (
             <Card className="border-border/60 bg-muted/10 shadow-none" key={section.title}>
@@ -55,7 +55,7 @@ export function UserDocsPage() {
             ))}
           </div>
         ) : (
-          <WorkspaceEmpty description="后续接入说明会显示在这里。" title="暂无文档内容" />
+          <WorkspaceEmpty description="Text。" title="Text" />
         )}
       </WorkspacePanel>
     </WorkspacePage>

@@ -73,15 +73,15 @@ type MessageViewMode = "text" | "html" | "raw";
 const RAW_PREVIEW_AUTOMATIC_LIMIT = 512 * 1024;
 
 const ttlOptions = [
-  { label: "24 小时", value: "24", keywords: ["1 day", "24"] },
-  { label: "72 小时", value: "72", keywords: ["3 days", "72"] },
-  { label: "168 小时", value: "168", keywords: ["7 days", "168"] },
+  { label: "24 hours", value: "24", keywords: ["1 day", "24"] },
+  { label: "72 hours", value: "72", keywords: ["3 days", "72"] },
+  { label: "168 hours", value: "168", keywords: ["7 days", "168"] },
 ];
 const mailboxAutoRefreshOptions = [
-  { label: "手动刷新", value: "0", keywords: ["manual", "off", "0"] },
-  { label: "5 秒", value: "5", keywords: ["5s", "5"] },
-  { label: "15 秒", value: "15", keywords: ["15s", "15"] },
-  { label: "30 秒", value: "30", keywords: ["30s", "30"] },
+  { label: "Manual refresh", value: "0", keywords: ["manual", "off", "0"] },
+  { label: "5 seconds", value: "5", keywords: ["5s", "5"] },
+  { label: "15 seconds", value: "15", keywords: ["15s", "15"] },
+  { label: "30 seconds", value: "30", keywords: ["30s", "30"] },
 ];
 const ADMIN_MAILBOXES_PAGE_SIZE = 8;
 
@@ -97,7 +97,7 @@ function formatDate(value: string) {
 function formatRemainingHours(value: string) {
   const diff = new Date(value).getTime() - Date.now();
   const hours = Math.max(0, Math.ceil(diff / (1000 * 60 * 60)));
-  return `${hours} 小时`;
+  return `${hours} hours`;
 }
 
 function blobToDataURL(blob: Blob) {
@@ -415,7 +415,7 @@ export function AdminMailboxesPage() {
       })
       .catch(() => {
         if (!cancelled) {
-          setFeedback("部分内联图片加载失败，已保留正文预览。");
+          setFeedback("Some inline images failed to load; body preview was kept.");
         }
       });
 
@@ -441,7 +441,7 @@ export function AdminMailboxesPage() {
   const createMutation = useMutation({
     mutationFn: createAdminMailbox,
     onSuccess: async (created) => {
-      setFeedback(`已创建邮箱 ${created.address}`);
+      setFeedback(`Created mailbox ${created.address}`);
       setLocalPart("");
       await invalidateMailboxData();
       setMailboxesPage(1);
@@ -449,7 +449,7 @@ export function AdminMailboxesPage() {
       setSelectedUserId(String(created.userId));
     },
     onError: () => {
-      setFeedback("创建邮箱失败，请检查域名验证状态或稍后重试。");
+      setFeedback("Failed to create mailbox. Check domain verification status or retry later.");
     },
   });
 
@@ -457,11 +457,11 @@ export function AdminMailboxesPage() {
     mutationFn: ({ mailboxId, expiresInHours }: { mailboxId: number; expiresInHours: number }) =>
       extendAdminMailbox(mailboxId, expiresInHours),
     onSuccess: async (updated) => {
-      setFeedback(`已为 ${updated.address} 延长 24 小时`);
+      setFeedback(`Extended ${updated.address} by 24 hours`);
       await invalidateMailboxData();
     },
     onError: () => {
-      setFeedback("续期失败，请稍后重试。");
+      setFeedback("Renewal failed. Try again later.");
     },
   });
 
@@ -471,10 +471,10 @@ export function AdminMailboxesPage() {
       await invalidateMailboxData();
       setSelectedMailboxId((current) => (current === updated.id ? null : current));
       setSelectedMessageId(null);
-      setFeedback(`已释放邮箱 ${updated.address}`);
+      setFeedback(`Released mailbox ${updated.address}`);
     },
     onError: () => {
-      setFeedback("释放邮箱失败，请稍后重试。");
+      setFeedback("Failed to release mailbox. Try again later.");
     },
   });
 
@@ -488,15 +488,15 @@ export function AdminMailboxesPage() {
       <AlertDialog open={releaseDialogOpen} onOpenChange={setReleaseDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>释放邮箱？</AlertDialogTitle>
+            <AlertDialogTitle>Release mailbox?</AlertDialogTitle>
             <AlertDialogDescription>
               {selectedMailbox
-                ? `确认释放邮箱 ${selectedMailbox.address}？释放后它会立即从当前列表中移除。`
+                ? `Release mailbox ${selectedMailbox.address}? It will be removed from the current list immediately.`
                 : ""}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>取消</AlertDialogCancel>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 if (!selectedMailbox) {
@@ -507,7 +507,7 @@ export function AdminMailboxesPage() {
                 setReleaseDialogOpen(false);
               }}
             >
-              确认释放
+              Confirm Release
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -519,90 +519,90 @@ export function AdminMailboxesPage() {
             action={
               <div className="flex flex-wrap items-center gap-2">
                 <OptionCombobox
-                  ariaLabel="邮箱自动刷新时间"
+                  ariaLabel="Mailbox auto refresh interval"
                   className="h-9 w-[96px] min-w-[96px]"
                   contentClassName="w-[112px] min-w-[112px]"
-                  emptyLabel="没有匹配的刷新时间"
+                  emptyLabel="No matching refresh interval"
                   onValueChange={(value) => setAutoRefreshSeconds(Number(value || 0))}
                   options={mailboxAutoRefreshOptions}
-                  placeholder="自动刷新"
-                  searchPlaceholder="搜索刷新时间"
+                  placeholder="Auto refresh"
+                  searchPlaceholder="Search refresh intervals"
                   value={String(autoRefreshSeconds)}
                 />
                 <Button onClick={() => void refreshMailboxWorkspace()} size="sm" variant="secondary">
                   <RefreshCw className={`size-4 ${isRefreshing ? "animate-spin" : ""}`} />
-                  刷新
+                  Refresh
                 </Button>
               </div>
             }
-            description="管理员可直接代用户创建邮箱、续期、释放并查看收件内容。"
-            title="邮箱管理"
+            description="Admins can create, renew, release, and inspect mailbox contents on behalf of users."
+            title="Mailbox Management"
           >
             <div className="grid gap-4 md:grid-cols-4">
-              <WorkspaceMetric label="活跃邮箱" value={activeCount} />
-              <WorkspaceMetric label="用户总数" value={users.length} />
-              <WorkspaceMetric label="可用域名" value={domains.length} />
-              <WorkspaceMetric label="当前筛选邮箱" value={selectedUserMailboxCount} />
+              <WorkspaceMetric label="Active Mailboxes" value={activeCount} />
+              <WorkspaceMetric label="Total Users" value={users.length} />
+              <WorkspaceMetric label="Available Domains" value={domains.length} />
+              <WorkspaceMetric label="Filtered Mailboxes" value={selectedUserMailboxCount} />
             </div>
 
             <Card className="border-border/60 bg-muted/10 shadow-none">
               <CardContent className="space-y-4 py-4">
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <MailPlus className="size-4" />
-                  <span>创建新邮箱</span>
+                  <span>Create New Mailbox</span>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                  <WorkspaceField label="目标用户">
+                  <WorkspaceField label="Target User">
                     <OptionCombobox
-                      ariaLabel="选择用户"
-                      emptyLabel="没有匹配用户"
+                      ariaLabel="Select user"
+                      emptyLabel="No matching users"
                       onValueChange={setSelectedUserId}
                       options={users.map((user) => ({
                         value: String(user.id),
                         label: `${user.username} · ${user.email}`,
                         keywords: [user.username, user.email],
                       }))}
-                      placeholder="选择用户"
-                      searchPlaceholder="搜索用户"
+                      placeholder="Select user"
+                      searchPlaceholder="Search users"
                       value={selectedUserId}
                     />
                   </WorkspaceField>
 
-                  <WorkspaceField label="域名">
+                  <WorkspaceField label="Domain">
                     <OptionCombobox
-                      ariaLabel="选择域名"
-                      emptyLabel="没有匹配域名"
+                      ariaLabel="Select domain"
+                      emptyLabel="No matching domains"
                       onValueChange={setDomainId}
                       options={domains.map((domain) => ({
                         value: String(domain.id),
                         label: domain.domain,
                         keywords: [domain.rootDomain, domain.kind, domain.visibility],
                       }))}
-                      placeholder="选择域名"
-                      searchPlaceholder="搜索域名"
+                      placeholder="Select domain"
+                      searchPlaceholder="Search domains"
                       value={domainId}
                     />
                   </WorkspaceField>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-[1fr_180px_auto]">
-                  <WorkspaceField label="邮箱前缀">
+                  <WorkspaceField label="Mailbox Prefix">
                     <Input
                       onChange={(event) => setLocalPart(event.target.value)}
-                      placeholder="留空则自动生成"
+                      placeholder="Leave blank to auto-generate"
                       value={localPart}
                     />
                   </WorkspaceField>
 
-                  <WorkspaceField label="有效期">
+                  <WorkspaceField label="Validity">
                     <OptionCombobox
-                      ariaLabel="邮箱有效期"
-                      emptyLabel="没有匹配的有效期"
+                      ariaLabel="Mailbox validity"
+                      emptyLabel="No matching validity"
                       onValueChange={(value) => setTtlHours(Number(value))}
                       options={ttlOptions}
-                      placeholder="选择有效期"
-                      searchPlaceholder="搜索有效期"
+                      placeholder="Select validity"
+                      searchPlaceholder="Search validity"
                       value={String(ttlHours)}
                     />
                   </WorkspaceField>
@@ -625,7 +625,7 @@ export function AdminMailboxesPage() {
                       }}
                     >
                       <MailPlus className="size-4" />
-                      {createMutation.isPending ? "创建中..." : "创建邮箱"}
+                      {createMutation.isPending ? "Creating..." : "Create Mailbox"}
                     </Button>
                   </div>
                 </div>
@@ -635,36 +635,36 @@ export function AdminMailboxesPage() {
             </Card>
           </WorkspacePanel>
 
-          <WorkspacePanel description="管理员可按用户筛选并切换邮箱，右侧直接查看消息。" title="当前邮箱">
+          <WorkspacePanel description="Admins can filter mailboxes by user and inspect messages on the right." title="Current Mailboxes">
             <div className="grid gap-4 md:grid-cols-[220px_1fr]">
-              <WorkspaceField label="筛选用户">
+              <WorkspaceField label="Filter User">
                 <OptionCombobox
-                  ariaLabel="筛选用户"
-                  emptyLabel="没有匹配用户"
+                  ariaLabel="Filter user"
+                  emptyLabel="No matching users"
                   onValueChange={setSelectedUserId}
                   options={users.map((user) => ({
                     value: String(user.id),
                     label: `${user.username} · ${user.email}`,
                     keywords: [user.username, user.email],
                   }))}
-                  placeholder="选择用户"
-                  searchPlaceholder="搜索用户"
+                  placeholder="Select user"
+                  searchPlaceholder="Search users"
                   value={selectedUserId}
                 />
               </WorkspaceField>
-              <WorkspaceField label="搜索邮箱">
+              <WorkspaceField label="Search Mailbox">
                 <Input
                   onChange={(event) => setSearchValue(event.target.value)}
-                  placeholder="按邮箱 / 用户 / 域名搜索"
+                  placeholder="Search by mailbox / user / domain"
                   value={searchValue}
                 />
               </WorkspaceField>
             </div>
 
             {mailboxesQuery.isLoading ? (
-              <WorkspaceEmpty description="正在同步邮箱列表，请稍候。" title="正在加载邮箱列表" />
+              <WorkspaceEmpty description="Synchronizing mailbox list. Please wait." title="Loading mailboxes" />
             ) : !filteredMailboxes.length ? (
-              <WorkspaceEmpty description="当前筛选条件下还没有活跃邮箱。" title="还没有可用邮箱" />
+              <WorkspaceEmpty description="No active mailboxes match the current filters." title="No available mailboxes" />
             ) : (
               <div className="space-y-3">
                 {paginatedFilteredMailboxes.items.map((mailbox) => {
@@ -688,11 +688,11 @@ export function AdminMailboxesPage() {
                                 {mailbox.ownerUsername} · {mailbox.domain}
                               </p>
                             </div>
-                            <WorkspaceBadge>{mailbox.status === "active" ? "活跃" : mailbox.status}</WorkspaceBadge>
+                            <WorkspaceBadge>{mailbox.status === "active" ? "Active" : mailbox.status}</WorkspaceBadge>
                           </div>
                           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                            <span>{mailbox.permanent ? "永久邮箱" : `剩余 ${formatRemainingHours(mailbox.expiresAt)}`}</span>
-                            <span>更新于 {formatDate(mailbox.updatedAt)}</span>
+                            <span>{mailbox.permanent ? "Permanent mailbox" : `${formatRemainingHours(mailbox.expiresAt)} remaining`}</span>
+                            <span>Updated {formatDate(mailbox.updatedAt)}</span>
                           </div>
                         </CardContent>
                       </Card>
@@ -700,7 +700,7 @@ export function AdminMailboxesPage() {
                   );
                 })}
                 <PaginationControls
-                  itemLabel="邮箱"
+                  itemLabel="mailboxes"
                   onPageChange={setMailboxesPage}
                   page={paginatedFilteredMailboxes.page}
                   pageSize={ADMIN_MAILBOXES_PAGE_SIZE}
@@ -713,8 +713,8 @@ export function AdminMailboxesPage() {
         </div>
 
         <WorkspacePanel
-          description={selectedMailbox ? (selectedMailbox.permanent ? `归属 ${selectedMailbox.ownerUsername} · 永久邮箱` : `归属 ${selectedMailbox.ownerUsername} · 到期 ${formatDate(selectedMailbox.expiresAt)}`) : "先从左侧选择一个邮箱。"}
-          title={selectedMailbox?.address ?? "消息预览"}
+          description={selectedMailbox ? (selectedMailbox.permanent ? `Owner ${selectedMailbox.ownerUsername} · permanent mailbox` : `Owner ${selectedMailbox.ownerUsername} · expires ${formatDate(selectedMailbox.expiresAt)}`) : "Select a mailbox from the left first."}
+          title={selectedMailbox?.address ?? "Message Preview"}
         >
           {selectedMailbox ? (
             <div className="space-y-4">
@@ -729,7 +729,7 @@ export function AdminMailboxesPage() {
                   variant="secondary"
                 >
                   <TimerReset className="size-4" />
-                  续期 24 小时
+                  Renew 24 Hours
                 </Button>
                 <Button
                   disabled={releaseMutation.isPending || selectedMailbox.status === "released"}
@@ -738,7 +738,7 @@ export function AdminMailboxesPage() {
                   variant="outline"
                 >
                   <Trash2 className="size-4" />
-                  {selectedMailbox.status === "released" ? "已释放" : "释放邮箱"}
+                  {selectedMailbox.status === "released" ? "Released" : "Release Mailbox"}
                 </Button>
                 <Badge className="rounded-full" variant="outline">
                   <UserRound className="mr-1 size-3.5" />
@@ -746,19 +746,19 @@ export function AdminMailboxesPage() {
                 </Badge>
                 <Badge className="rounded-full" variant="outline">
                   <Clock3 className="mr-1 size-3.5" />
-                  {selectedMailbox.permanent ? "永久" : `剩余 ${formatRemainingHours(selectedMailbox.expiresAt)}`}
+                  {selectedMailbox.permanent ? "Permanent" : `${formatRemainingHours(selectedMailbox.expiresAt)} remaining`}
                 </Badge>
                 <Badge className="rounded-full" variant={selectedMailbox.status === "active" ? "secondary" : "outline"}>
                   <ShieldCheck className="mr-1 size-3.5" />
-                  {selectedMailbox.status === "active" ? "可接收邮件" : "已停止接收"}
+                  {selectedMailbox.status === "active" ? "Receiving mail" : "Receiving stopped"}
                 </Badge>
               </div>
 
               <div className="space-y-3">
                 {messagesQuery.isLoading ? (
-                  <WorkspaceEmpty description="正在同步消息列表，请稍候。" title="正在加载消息" />
+                  <WorkspaceEmpty description="Synchronizing message list. Please wait." title="Loading messages" />
                 ) : !(messagesQuery.data?.length ?? 0) ? (
-                  <WorkspaceEmpty description="这个邮箱当前还没有消息，等待新的邮件到达。" title="还没有消息" />
+                  <WorkspaceEmpty description="This mailbox has no messages yet. Waiting for new mail." title="No messages yet" />
                 ) : (
                   messagesQuery.data?.map((message) => {
                     const active = message.id === selectedMessageId;
@@ -774,21 +774,21 @@ export function AdminMailboxesPage() {
                             <div className="flex items-start justify-between gap-3">
                               <div className="space-y-1">
                                 <div className="text-sm font-medium">
-                                  {message.subject ? `主题 · ${decodeMimeHeaderValue(message.subject)}` : "(无主题)"}
+                                  {message.subject ? `Subject · ${decodeMimeHeaderValue(message.subject)}` : "(no subject)"}
                                 </div>
                                 <p className="text-xs text-muted-foreground">{decodeMimeHeaderValue(message.fromAddr)}</p>
                               </div>
                               <span className="text-xs text-muted-foreground">{formatDate(message.receivedAt)}</span>
                             </div>
                             <p className="line-clamp-2 text-sm leading-6 text-muted-foreground">
-                              {message.textPreview || message.htmlPreview || "暂无预览内容"}
+                              {message.textPreview || message.htmlPreview || "No preview available"}
                             </p>
                             <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                               <span className="inline-flex items-center gap-1.5">
                                 <Inbox className="size-3.5" />
                                 {decodeMimeHeaderValue(message.toAddr)}
                               </span>
-                              <span>{message.attachmentCount} 个附件</span>
+                              <span>{message.attachmentCount} attachments</span>
                             </div>
                           </CardContent>
                         </Card>
@@ -803,8 +803,8 @@ export function AdminMailboxesPage() {
                   <CardContent className="space-y-4 py-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="space-y-1">
-                        <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">邮件详情</p>
-                        <h3 className="text-base font-medium">{decodeMimeHeaderValue(selectedMessageSummary.subject) || "(无主题)"}</h3>
+                        <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Message Details</p>
+                        <h3 className="text-base font-medium">{decodeMimeHeaderValue(selectedMessageSummary.subject) || "(no subject)"}</h3>
                       </div>
 
                       <Button
@@ -814,31 +814,31 @@ export function AdminMailboxesPage() {
                           }
                           setFeedback(null);
                           void downloadAdminMailboxMessageRaw(selectedMailbox.id, selectedMessageSummary.id).catch(() => {
-                            setFeedback("下载原文失败，请稍后重试。");
+                            setFeedback("Failed to download raw message. Try again later.");
                           });
                         }}
                         size="sm"
                         variant="secondary"
                       >
                         <Download className="size-4" />
-                        下载原文
+                        Download Raw
                       </Button>
                     </div>
 
                     <div className="grid gap-3 md:grid-cols-2">
-                      <MetaCard label="归属邮箱" value={selectedMailbox.address} />
-                      <MetaCard label="发件人" value={decodeMimeHeaderValue(selectedMessageSummary.fromAddr)} />
-                      <MetaCard label="收件人" value={decodeMimeHeaderValue(selectedMessageSummary.toAddr)} />
-                      <MetaCard label="接收时间" value={formatDate(selectedMessageSummary.receivedAt)} />
+                      <MetaCard label="Mailbox" value={selectedMailbox.address} />
+                      <MetaCard label="From" value={decodeMimeHeaderValue(selectedMessageSummary.fromAddr)} />
+                      <MetaCard label="To" value={decodeMimeHeaderValue(selectedMessageSummary.toAddr)} />
+                      <MetaCard label="Received At" value={formatDate(selectedMessageSummary.receivedAt)} />
                     </div>
 
                     {selectedMessageQuery.isLoading && !selectedMessage ? (
-                      <WorkspaceEmpty description="正在加载邮件详情，请稍候。" title="正在同步详情" />
+                      <WorkspaceEmpty description="Loading message details. Please wait." title="Syncing details" />
                     ) : selectedMessage ? (
                       <>
                         <Card className="border-border/60 bg-background/60 shadow-none">
                           <CardContent className="space-y-3 py-4">
-                            <div className="text-sm font-medium">投递与认证摘要</div>
+                            <div className="text-sm font-medium">Delivery and Authentication Summary</div>
                             <div className="grid gap-3 md:grid-cols-3">
                               <SecurityStatusCard label="SPF" value={messageSecuritySummary.spf} />
                               <SecurityStatusCard label="DKIM" value={messageSecuritySummary.dkim} />
@@ -854,14 +854,14 @@ export function AdminMailboxesPage() {
 
                         <Card className="border-border/60 bg-background/60 shadow-none">
                           <CardContent className="space-y-3 py-4">
-                            <div className="text-sm font-medium">Received 路径</div>
+                            <div className="text-sm font-medium">Received Path</div>
                             {receivedTimeline.length ? (
                               <div className="space-y-3">
                                 {receivedTimeline.map((item, index) => (
                                   <div className="rounded-xl border border-border/60 bg-muted/10 p-3" key={`${item.date}-${index}`}>
                                     <div className="flex flex-wrap items-center justify-between gap-2">
                                       <WorkspaceBadge variant="outline">#{index + 1}</WorkspaceBadge>
-                                      <span className="text-xs text-muted-foreground">{item.date || "时间未知"}</span>
+                                      <span className="text-xs text-muted-foreground">{item.date || "Time unknown"}</span>
                                     </div>
                                     <div className="mt-2 text-sm font-medium">{item.route}</div>
                                     {item.raw ? (
@@ -871,23 +871,23 @@ export function AdminMailboxesPage() {
                                     ) : null}
                                     {item.isRawTruncated ? (
                                       <p className="mt-2 text-[11px] text-muted-foreground">
-                                        该节点原始头已截断，完整内容请查看 Raw 原文。
+                                        Raw headers for this node were truncated. Check the raw source for the full content.
                                       </p>
                                     ) : null}
                                   </div>
                                 ))}
                               </div>
                             ) : (
-                              <WorkspaceEmpty description="当前邮件没有可解析的 Received 路径。" title="暂无投递路径" />
+                              <WorkspaceEmpty description="This message has no parseable Received path." title="No delivery path" />
                             )}
                           </CardContent>
                         </Card>
 
                         <Card className="border-border/60 bg-background/60 shadow-none">
                           <CardContent className="space-y-3 py-4">
-                            <div className="text-sm font-medium">提取结果</div>
+                            <div className="text-sm font-medium">Extraction Results</div>
                             {selectedMessageExtractionsQuery.isLoading ? (
-                              <WorkspaceEmpty description="正在分析这封邮件命中的默认提取模板。" title="正在计算提取结果" />
+                              <WorkspaceEmpty description="Analyzing default extraction templates matched by this message." title="Computing extraction results" />
                             ) : selectedMessageExtractionsQuery.data?.items.length ? (
                               <div className="space-y-3">
                                 {selectedMessageExtractionsQuery.data.items.map((item, index) => (
@@ -903,7 +903,7 @@ export function AdminMailboxesPage() {
                                 ))}
                               </div>
                             ) : (
-                              <WorkspaceEmpty description="当前邮件没有命中任何已启用的默认提取模板。" title="暂无提取结果" />
+                              <WorkspaceEmpty description="This message did not match any enabled default extraction templates." title="No extraction results" />
                             )}
                           </CardContent>
                         </Card>
@@ -913,7 +913,7 @@ export function AdminMailboxesPage() {
                             <div className="flex flex-wrap items-center justify-between gap-3">
                               <div className="inline-flex items-center gap-2 text-sm font-medium">
                                 <FileText className="size-4" />
-                                邮件内容
+                                Message Content
                               </div>
                               <div className="flex flex-wrap items-center gap-2">
                                 {messageViewMode === "html" && htmlPreview ? (
@@ -923,12 +923,12 @@ export function AdminMailboxesPage() {
                                     variant="outline"
                                     onClick={() => openHtmlPreviewWindow(htmlPreview.html)}
                                   >
-                                    新窗口打开
+                                    Open in New Window
                                   </Button>
                                 ) : null}
                                 <div className="inline-flex rounded-lg border border-border/60 bg-muted/20 p-1">
                                   {[
-                                    { value: "text" as const, label: "文本" },
+                                    { value: "text" as const, label: "Text" },
                                     { value: "html" as const, label: "HTML" },
                                     { value: "raw" as const, label: "Raw" },
                                   ].map((option) => (
@@ -962,7 +962,7 @@ export function AdminMailboxesPage() {
                                     className="min-h-[420px] w-full rounded-xl border border-border/60 bg-white"
                                     sandbox="allow-same-origin"
                                     srcDoc={buildMailHtmlDocument(htmlPreview.html)}
-                                    title="HTML 邮件预览"
+                                    title="HTML Email Preview"
                                     onLoad={(event) => {
                                       const frame = event.currentTarget;
                                       const doc = frame.contentDocument;
@@ -972,15 +972,15 @@ export function AdminMailboxesPage() {
                                   />
                                 </div>
                               ) : (
-                                <WorkspaceEmpty description="这封邮件没有可展示的 HTML 正文。" title="暂无 HTML 内容" />
+                                <WorkspaceEmpty description="This message has no displayable HTML body." title="No HTML content" />
                               )
                             ) : null}
                             {messageViewMode === "raw" ? (
                               !canAutoLoadRawPreview && !rawPreviewRequested ? (
                                 <div className="space-y-3">
                                   <div className="rounded-xl border border-border/60 bg-muted/10 p-3 text-xs leading-6 text-muted-foreground">
-                                    这封邮件体积约 {Math.max(1, Math.round((selectedMessageSummary.sizeBytes || 0) / 1024))} KB。
-                                    为避免页面卡顿，Raw 预览默认不自动加载；你仍可下载原文，或手动加载截断预览。
+                                    This message is about {Math.max(1, Math.round((selectedMessageSummary.sizeBytes || 0) / 1024))} KB.
+                                    To avoid UI lag, raw preview is not loaded automatically. You can still download the raw source or manually load a truncated preview.
                                   </div>
                                   <div className="flex justify-end">
                                     <Button
@@ -989,31 +989,31 @@ export function AdminMailboxesPage() {
                                       variant="outline"
                                       onClick={() => setRawPreviewRequested(true)}
                                     >
-                                      加载 Raw 预览
+                                      Load Raw Preview
                                     </Button>
                                   </div>
                                 </div>
                               ) : selectedMessageRawQuery.isLoading ? (
-                                <WorkspaceEmpty description="正在读取原始邮件内容，请稍候。" title="正在加载 Raw" />
+                                <WorkspaceEmpty description="Reading raw message content. Please wait." title="Loading Raw" />
                               ) : rawPreview ? (
                                 <div className="space-y-3">
                                   {rawPreview.isTruncated ? (
                                     <div className="rounded-xl border border-border/60 bg-muted/10 p-3 text-xs leading-6 text-muted-foreground">
-                                      Raw 体积较大，页面仅展示前 {Math.max(1, Math.round(rawPreview.preview.length / 1024))} KB 预览。
-                                      完整原文请使用上方“下载原文”。
+                                      Raw content is large. This page only shows the first {Math.max(1, Math.round(rawPreview.preview.length / 1024))} KB preview.
+                                      Use Download Raw above for the full source.
                                     </div>
                                   ) : null}
                                   <div className="grid gap-3 md:grid-cols-2">
                                     <div className="rounded-xl border border-border/60 bg-muted/10 p-3">
                                       <div className="mb-2 text-xs font-medium text-foreground">Raw Headers</div>
                                       <pre className="max-h-[260px] overflow-auto whitespace-pre-wrap break-all text-xs leading-6 text-muted-foreground">
-                                        {rawPreview.headers || "暂无 Header 原文。"}
+                                        {rawPreview.headers || "No raw headers available."}
                                       </pre>
                                     </div>
                                     <div className="rounded-xl border border-border/60 bg-muted/10 p-3">
                                       <div className="mb-2 text-xs font-medium text-foreground">Raw Body</div>
                                       <pre className="max-h-[260px] overflow-auto whitespace-pre-wrap break-all text-xs leading-6 text-muted-foreground">
-                                        {rawPreview.body || "暂无 Body 原文。"}
+                                        {rawPreview.body || "No raw body available."}
                                       </pre>
                                     </div>
                                   </div>
@@ -1024,12 +1024,12 @@ export function AdminMailboxesPage() {
                                       variant="outline"
                                       onClick={() => {
                                         void navigator.clipboard.writeText(rawPreview.preview).then(
-                                          () => setFeedback(rawPreview.isTruncated ? "Raw 预览已复制，完整原文请下载。" : "Raw 原文已复制。"),
-                                          () => setFeedback(rawPreview.isTruncated ? "复制 Raw 预览失败，请改用下载原文。" : "复制 Raw 原文失败，请手动复制。"),
+                                          () => setFeedback(rawPreview.isTruncated ? "Raw preview copied. Download the full raw source for complete content." : "Raw source copied."),
+                                          () => setFeedback(rawPreview.isTruncated ? "Failed to copy raw preview. Use Download Raw instead." : "Failed to copy raw source. Copy manually."),
                                         );
                                       }}
                                     >
-                                      {rawPreview.isTruncated ? "复制预览" : "复制 Raw"}
+                                      {rawPreview.isTruncated ? "Copy Preview" : "Copy Raw"}
                                     </Button>
                                   </div>
                                   <pre className="max-h-[320px] overflow-auto rounded-xl border border-border/60 bg-muted/20 p-4 text-xs leading-6 text-muted-foreground whitespace-pre-wrap break-all">
@@ -1037,7 +1037,7 @@ export function AdminMailboxesPage() {
                                   </pre>
                                 </div>
                               ) : (
-                                <WorkspaceEmpty description="当前邮件没有可读取的 Raw 原文。" title="Raw 不可用" />
+                                <WorkspaceEmpty description="This message has no readable raw source." title="Raw unavailable" />
                               )
                             ) : null}
                             {messageViewMode === "text" ? (
@@ -1053,7 +1053,7 @@ export function AdminMailboxesPage() {
                             <div className="flex flex-wrap items-center justify-between gap-3">
                               <div className="inline-flex items-center gap-2 text-sm font-medium">
                                 <Paperclip className="size-4" />
-                                附件
+                                Attachments
                               </div>
                               <Button
                                 size="sm"
@@ -1061,14 +1061,14 @@ export function AdminMailboxesPage() {
                                 variant="ghost"
                                 onClick={() => setHeadersExpanded((current) => !current)}
                               >
-                                {headersExpanded ? "收起 Headers" : "查看 Headers"}
+                                {headersExpanded ? "Collapse Headers" : "View Headers"}
                               </Button>
                             </div>
                             {headersExpanded ? (
                               <div className="space-y-2 rounded-xl border border-border/60 bg-muted/10 p-3">
                                 <Input
                                   onChange={(event) => setHeadersSearch(event.target.value)}
-                                  placeholder="搜索 Header 名称或内容"
+                                  placeholder="Search header names or values"
                                   value={headersSearch}
                                 />
                                 {filteredHeaderEntries.length ? (
@@ -1084,10 +1084,10 @@ export function AdminMailboxesPage() {
                                   <WorkspaceEmpty
                                     description={
                                       Object.keys(selectedMessage.headers ?? {}).length
-                                        ? "没有匹配的 Header，请换个关键词再试。"
-                                        : "当前邮件没有可展示的原始头信息。"
+                                        ? "No matching headers. Try another keyword."
+                                        : "This message has no displayable raw headers."
                                     }
-                                    title={Object.keys(selectedMessage.headers ?? {}).length ? "未找到匹配 Header" : "暂无 Headers"}
+                                    title={Object.keys(selectedMessage.headers ?? {}).length ? "No matching headers" : "No headers"}
                                   />
                                 )}
                               </div>
@@ -1116,33 +1116,33 @@ export function AdminMailboxesPage() {
                                           selectedMessage.id,
                                           index,
                                         ).catch(() => {
-                                          setFeedback(`下载附件 ${attachment.fileName} 失败，请稍后重试。`);
+                                          setFeedback(`Failed to download attachment ${attachment.fileName}. Try again later.`);
                                         });
                                       }}
                                       size="sm"
                                       variant="outline"
                                     >
                                       <Download className="size-4" />
-                                      下载附件
+                                      Download Attachment
                                     </Button>
                                   </div>
                                 ))}
                               </div>
                             ) : (
-                              <WorkspaceEmpty description="这封邮件没有附件。" title="没有附件" />
+                              <WorkspaceEmpty description="This message has no attachments." title="No attachments" />
                             )}
                           </CardContent>
                         </Card>
                       </>
                     ) : (
-                      <WorkspaceEmpty description="暂时无法加载这封邮件详情，请刷新重试。" title="详情不可用" />
+                      <WorkspaceEmpty description="Unable to load this message detail right now. Refresh and try again." title="Details unavailable" />
                     )}
                   </CardContent>
                 </Card>
               ) : null}
             </div>
           ) : (
-            <WorkspaceEmpty description="选择邮箱后，这里会展示最近收到的邮件。" title="还没有选中邮箱" />
+            <WorkspaceEmpty description="Select a mailbox to show recently received messages here." title="No mailbox selected" />
           )}
         </WorkspacePanel>
       </div>
@@ -1164,7 +1164,7 @@ function MetaCard({ label, value }: { label: string; value: string }) {
 function SecurityStatusCard({ label, value }: { label: string; value: string }) {
   const normalized = value.toLowerCase();
   const variant =
-    normalized.includes("pass") || normalized.includes("通过")
+    normalized.includes("pass") || normalized.includes("Text")
       ? "secondary"
       : normalized.includes("fail") || normalized.includes("reject")
         ? "destructive"

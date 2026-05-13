@@ -62,7 +62,7 @@ function formatRelativeTime(dateStr: string) {
   const diffMs = now.getTime() - date.getTime();
   const diffMin = Math.floor(diffMs / 60000);
 
-  if (diffMin < 1) return "刚刚";
+  if (diffMin < 1) return "just now";
   if (diffMin < 60) return `${diffMin}m`;
   const diffHour = Math.floor(diffMin / 60);
   if (diffHour < 24) return `${diffHour}h`;

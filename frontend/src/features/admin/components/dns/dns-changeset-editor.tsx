@@ -81,9 +81,9 @@ export function DnsChangesetEditor({
   return (
     <div className="space-y-3 rounded-xl border border-border/60 bg-muted/20 p-3">
       <SectionToggle
-        description="逐行编辑目标记录，先生成 preview，再按 change-set 应用。"
+        description="Text，Text preview，Text change-set Text。"
         expanded={expanded}
-        meta={<WorkspaceBadge variant="outline">{desiredRecordsDraft.length} 条目标记录</WorkspaceBadge>}
+        meta={<WorkspaceBadge variant="outline">{desiredRecordsDraft.length} Text</WorkspaceBadge>}
         title="DNS Change Set"
         onToggle={onToggleExpanded}
       />
@@ -112,7 +112,7 @@ export function DnsChangesetEditor({
                       }
                     />
                     <Input
-                      aria-label="记录名称"
+                      aria-label="Text"
                       className="h-9"
                       disabled={isWorkspaceBusy}
                       onChange={(event) =>
@@ -128,7 +128,7 @@ export function DnsChangesetEditor({
                       value={record.name}
                     />
                     <Input
-                      aria-label="记录值"
+                      aria-label="Text"
                       className="h-9"
                       disabled={isWorkspaceBusy}
                       onChange={(event) =>
@@ -140,7 +140,7 @@ export function DnsChangesetEditor({
                           ),
                         )
                       }
-                      placeholder="记录值"
+                      placeholder="Text"
                       value={record.value}
                     />
                     <Input
@@ -161,7 +161,7 @@ export function DnsChangesetEditor({
                       value={record.ttl}
                     />
                     <Input
-                      aria-label="优先级"
+                      aria-label="Text"
                       className="h-9"
                       disabled={isWorkspaceBusy}
                       min={0}
@@ -179,7 +179,7 @@ export function DnsChangesetEditor({
                     />
                     <label className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Checkbox
-                        aria-label="是否代理"
+                        aria-label="Text"
                         checked={record.proxied}
                         disabled={isWorkspaceBusy}
                         onCheckedChange={(checked) =>
@@ -192,10 +192,10 @@ export function DnsChangesetEditor({
                           )
                         }
                       />
-                      代理
+                      Text
                     </label>
                     <Button
-                      aria-label="删除记录"
+                      aria-label="Text"
                       className="h-9"
                       disabled={isWorkspaceBusy}
                       size="sm"
@@ -206,17 +206,17 @@ export function DnsChangesetEditor({
                         )
                       }
                     >
-                      删除
+                      Text
                     </Button>
                   </div>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    记录 #{(page - 1) * ADMIN_CHANGESET_EDITOR_PAGE_SIZE + index + 1}
+                    Text #{(page - 1) * ADMIN_CHANGESET_EDITOR_PAGE_SIZE + index + 1}
                   </p>
                 </div>
               ))}
             </div>
             <PaginationControls
-              itemLabel="目标记录"
+              itemLabel="Text"
               page={page}
               pageSize={ADMIN_CHANGESET_EDITOR_PAGE_SIZE}
               total={total}
@@ -225,7 +225,7 @@ export function DnsChangesetEditor({
             />
             <div className="flex flex-wrap gap-2">
               <Button
-                aria-label="新增记录"
+                aria-label="Text"
                 disabled={isWorkspaceBusy}
                 size="sm"
                 variant="outline"
@@ -245,7 +245,7 @@ export function DnsChangesetEditor({
                 }
               >
                 <Plus className="size-4" />
-                新增记录
+                Text
               </Button>
               <Button
                 disabled={isWorkspaceBusy}
@@ -258,7 +258,7 @@ export function DnsChangesetEditor({
                   onPageChange(1);
                 }}
               >
-                重置为当前记录
+                Text
               </Button>
             </div>
           </div>
@@ -279,7 +279,7 @@ export function DnsChangesetEditor({
               disabled={isWorkspaceBusy}
               onClick={onSave}
             >
-              {isSaving ? "保存中..." : "保存到服务商"}
+              {isSaving ? "Text..." : "Text and Text"}
             </Button>
 
             <Button
@@ -287,7 +287,7 @@ export function DnsChangesetEditor({
               variant="outline"
               onClick={onPreview}
             >
-              {isPreviewing ? "生成中..." : "预览自动配置"}
+              {isPreviewing ? "Text..." : "Text"}
             </Button>
 
             <Button
@@ -295,7 +295,7 @@ export function DnsChangesetEditor({
               variant="secondary"
               onClick={onApply}
             >
-              {isApplying ? "应用中..." : "应用自动配置"}
+              {isApplying ? "Text..." : "Text"}
             </Button>
           </div>
 
@@ -312,16 +312,16 @@ function ChangeSetPreviewPanel({ changeSet }: { changeSet: DNSChangeSetItem }) {
   return (
     <div className="space-y-2 rounded-xl border border-border/60 bg-background/80 p-3">
       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-        <WorkspaceBadge variant="outline">当前预览</WorkspaceBadge>
+        <WorkspaceBadge variant="outline">Text</WorkspaceBadge>
         <WorkspaceBadge>
           {changeSet.status}
         </WorkspaceBadge>
         <span>{describeChangeSetOperations(changeSet)}</span>
-        <span>生成于 {formatChangeSetTimestamp(changeSet.createdAt)}</span>
+        <span>Text {formatChangeSetTimestamp(changeSet.createdAt)}</span>
         {changeSet.appliedAt ? (
-          <span>应用于 {formatChangeSetTimestamp(changeSet.appliedAt)}</span>
+          <span>Text {formatChangeSetTimestamp(changeSet.appliedAt)}</span>
         ) : (
-          <span>待应用</span>
+          <span>Text</span>
         )}
       </div>
 
@@ -356,8 +356,8 @@ function ChangeSetPreviewPanel({ changeSet }: { changeSet: DNSChangeSetItem }) {
         </div>
       ) : (
         <WorkspaceEmpty
-          title="无变更"
-          description="当前目标 Records 与上游记录已经一致。"
+          title="Text"
+          description="Text Records Text。"
         />
       )}
     </div>

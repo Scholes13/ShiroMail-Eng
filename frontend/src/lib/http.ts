@@ -171,24 +171,24 @@ export function getMailDeliveryErrorMessage(error: unknown, fallback: string) {
     const suffix = responseHint ? ` ${responseHint}` : "";
     switch (responseCode) {
       case "connect_failed":
-        return `${message}${suffix || " 请检查 SMTP 主机、端口与网络连通性。"}`;
+        return `${message}${suffix || "  Check the SMTP host, port, and network connectivity."}`;
       case "starttls_unavailable":
       case "tls_failed":
       case "tls_certificate_invalid":
-        return `${message}${suffix || " 请检查传输模式、证书配置，或确认服务端是否支持 STARTTLS / SMTPS。"}`;
+        return `${message}${suffix || "  Check the transport mode and certificate configuration, or confirm the server supports STARTTLS / SMTPS."}`;
       case "auth_failed":
       case "auth_unavailable":
-        return `${message}${suffix || " 请检查 SMTP 账号密码，或确认服务端已开启 AUTH。"}`;
+        return `${message}${suffix || "  Check the SMTP username and password, or confirm AUTH is enabled on the server."}`;
       case "sender_rejected":
-        return `${message}${suffix || " 请确认发件邮箱地址已被该 SMTP 服务商允许作为发信身份。"}`;
+        return `${message}${suffix || "  Confirm the sender address is allowed by this SMTP provider."}`;
       case "recipient_rejected":
-        return `${message}${suffix || " 请检查测试收件人地址，或确认服务商没有拒收该目标地址。"}`;
+        return `${message}${suffix || " TextRecipientText，Text。"}`;
       case "data_failed":
-        return `${message}${suffix || " 请检查邮件内容大小限制，或稍后重试。"}`;
+        return `${message}${suffix || "  Check message size limits, or try again later."}`;
       case "quit_failed":
-        return `${message}${suffix || " 邮件主体可能已发送，建议先检查收件箱后再重试。"}`;
+        return `${message}${suffix || "  The message body may have been sent; check the inbox before retrying."}`;
       case "timeout":
-        return `${message}${suffix || " 请检查网络、防火墙或 SMTP 服务端响应速度。"}`;
+        return `${message}${suffix || "  Check the network, firewall, or SMTP server response time."}`;
       default:
         return suffix ? `${message} ${responseHint}` : message;
     }
@@ -197,35 +197,35 @@ export function getMailDeliveryErrorMessage(error: unknown, fallback: string) {
   const normalized = message.toLowerCase();
 
   if (normalized.includes("mail delivery connect failed")) {
-    return `${message} 请检查 SMTP 主机、端口与网络连通性。`;
+    return `${message}  Check the SMTP host, port, and network connectivity.`;
   }
   if (
     normalized.includes("mail delivery tls handshake failed") ||
     normalized.includes("starttls") ||
     normalized.includes("certificate")
   ) {
-    return `${message} 请检查传输模式、证书配置，或确认服务端是否支持 STARTTLS / SMTPS。`;
+    return `${message}  Check the transport mode and certificate configuration, or confirm the server supports STARTTLS / SMTPS.`;
   }
   if (
     normalized.includes("mail delivery authentication failed") ||
     normalized.includes("advertise auth")
   ) {
-    return `${message} 请检查 SMTP 账号密码，或确认服务端已开启 AUTH。`;
+    return `${message}  Check the SMTP username and password, or confirm AUTH is enabled on the server.`;
   }
   if (normalized.includes("mail delivery mail from failed")) {
-    return `${message} 请确认发件邮箱地址已被该 SMTP 服务商允许作为发信身份。`;
+    return `${message}  Confirm the sender address is allowed by this SMTP provider.`;
   }
   if (normalized.includes("mail delivery rcpt to failed")) {
-    return `${message} 请检查测试收件人地址，或确认服务商没有拒收该目标地址。`;
+    return `${message} TextRecipientText，Text。`;
   }
   if (normalized.includes("mail delivery data failed")) {
-    return `${message} 请检查邮件内容大小限制，或稍后重试。`;
+    return `${message}  Check message size limits, or try again later.`;
   }
   if (normalized.includes("mail delivery quit failed")) {
-    return `${message} 邮件主体可能已发送，建议先检查收件箱后再重试。`;
+    return `${message}  The message body may have been sent; check the inbox before retrying.`;
   }
   if (normalized.includes("operation timed out")) {
-    return `${message} 请检查网络、防火墙或 SMTP 服务端响应速度。`;
+    return `${message}  Check the network, firewall, or SMTP server response time.`;
   }
 
   return message;

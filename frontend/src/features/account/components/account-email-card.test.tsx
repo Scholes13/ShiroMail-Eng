@@ -6,7 +6,7 @@ vi.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, values?: Record<string, string>) => {
       if (key === "account.emailVerificationSent") {
-        return `验证码已发送至 ${values?.email ?? ""}`;
+        return `verification codeText ${values?.email ?? ""}`;
       }
       return key;
     },
@@ -45,6 +45,6 @@ describe("AccountEmailCard", () => {
 
     expect(screen.getByDisplayValue("new@example.com")).toBeInTheDocument();
     expect(screen.getByDisplayValue("123456")).toBeInTheDocument();
-    expect(screen.getByText("验证码已发送至 new@example.com")).toBeInTheDocument();
+    expect(screen.getByText("verification codeText new@example.com")).toBeInTheDocument();
   });
 });

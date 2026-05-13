@@ -27,14 +27,14 @@ import { formatDateTime } from "../../user/pages/shared";
 
 const ADMIN_INBOUND_SPOOL_PAGE_SIZE = 10;
 const spoolStatusOptions = [
-  { label: "全部状态", value: "all" },
+  { label: "Text", value: "all" },
   { label: "Pending", value: "pending" },
   { label: "Processing", value: "processing" },
   { label: "Completed", value: "completed" },
   { label: "Failed", value: "failed" },
 ];
 const spoolFailureModeOptions = [
-  { label: "全部失败", value: "all" },
+  { label: "Text", value: "all" },
   { label: "Retryable", value: "retryable" },
   { label: "Check config", value: "non_retryable" },
 ];
@@ -96,19 +96,19 @@ export function AdminJobsPage() {
   return (
     <WorkspacePage>
       <div className="grid gap-3 md:grid-cols-4">
-        <WorkspaceMetric hint="最近后台任务失败记录数" label="失败任务" value={failedJobCount} />
-        <WorkspaceMetric hint="等待 worker 处理的 SMTP 入站数" label="Pending Spool" value={spool?.summary.pending ?? 0} />
-        <WorkspaceMetric hint="正在消费中的 SMTP 入站数" label="Processing Spool" value={spool?.summary.processing ?? 0} />
-        <WorkspaceMetric hint="最终失败且需要人工介入的入站数" label="Failed Spool" value={spool?.summary.failed ?? 0} />
+        <WorkspaceMetric hint="Text" label="Text" value={failedJobCount} />
+        <WorkspaceMetric hint="Text worker Text SMTP Text" label="Pending Spool" value={spool?.summary.pending ?? 0} />
+        <WorkspaceMetric hint="Text SMTP Text" label="Processing Spool" value={spool?.summary.processing ?? 0} />
+        <WorkspaceMetric hint="Text" label="Failed Spool" value={spool?.summary.failed ?? 0} />
       </div>
 
       <WorkspacePanel
-        description="统一查看 worker 失败、SMTP 入站积压、失败原因聚合，并支持人工重试失败的 spool 项。"
-        title="任务队列"
+        description="Text worker Text、SMTP Text、Text，Text spool Text。"
+        title="Text"
         action={
           <Button size="sm" type="button" variant="outline" onClick={() => void handleRefresh()}>
             <RefreshCw className={`size-4 ${isRefreshing ? "animate-spin" : ""}`} />
-            刷新
+            Refresh
           </Button>
         }
       >
@@ -116,16 +116,16 @@ export function AdminJobsPage() {
           <div className="space-y-3">
             <WorkspacePanel
               className="border-dashed"
-              description="从内存 metrics 快照读取 SMTP 会话、拒收与 spool 消费计数，方便快速判断当前收件链是否稳定。"
-              title="SMTP 实时指标"
+              description="Text metrics Text SMTP Text、Text spool Text，Text。"
+              title="SMTP Text"
             >
               <div className="grid gap-3 md:grid-cols-3">
-                <WorkspaceMetric hint="SMTP listener 已建立的会话数" label="Sessions" value={smtpMetrics?.sessionsStarted ?? 0} />
-                <WorkspaceMetric hint="SMTP RCPT TO 成功接受次数" label="Recipients Accepted" value={smtpMetrics?.recipientsAccepted ?? 0} />
-                <WorkspaceMetric hint="DATA 阶段累计接收字节数" label="Bytes Received" value={smtpMetrics?.bytesReceived ?? 0} />
+                <WorkspaceMetric hint="SMTP listener Text" label="Sessions" value={smtpMetrics?.sessionsStarted ?? 0} />
+                <WorkspaceMetric hint="SMTP RCPT TO Text" label="Recipients Accepted" value={smtpMetrics?.recipientsAccepted ?? 0} />
+                <WorkspaceMetric hint="DATA Text" label="Bytes Received" value={smtpMetrics?.bytesReceived ?? 0} />
               </div>
               <div className="grid gap-3 md:grid-cols-3">
-                <WorkspacePanel className="border-dashed" description="direct / spool 两条成功路径的累计计数。" title="Accepted">
+                <WorkspacePanel className="border-dashed" description="direct / spool Text。" title="Accepted">
                   {smtpMetrics && Object.keys(smtpMetrics.accepted).length ? (
                     <div className="space-y-3">
                       {Object.entries(smtpMetrics.accepted).map(([key, value]) => (
@@ -137,10 +137,10 @@ export function AdminJobsPage() {
                       ))}
                     </div>
                   ) : (
-                    <WorkspaceEmpty description="当前还没有成功 SMTP 投递计数。" title="暂无成功计数" />
+                    <WorkspaceEmpty description="Text SMTP Text。" title="Text" />
                   )}
                 </WorkspacePanel>
-                <WorkspacePanel className="border-dashed" description="按拒收原因聚合 SMTP 侧 reject。" title="Rejected">
+                <WorkspacePanel className="border-dashed" description="Text SMTP Text reject。" title="Rejected">
                   {smtpMetrics && ((smtpMetrics.rejectedDetails?.length ?? 0) > 0 || Object.keys(smtpMetrics.rejected).length) ? (
                     <div className="space-y-3">
                       {(smtpMetrics.rejectedDetails?.length
@@ -167,10 +167,10 @@ export function AdminJobsPage() {
                       })}
                     </div>
                   ) : (
-                    <WorkspaceEmpty description="当前没有 SMTP reject 计数。" title="暂无拒收计数" />
+                    <WorkspaceEmpty description="Text SMTP reject Text。" title="Text" />
                   )}
                 </WorkspacePanel>
-                <WorkspacePanel className="border-dashed" description="worker 对 inbound spool 的 completed / failed 结果累计。" title="Spool Worker">
+                <WorkspacePanel className="border-dashed" description="worker Text inbound spool Text completed / failed Text。" title="Spool Worker">
                   {smtpMetrics && Object.keys(smtpMetrics.spoolProcessed).length ? (
                     <div className="space-y-3">
                       {Object.entries(smtpMetrics.spoolProcessed).map(([key, value]) => (
@@ -182,7 +182,7 @@ export function AdminJobsPage() {
                       ))}
                     </div>
                   ) : (
-                    <WorkspaceEmpty description="当前没有 worker spool 消费计数。" title="暂无 spool 计数" />
+                    <WorkspaceEmpty description="Text worker spool Text。" title="Text spool Text" />
                   )}
                 </WorkspacePanel>
               </div>
@@ -190,8 +190,8 @@ export function AdminJobsPage() {
 
             <WorkspacePanel
               className="border-dashed"
-              description="最近 worker / cleanup / spool 的失败与成功记录。"
-              title="后台任务历史"
+              description="Text worker / cleanup / spool Text。"
+              title="Text"
             >
               {jobs.length ? (
                 <div className="space-y-3">
@@ -207,7 +207,7 @@ export function AdminJobsPage() {
                               <p>{failure.title}</p>
                               <p className="text-muted-foreground">{failure.description}</p>
                             </div>
-                          ) : (item.errorMessage || "无异常")
+                          ) : (item.errorMessage || "Text")
                         }
                         meta={
                           <>
@@ -229,19 +229,19 @@ export function AdminJobsPage() {
                   })}
                 </div>
               ) : (
-                <WorkspaceEmpty description="后台任务当前没有待观察记录。" title="暂无任务记录" />
+                <WorkspaceEmpty description="Text。" title="Text" />
               )}
             </WorkspacePanel>
 
             <WorkspacePanel
               className="border-dashed"
-              description="SMTP 接收后先入 spool，再由 worker 异步消费；这里可以查看当前积压、失败与重试。"
+              description="SMTP Text spool，Text worker Text；Text、Text。"
               title="Inbound Spool"
               action={
                 <div className="flex items-center gap-2">
-                  <WorkspaceField label="状态过滤">
+                  <WorkspaceField label="Text">
                     <BasicSelect
-                      aria-label="Inbound Spool 状态过滤"
+                      aria-label="Inbound Spool Text"
                       className="min-w-36"
                       value={spoolStatus}
                       onChange={(event) => {
@@ -256,9 +256,9 @@ export function AdminJobsPage() {
                       ))}
                     </BasicSelect>
                   </WorkspaceField>
-                  <WorkspaceField label="失败诊断">
+                  <WorkspaceField label="Text">
                     <BasicSelect
-                      aria-label="Inbound Spool 失败诊断过滤"
+                      aria-label="Inbound Spool Text"
                       className="min-w-36"
                       value={spoolFailureMode}
                       onChange={(event) => {
@@ -289,10 +289,10 @@ export function AdminJobsPage() {
                         title={`#${item.id} · ${item.mailFrom || "unknown sender"}`}
                         description={
                           <div className="space-y-1">
-                            <p>收件人：{item.recipients.join(", ") || "无"}</p>
+                            <p>Recipient：{item.recipients.join(", ") || "Text"}</p>
                             <p>
-                              尝试：{item.attemptCount} / {item.maxAttempts}
-                              {failure ? ` · 问题：${failure.title}` : ""}
+                              Text：{item.attemptCount} / {item.maxAttempts}
+                              {failure ? ` · issue：${failure.title}` : ""}
                             </p>
                             {failure ? (
                               <div className="flex flex-wrap items-center gap-2 text-muted-foreground">
@@ -321,7 +321,7 @@ export function AdminJobsPage() {
                                 ) : (
                                   <RotateCcw className="size-4" />
                                 )}
-                                重试
+                                Text
                               </Button>
                             ) : null}
                           </>
@@ -330,7 +330,7 @@ export function AdminJobsPage() {
                     );
                   })}
                   <PaginationControls
-                    itemLabel="spool 项"
+                    itemLabel="spool Text"
                     page={spool.page}
                     pageSize={spool.pageSize}
                     total={spool.total}
@@ -340,8 +340,8 @@ export function AdminJobsPage() {
                 </div>
               ) : (
                 <WorkspaceEmpty
-                  description="当前没有符合筛选条件的 inbound spool 项，说明 SMTP 入站暂时没有积压。"
-                  title="Inbound Spool 为空"
+                  description="Text inbound spool Text，Text SMTP Text。"
+                  title="Inbound Spool Text"
                 />
               )}
             </WorkspacePanel>
@@ -349,8 +349,8 @@ export function AdminJobsPage() {
 
           <WorkspacePanel
             className="border-dashed"
-            description="聚合最近失败的 spool 错误，优先帮助定位积压主因。"
-            title="失败原因聚合"
+            description="Text spool Text，Text。"
+            title="Text"
           >
             {spool?.failureReasons.length ? (
               <div className="space-y-3">
@@ -363,7 +363,7 @@ export function AdminJobsPage() {
                     description={item.description}
                     meta={
                       <>
-                        <WorkspaceBadge variant="destructive">{reason.count} 次</WorkspaceBadge>
+                        <WorkspaceBadge variant="destructive">{reason.count} Text</WorkspaceBadge>
                         <WorkspaceBadge variant={item.retryable ? "outline" : "secondary"}>
                           {item.retryable ? "Retryable" : "Check config"}
                         </WorkspaceBadge>
@@ -377,7 +377,7 @@ export function AdminJobsPage() {
                 })}
               </div>
             ) : (
-              <WorkspaceEmpty description="当前没有已聚合的 failed spool reason。" title="暂无失败原因" />
+              <WorkspaceEmpty description="Text failed spool reason。" title="Text" />
             )}
           </WorkspacePanel>
         </div>

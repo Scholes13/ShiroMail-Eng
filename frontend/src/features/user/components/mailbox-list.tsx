@@ -34,13 +34,13 @@ export function MailboxList({
   formatRemainingHours,
 }: Props) {
   return (
-    <WorkspacePanel description="点击邮箱卡片切换，右侧自动展示最近收件。" title="当前邮箱">
+    <WorkspacePanel description="Text，Text。" title="Text">
       {isLoading ? (
-        <WorkspaceEmpty description="正在同步邮箱列表，请稍候。" title="正在加载邮箱列表" />
+        <WorkspaceEmpty description="Text，Text。" title="Text" />
       ) : !hasMailboxes ? (
         <WorkspaceEmpty
-          description="当前还没有邮箱，先创建一个临时邮箱开始使用。"
-          title="还没有可用邮箱"
+          description="Text，Text。"
+          title="Text"
         />
       ) : (
         <div className="space-y-3">
@@ -55,7 +55,7 @@ export function MailboxList({
             />
           ))}
           <PaginationControls
-            itemLabel="邮箱"
+            itemLabel="Text"
             onPageChange={onPageChange}
             page={paginatedMailboxes.page}
             pageSize={pageSize}

@@ -72,7 +72,7 @@ export function AdminOverviewPage() {
               />
             ))}
             <PaginationControls
-              itemLabel="邮件事件"
+              itemLabel="Text"
               onPageChange={setMessagesPage}
               page={paginatedMessages.page}
               pageSize={ADMIN_OVERVIEW_MESSAGES_PAGE_SIZE}

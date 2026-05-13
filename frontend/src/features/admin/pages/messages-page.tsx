@@ -23,7 +23,7 @@ export function AdminMessagesPage() {
   const [status, setStatus] = useState<"all" | "new" | "seen">("all");
   const [messagesPage, setMessagesPage] = useState(1);
   const statusOptions = [
-    { value: "all", label: "全部状态", keywords: ["all"] },
+    { value: "all", label: "Text", keywords: ["all"] },
     { value: "new", label: "new" },
     { value: "seen", label: "seen" },
   ];
@@ -43,25 +43,25 @@ export function AdminMessagesPage() {
 
   return (
     <WorkspacePage>
-      <WorkspacePanel description="按状态和关键字筛选最近进入平台的消息。" title="消息流">
+      <WorkspacePanel description="Text。" title="Text">
         <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_180px]">
-          <WorkspaceField label="搜索">
+          <WorkspaceField label="Text">
             <Input
               className="h-9"
               onChange={(event) => setKeyword(event.target.value)}
-              placeholder="搜索主题 / 发件人 / 收件邮箱"
+              placeholder="Text / Sender / Text"
               value={keyword}
             />
           </WorkspaceField>
-          <WorkspaceField label="状态">
+          <WorkspaceField label="Text">
             <OptionCombobox
-              ariaLabel="消息状态"
-              emptyLabel="没有匹配的状态"
+              ariaLabel="Text"
+              emptyLabel="Text"
               value={status}
               onValueChange={(value) => setStatus(value as "all" | "new" | "seen")}
               options={statusOptions}
-              placeholder="全部状态"
-              searchPlaceholder="搜索状态"
+              placeholder="Text"
+              searchPlaceholder="Text"
             />
           </WorkspaceField>
         </div>
@@ -78,11 +78,11 @@ export function AdminMessagesPage() {
                     <span>{formatDateTime(item.receivedAt)}</span>
                   </>
                 }
-                title={decodeMimeHeaderValue(item.subject) || "(无主题)"}
+                title={decodeMimeHeaderValue(item.subject) || "(No subject)"}
               />
             ))}
             <PaginationControls
-              itemLabel="消息"
+              itemLabel="Text"
               onPageChange={setMessagesPage}
               page={paginatedMessages.page}
               pageSize={ADMIN_MESSAGES_PAGE_SIZE}
@@ -91,7 +91,7 @@ export function AdminMessagesPage() {
             />
           </div>
         ) : (
-          <WorkspaceEmpty description="没有符合当前筛选条件的消息。" title="暂无匹配消息" />
+          <WorkspaceEmpty description="Text。" title="Text" />
         )}
       </WorkspacePanel>
     </WorkspacePage>

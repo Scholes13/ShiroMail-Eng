@@ -110,17 +110,17 @@ describe("AdminWebhooksPage", () => {
       </QueryClientProvider>,
     );
 
-    expect(screen.queryByPlaceholderText("输入用户 ID")).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText("Text ID")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "新增 Webhook" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text Webhook" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "新增 Webhook" });
+    const dialog = await screen.findByRole("dialog", { name: "Text Webhook" });
     const dialogQueries = within(dialog);
 
-    fireEvent.change(dialogQueries.getByPlaceholderText("输入用户 ID"), {
+    fireEvent.change(dialogQueries.getByPlaceholderText("Text ID"), {
       target: { value: "9" },
     });
-    fireEvent.change(dialogQueries.getByPlaceholderText("Webhook 名称"), {
+    fireEvent.change(dialogQueries.getByPlaceholderText("Webhook Text"), {
       target: { value: "ops-events" },
     });
     fireEvent.change(
@@ -136,7 +136,7 @@ describe("AdminWebhooksPage", () => {
       },
     );
 
-    fireEvent.click(dialogQueries.getByRole("button", { name: "创建 Webhook" }));
+    fireEvent.click(dialogQueries.getByRole("button", { name: "Text Webhook" }));
 
     await waitFor(() => {
       expect(vi.mocked(createAdminWebhook).mock.calls[0]?.[0]).toEqual({
@@ -162,13 +162,13 @@ describe("AdminWebhooksPage", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.click(await screen.findByRole("button", { name: "编辑" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "编辑 Webhook" });
+    const dialog = await screen.findByRole("dialog", { name: "Text Webhook" });
     const dialogQueries = within(dialog);
 
-    expect(dialogQueries.getByPlaceholderText("输入用户 ID")).toBeDisabled();
-    fireEvent.change(dialogQueries.getByPlaceholderText("Webhook 名称"), {
+    expect(dialogQueries.getByPlaceholderText("Text ID")).toBeDisabled();
+    fireEvent.change(dialogQueries.getByPlaceholderText("Webhook Text"), {
       target: { value: "primary-updated" },
     });
     fireEvent.change(
@@ -183,7 +183,7 @@ describe("AdminWebhooksPage", () => {
         target: { value: "message.received, mailbox.released" },
       },
     );
-    fireEvent.click(dialogQueries.getByRole("button", { name: "保存修改" }));
+    fireEvent.click(dialogQueries.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(updateAdminWebhook).mock.calls[0]?.[0]).toBe(1);
@@ -209,8 +209,8 @@ describe("AdminWebhooksPage", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.click(await screen.findByRole("button", { name: "停用" }));
-    fireEvent.click(await screen.findByRole("button", { name: "确认停用" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Disable" }));
+    fireEvent.click(await screen.findByRole("button", { name: "TextDisable" }));
 
     await waitFor(() => {
       expect(vi.mocked(toggleAdminWebhook).mock.calls[0]?.[0]).toBe(1);
@@ -234,16 +234,16 @@ describe("AdminWebhooksPage", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "新增 Webhook" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text Webhook" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "新增 Webhook" });
+    const dialog = await screen.findByRole("dialog", { name: "Text Webhook" });
     const dialogQueries = within(dialog);
 
-    fireEvent.change(dialogQueries.getByPlaceholderText("输入用户 ID"), {
+    fireEvent.change(dialogQueries.getByPlaceholderText("Text ID"), {
       target: { value: "9" },
     });
 
-    fireEvent.click(dialogQueries.getByRole("button", { name: "创建 Webhook" }));
+    fireEvent.click(dialogQueries.getByRole("button", { name: "Text Webhook" }));
 
     expect(await dialogQueries.findByText("target url is invalid")).toBeInTheDocument();
   });

@@ -85,35 +85,35 @@ export function toRuleDraft(rule: Partial<MailExtractorRule>): RuleDraft {
 
 export function validateRuleDraft(draft: RuleDraft): string | null {
   if (!draft.name.trim()) {
-    return "请输入规则名称。";
+    return "TextRule name。";
   }
   if (!draft.pattern.trim()) {
-    return "请输入正则表达式。";
+    return "TextRegular expression。";
   }
   if (!Array.isArray(draft.targetFields) || draft.targetFields.length === 0) {
-    return "至少选择一个提取字段。";
+    return "TextExtraction field。";
   }
   if (!/^[ims]*$/i.test(draft.flags.trim())) {
-    return "Flags 只支持 i、m、s。";
+    return "Flags Text i、m、s。";
   }
   if (draft.resultMode === "capture_group") {
     const captureGroupIndex = Number(draft.captureGroupIndex ?? 1);
     if (!Number.isInteger(captureGroupIndex) || captureGroupIndex < 0) {
-      return "捕获分组必须是大于等于 0 的整数。";
+      return "Capture groupText 0 Text。";
     }
   }
   try {
-    // 前端先行验证，避免把非法正则提交到后端。
-    // 支持的 flags 与后端保持一致。
+    // Text，Text and Text。
+    // Text flags Text。
     new RegExp(draft.pattern, draft.flags.trim());
   } catch (error) {
-    return `正则表达式无效：${error instanceof Error ? error.message : "请检查写法"}`;
+    return `Regular expressionText：${error instanceof Error ? error.message : "Text"}`;
   }
   if (looksLikeRegex(draft.senderContains)) {
-    return "“发件人包含”只支持普通文本包含，不支持正则，请把正则写到主表达式里。";
+    return "“SenderText”Text，Text，Text and Text。";
   }
   if (looksLikeRegex(draft.subjectContains)) {
-    return "“标题包含”只支持普通文本包含，不支持正则，请把正则写到主表达式里。";
+    return "“SubjectText”Text，Text，Text and Text。";
   }
   return null;
 }

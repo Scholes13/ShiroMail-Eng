@@ -46,9 +46,9 @@ describe("AdminMessagesPage", () => {
       </QueryClientProvider>,
     );
 
-    expect(await screen.findByText("测试测试")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
     expect(await screen.findByText("Weekly summary")).toBeInTheDocument();
-    expect(await screen.findByText("木偶 <ops@example.com> → alpha@shiro.local")).toBeInTheDocument();
+    expect(await screen.findByText("Text <ops@example.com> → alpha@shiro.local")).toBeInTheDocument();
   });
 
   it("filters messages by keyword and status", async () => {
@@ -64,18 +64,18 @@ describe("AdminMessagesPage", () => {
       </QueryClientProvider>,
     );
 
-    await screen.findByText("测试测试");
+    await screen.findByText("Text");
 
-    fireEvent.change(screen.getByPlaceholderText("搜索主题 / 发件人 / 收件邮箱"), {
+    fireEvent.change(screen.getByPlaceholderText("Text / Sender / Text"), {
       target: { value: "digest" },
     });
     expect(screen.getByText("Weekly summary")).toBeInTheDocument();
-    expect(screen.queryByText("测试测试")).not.toBeInTheDocument();
+    expect(screen.queryByText("Text")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("combobox", { name: "消息状态" }));
+    fireEvent.click(screen.getByRole("combobox", { name: "Text" }));
     fireEvent.click(await screen.findByRole("option", { name: "new" }));
 
-    expect(screen.queryByText("测试测试")).not.toBeInTheDocument();
+    expect(screen.queryByText("Text")).not.toBeInTheDocument();
     expect(screen.queryByText("Weekly summary")).not.toBeInTheDocument();
   });
 });

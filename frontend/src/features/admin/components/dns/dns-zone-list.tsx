@@ -48,8 +48,8 @@ export function DnsZoneList({
   if (!providerZonePanel) {
     return (
       <WorkspaceEmpty
-        title="先查看 Zone"
-        description={'在 Provider 账号页点击"查看 Zones"后，这里会显示当前 Provider 的 Zone 列表。'}
+        title="Text Zone"
+        description={'Text Provider Text"Text Zones"Text，Text Provider Text Zone Text。'}
       />
     );
   }
@@ -57,7 +57,7 @@ export function DnsZoneList({
   return (
     <div className="space-y-3 rounded-xl border border-border/60 bg-background/60 p-3">
       <SectionToggle
-        description={`共 ${providerZonePanel.zones.length} 个可用 Zone`}
+        description={`Text ${providerZonePanel.zones.length} Text Zone`}
         expanded={expanded}
         meta={
           <WorkspaceBadge variant="outline">
@@ -87,20 +87,20 @@ export function DnsZoneList({
                 title={zone.name}
                 description={
                   activeZoneId === zone.id
-                    ? "Provider Zone · 当前工作区"
+                    ? "Provider Zone · Text"
                     : "Provider Zone"
                 }
                 meta={
                   <>
                     <WorkspaceBadge>{zone.status}</WorkspaceBadge>
                     {activeZoneId === zone.id ? (
-                      <WorkspaceBadge variant="outline">当前工作区</WorkspaceBadge>
+                      <WorkspaceBadge variant="outline">Text</WorkspaceBadge>
                     ) : null}
                     {cooldownSeconds > 0 ? (
-                      <WorkspaceBadge variant="outline">冷却 {cooldownSeconds}s</WorkspaceBadge>
+                      <WorkspaceBadge variant="outline">Text {cooldownSeconds}s</WorkspaceBadge>
                     ) : null}
                     <Button
-                      aria-label={`${zone.name} 查看 Records`}
+                      aria-label={`${zone.name} Text Records`}
                       disabled={
                         loadingRecordsZoneKey === zoneKey ||
                         isChangeSetWorkspaceBusy ||
@@ -111,10 +111,10 @@ export function DnsZoneList({
                       onClick={() => onLoadRecords(zone)}
                     >
                       {loadingRecordsZoneKey === zoneKey
-                        ? "载入中..."
+                        ? "Text..."
                         : cooldownSeconds > 0
-                          ? `冷却 ${cooldownSeconds}s`
-                          : "查看 Records"}
+                          ? `Text ${cooldownSeconds}s`
+                          : "Text Records"}
                     </Button>
                   </>
                 }
@@ -132,8 +132,8 @@ export function DnsZoneList({
         </div>
       ) : expanded ? (
         <WorkspaceEmpty
-          title="暂无 Zone"
-          description="当前 Provider 账号还没有可用的 Zone。"
+          title="Text Zone"
+          description="Text Provider Text Zone。"
         />
       ) : null}
     </div>

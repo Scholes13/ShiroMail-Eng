@@ -9,7 +9,7 @@ export function UserNoticesPage() {
 
   return (
     <WorkspacePage>
-      <WorkspacePanel description="平台维护、版本更新和投递策略变更都会在这里同步。" title="公告">
+      <WorkspacePanel description="Platform maintenance, releases, and delivery policy changes are published here." title="Notices">
         {noticesQuery.data?.length ? (
           <div className="space-y-3">
             {noticesQuery.data.map((notice) => (
@@ -26,7 +26,7 @@ export function UserNoticesPage() {
             ))}
           </div>
         ) : (
-          <WorkspaceEmpty description="当前还没有发布内容，后续平台更新会出现在这里。" title="暂无公告" />
+          <WorkspaceEmpty description="No posts yet. Future platform updates will appear here." title="TextNotices" />
         )}
       </WorkspacePanel>
     </WorkspacePage>

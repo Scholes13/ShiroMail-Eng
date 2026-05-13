@@ -8,20 +8,20 @@ describe("OptionCombobox", () => {
 
     render(
       <OptionCombobox
-        ariaLabel="选择域名"
-        emptyLabel="没有匹配域名"
+        ariaLabel="TextDomain"
+        emptyLabel="TextDomain"
         onValueChange={onValueChange}
         options={[
           { value: "1", label: "alpha.test" },
           { value: "2", label: "beta.test" },
         ]}
-        placeholder="选择域名"
-        searchPlaceholder="搜索域名"
+        placeholder="TextDomain"
+        searchPlaceholder="TextDomain"
         value="1"
       />,
     );
 
-    const combobox = screen.getByRole("combobox", { name: "选择域名" });
+    const combobox = screen.getByRole("combobox", { name: "TextDomain" });
     expect(combobox).toHaveValue("alpha.test");
 
     fireEvent.click(combobox);

@@ -15,12 +15,12 @@ export function UserBalancePage() {
 
   return (
     <WorkspacePage>
-      <WorkspacePanel description="奖励、扣减与账户余额变化明细。" title="我的余额">
+      <WorkspacePanel description="Text、Text。" title="Text">
         <Card className="border-border/60 bg-card/92 shadow-none">
           <CardContent className="space-y-1 py-4">
-            <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">账户余额</div>
+            <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Text</div>
             <div className="text-xl font-semibold tracking-tight">{formatCurrency(balance?.balanceCents ?? 0)}</div>
-            <p className="text-xs leading-6 text-muted-foreground">奖励、兑换与扣减共用这一个余额池。</p>
+            <p className="text-xs leading-6 text-muted-foreground">Text、Text。</p>
           </CardContent>
         </Card>
 
@@ -41,7 +41,7 @@ export function UserBalancePage() {
             ))}
           </div>
         ) : (
-          <WorkspaceEmpty description="当前还没有余额变动记录。" title="暂无余额流水" />
+          <WorkspaceEmpty description="Text。" title="Text" />
         )}
       </WorkspacePanel>
     </WorkspacePage>

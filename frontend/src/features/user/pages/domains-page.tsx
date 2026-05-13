@@ -81,25 +81,25 @@ function getDomainStatusGroup(domain: {
 function getDomainStatusMeta(group: DomainStatusGroup) {
   if (group === "verified") {
     return {
-      label: "已验证",
+      label: "Verified",
       iconClassName: "text-emerald-500",
       cardClassName: "border-emerald-500/20 bg-emerald-500/5",
-      description: "DNS 和验证状态已经基本就绪，可直接继续创建邮箱。",
+      description: "DNS and verification status are ready. You can continue creating mailboxes.",
     };
   }
   if (group === "pending") {
     return {
-      label: "待验证",
+      label: "Pending verification",
       iconClassName: "text-rose-400",
       cardClassName: "border-rose-500/20 bg-rose-500/5",
-      description: "已经绑定了 DNS 服务商，但仍需进入 DNS 配置完成校验。",
+      description: "A DNS provider is bound, but DNS configuration still needs verification.",
     };
   }
   return {
-    label: "未绑定 DNS",
+    label: "DNS not bound",
     iconClassName: "text-amber-500",
     cardClassName: "border-amber-500/20 bg-amber-500/5",
-    description: "还没绑定 DNS 服务商，先完成绑定后再进入 Zone 工作区。",
+    description: "No DNS provider is bound yet. Bind one before opening the Zone workspace.",
   };
 }
 
@@ -158,7 +158,7 @@ function formatVerificationTypeLabel(value: string) {
   const normalized = value.trim().toLowerCase();
   const labels: Record<string, string> = {
     mx: "MX",
-    inbound_mx: "收件 MX",
+    inbound_mx: "Inbound MX",
     spf: "SPF",
     dkim: "DKIM",
     dmarc: "DMARC",
@@ -172,15 +172,15 @@ function formatVerificationTypeLabel(value: string) {
 
 function formatVerificationStatusLabel(status: string) {
   if (status === "verified") {
-    return "已通过";
+    return "Verified";
   }
   if (status === "drifted") {
-    return "记录漂移";
+    return "Record drifted";
   }
   if (status === "missing") {
-    return "记录缺失";
+    return "Record missing";
   }
-  return "待处理";
+  return "Pending";
 }
 
 function formatDnsRecord(record: {
@@ -202,7 +202,7 @@ function formatDnsRecord(record: {
 
 function formatVerificationTimestamp(value?: string) {
   if (!value) {
-    return "尚未检查";
+    return "Not checked yet";
   }
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -234,10 +234,10 @@ function DomainVerificationDetails({
     .sort()
     .at(-1);
   const propagationLabel = result.passed
-    ? "传播已通过"
+    ? "Propagation passed"
     : pendingProfiles.length && result.verifiedCount > 0
-      ? "传播部分通过"
-      : "传播未通过";
+      ? "Propagation partially passed"
+      : "Propagation failed";
 
   return (
     <div
@@ -249,7 +249,7 @@ function DomainVerificationDetails({
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="text-sm font-semibold">{result.passed ? "最近一次验证已通过" : "最近一次验证未通过"}</div>
+            <div className="text-sm font-semibold">{result.passed ? "Latest verification passed" : "Latest verification failed"}</div>
             <WorkspaceBadge variant="outline">
               {result.verifiedCount} / {result.totalCount}
             </WorkspaceBadge>
@@ -258,21 +258,21 @@ function DomainVerificationDetails({
           <p className="text-sm text-muted-foreground">{result.summary}</p>
         </div>
         <Button asChild size="sm" variant="outline">
-          <Link to={dnsLink}>前往 DNS 配置</Link>
+          <Link to={dnsLink}>Open DNS Settings</Link>
         </Button>
       </div>
 
       <div className="mt-4 grid gap-3 md:grid-cols-3">
         <div className="rounded-lg border border-border/60 bg-background/70 px-3 py-2.5">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">传播状态</div>
+          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">Propagation status</div>
           <div className="mt-1 text-sm font-medium">{propagationLabel}</div>
         </div>
         <div className="rounded-lg border border-border/60 bg-background/70 px-3 py-2.5">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">待修复项</div>
-          <div className="mt-1 text-sm font-medium">{pendingProfiles.length} 项</div>
+          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">Items to fix</div>
+          <div className="mt-1 text-sm font-medium">{pendingProfiles.length} items</div>
         </div>
         <div className="rounded-lg border border-border/60 bg-background/70 px-3 py-2.5">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">最近检查</div>
+          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">Last check</div>
           <div className="mt-1 text-sm font-medium">{formatVerificationTimestamp(latestCheckedAt)}</div>
         </div>
       </div>
@@ -288,7 +288,7 @@ function DomainVerificationDetails({
               <p className="mt-2 text-sm text-muted-foreground">{profile.summary}</p>
               {profile.repairRecords.length ? (
                 <div className="mt-3 space-y-1.5">
-                  <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">建议修复记录</div>
+                  <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Suggested repair records</div>
                   {profile.repairRecords.slice(0, 3).map((record, index) => (
                     <div
                       key={`${profile.verificationType}-${record.type}-${record.name}-${index}`}
@@ -493,12 +493,12 @@ export function UserDomainsPage() {
       setCreatingDomainWithVerification(true);
       setRootDomain("");
       setDomainError(null);
-      let notice = "根域名已添加。";
+      let notice = "Root domain added.";
       try {
         clearUserVerificationResults([created.id]);
         const results = await autoVerifyUserDomains([created]);
         if (results.length === 1) {
-          notice = `根域名已添加，${results[0].passed ? "DNS 验证通过" : "DNS 验证未通过" }。`;
+          notice = `Root domain added; ${results[0].passed ? "DNS verification passed" : "DNS verification failed"}.`;
         }
       } finally {
         setCreatingDomainWithVerification(false);
@@ -509,7 +509,7 @@ export function UserDomainsPage() {
       await queryClient.invalidateQueries({ queryKey: ["user-dashboard"], refetchType: "all" });
     },
     onError: (error) => {
-      setDomainError(getAPIErrorMessage(error, "添加根域名失败，请检查域名格式。"));
+      setDomainError(getAPIErrorMessage(error, "Failed to add root domain. Check the domain format."));
     },
   });
 
@@ -517,7 +517,7 @@ export function UserDomainsPage() {
     mutationFn: deleteDomain,
     onSuccess: async (_, domainId) => {
       setDomainError(null);
-      setActionNotice("域名已删除。");
+      setActionNotice("Domain deleted.");
       queryClient.setQueryData<Awaited<ReturnType<typeof fetchDomains>>>(["user-domains"], (current) =>
         (current ?? []).filter((item) => item.id !== domainId),
       );
@@ -544,7 +544,7 @@ export function UserDomainsPage() {
       await queryClient.invalidateQueries({ queryKey: ["user-dashboard"], refetchType: "all" });
     },
     onError: (error) => {
-      setDomainError(getAPIErrorMessage(error, "删除域名失败，请先清理子域名。"));
+      setDomainError(getAPIErrorMessage(error, "Failed to delete domain. Clean up subdomains first."));
     },
   });
 
@@ -553,13 +553,13 @@ export function UserDomainsPage() {
     onSuccess: async (createdItems) => {
       setGeneratingDomainsWithVerification(true);
       setDomainError(null);
-      let notice = "子域名已批量生成。";
+      let notice = "Subdomains generated.";
       try {
         clearUserVerificationResults(createdItems.map((item) => item.id));
         const results = await autoVerifyUserDomains(createdItems);
         if (results.length) {
           const passedCount = results.filter((item) => item.passed).length;
-          notice = `子域名已批量生成，已自动验证 ${results.length} 个，${passedCount} 个通过。`;
+          notice = `Subdomains generated. Automatically verified ${results.length}; ${passedCount} passed.`;
         }
       } finally {
         setGeneratingDomainsWithVerification(false);
@@ -570,7 +570,7 @@ export function UserDomainsPage() {
       await queryClient.invalidateQueries({ queryKey: ["user-dashboard"], refetchType: "all" });
     },
     onError: (error) => {
-      setDomainError(getAPIErrorMessage(error, "批量生成子域名失败。"));
+      setDomainError(getAPIErrorMessage(error, "Failed to generate subdomains."));
     },
   });
   const bindProviderMutation = useMutation({
@@ -578,7 +578,7 @@ export function UserDomainsPage() {
       updateDomainProviderBinding(domainId, providerAccountId),
     onSuccess: async (updated) => {
       setDomainError(null);
-      setActionNotice(updated.providerAccountId ? "DNS 服务商已绑定。" : "DNS 服务商绑定已移除。");
+      setActionNotice(updated.providerAccountId ? "DNS provider bound." : "DNS provider binding removed.");
       setBindProviderDialogOpen(false);
       setBindingDomain(null);
       setSelectedProviderAccountId("");
@@ -596,7 +596,7 @@ export function UserDomainsPage() {
       await queryClient.invalidateQueries({ queryKey: ["user-domains"], refetchType: "all" });
     },
     onError: (error) => {
-      setDomainError(getAPIErrorMessage(error, "绑定 DNS 服务商失败，请检查域名和 Provider 权限后重试。"));
+      setDomainError(getAPIErrorMessage(error, "Failed to bind DNS provider. Check domain and provider permissions, then retry."));
     },
   });
 
@@ -604,12 +604,12 @@ export function UserDomainsPage() {
     mutationFn: requestDomainPublicPool,
     onSuccess: async () => {
       setDomainError(null);
-      setActionNotice("已提交公共池申请。");
+      setActionNotice("Public pool request submitted.");
       await queryClient.invalidateQueries({ queryKey: ["user-domains"], refetchType: "all" });
       await queryClient.invalidateQueries({ queryKey: ["user-dashboard"], refetchType: "all" });
     },
     onError: (error) => {
-      setDomainError(getAPIErrorMessage(error, "加入公共池失败。"));
+      setDomainError(getAPIErrorMessage(error, "Failed to join public pool."));
     },
   });
 
@@ -617,12 +617,12 @@ export function UserDomainsPage() {
     mutationFn: withdrawDomainPublicPool,
     onSuccess: async () => {
       setDomainError(null);
-      setActionNotice("公共池状态已更新。");
+      setActionNotice("Public pool status updated.");
       await queryClient.invalidateQueries({ queryKey: ["user-domains"], refetchType: "all" });
       await queryClient.invalidateQueries({ queryKey: ["user-dashboard"], refetchType: "all" });
     },
     onError: (error) => {
-      setDomainError(getAPIErrorMessage(error, "更新公共池状态失败。"));
+      setDomainError(getAPIErrorMessage(error, "Failed to update public pool status."));
     },
   });
 
@@ -637,7 +637,7 @@ export function UserDomainsPage() {
       await queryClient.invalidateQueries({ queryKey: ["user-dashboard"], refetchType: "all" });
     },
     onError: (error) => {
-      setDomainError(getAPIErrorMessage(error, "验证域名失败，请先检查 DNS 绑定和记录传播。"));
+      setDomainError(getAPIErrorMessage(error, "Domain verification failed. Check DNS binding and record propagation first."));
     },
     onSettled: () => {
       setVerifyingDomainId(null);
@@ -686,13 +686,13 @@ export function UserDomainsPage() {
 
   function handleCreateRootDomain() {
     const normalizedDomain = normalizeRootDomainInput(rootDomain);
-    const requiredError = validateRequiredText("根域名", normalizedDomain, { minLength: 3, maxLength: 253 });
+    const requiredError = validateRequiredText("Root domain", normalizedDomain, { minLength: 3, maxLength: 253 });
     if (requiredError) {
       setDomainError(requiredError);
       return;
     }
     if (!isRootDomainInput(normalizedDomain)) {
-      setDomainError("这里仅支持直接添加根域名，多级子域请通过“批量生成子域名”创建。");
+      setDomainError("Only root domains can be added here. Create multi-level subdomains with Generate Subdomains.");
       return;
     }
     setDomainError(null);
@@ -708,19 +708,19 @@ export function UserDomainsPage() {
   }
 
   function handleGenerateSubdomains() {
-    const baseDomainError = validateSelection("根域名", String(selectedBaseDomainId), rootDomains.map((item) => String(item.id)));
+    const baseDomainError = validateSelection("Root domain", String(selectedBaseDomainId), rootDomains.map((item) => String(item.id)));
     if (baseDomainError) {
       setDomainError(baseDomainError);
       return;
     }
     const prefixes = normalizeSubdomainPrefixes(prefixInput);
     if (!prefixes.length) {
-      setDomainError("至少需要填写一个子域名前缀。");
+      setDomainError("Enter at least one subdomain prefix.");
       return;
     }
     const invalidPrefix = prefixes.find((item) => !isValidSubdomainPrefix(item));
     if (invalidPrefix) {
-      setDomainError(`子域名前缀格式无效：${invalidPrefix}`);
+      setDomainError(`Invalid subdomain prefix format: ${invalidPrefix}`);
       return;
     }
     setDomainError(null);
@@ -738,10 +738,10 @@ export function UserDomainsPage() {
 
   function handleSaveProviderBinding() {
     if (!bindingDomain) {
-      setDomainError("当前没有可绑定的域名。");
+      setDomainError("No domain is available to bind.");
       return;
     }
-    const providerError = validateSelection("DNS 服务商", selectedProviderAccountId, providerOptions.map((item) => item.value));
+    const providerError = validateSelection("DNS provider", selectedProviderAccountId, providerOptions.map((item) => item.value));
     if (providerError) {
       setDomainError(providerError);
       return;
@@ -760,16 +760,16 @@ export function UserDomainsPage() {
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={() => void refreshUserDomainData()}>
               <RefreshCcw className={domainsQuery.isRefetching ? "size-4 animate-spin" : "size-4"} />
-              刷新
+              Refresh
             </Button>
-            <Button onClick={() => setCreateRootDialogOpen(true)}>新增根域名</Button>
+            <Button onClick={() => setCreateRootDialogOpen(true)}>Add Root Domain</Button>
             <Button variant="outline" onClick={() => setGenerateDialogOpen(true)}>
-              新增子域名
+              Add Subdomains
             </Button>
           </div>
         }
-        description="待验证域名、绑定状态和 DNS 配置入口都集中在这里；DNS 配置页只保留服务商、Zone、记录和变更工作区。"
-        title="域名管理"
+        description="Pending domains, binding status, and DNS configuration entry points are centralized here. The DNS settings page keeps providers, zones, records, and change workspaces."
+        title="Domain Management"
       >
         <div className="space-y-4">
           <AlertDialog
@@ -782,15 +782,15 @@ export function UserDomainsPage() {
           >
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>删除域名？</AlertDialogTitle>
+                <AlertDialogTitle>Delete domain?</AlertDialogTitle>
                 <AlertDialogDescription>
                   {deleteDomainDialog
-                    ? `确认删除${deleteDomainDialog.label} ${deleteDomainDialog.domain}？删除后该域名会从当前列表中移除。`
+                    ? `Delete ${deleteDomainDialog.label} ${deleteDomainDialog.domain}? This domain will be removed from the current list.`
                     : ""}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>取消</AlertDialogCancel>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
                     if (!deleteDomainDialog) {
@@ -800,7 +800,7 @@ export function UserDomainsPage() {
                     setDeleteDomainDialog(null);
                   }}
                 >
-                  确认删除
+                  Confirm Delete
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -815,15 +815,15 @@ export function UserDomainsPage() {
           >
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{withdrawDomainDialog?.label ?? "确认操作"}</AlertDialogTitle>
+                <AlertDialogTitle>{withdrawDomainDialog?.label ?? "Confirm action"}</AlertDialogTitle>
                 <AlertDialogDescription>
                   {withdrawDomainDialog
-                    ? `确认对域名 ${withdrawDomainDialog.domain} 执行“${withdrawDomainDialog.label}”？此操作会立即变更该域名在公共池中的状态。`
+                    ? `Run "${withdrawDomainDialog.label}" for domain ${withdrawDomainDialog.domain}? This immediately changes its public pool status.`
                     : ""}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>取消</AlertDialogCancel>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
                     if (!withdrawDomainDialog) {
@@ -833,7 +833,7 @@ export function UserDomainsPage() {
                     setWithdrawDomainDialog(null);
                   }}
                 >
-                  确认继续
+                  Continue
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -852,11 +852,11 @@ export function UserDomainsPage() {
           <Dialog open={isCreateRootDialogOpen} onOpenChange={setCreateRootDialogOpen}>
             <DialogContent className="sm:max-w-xl">
               <DialogHeader>
-                <DialogTitle>添加根域名</DialogTitle>
-                <DialogDescription>这里只录入根域名资产；DNS 服务商绑定和记录配置请在“DNS 配置”页面完成。</DialogDescription>
+                <DialogTitle>Add Root Domain</DialogTitle>
+                <DialogDescription>Only root domain assets are added here. Complete DNS provider binding and record configuration on the DNS Settings page.</DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
-                <WorkspaceField label="根域名">
+                <WorkspaceField label="Root Domain">
                   <Input
                     value={rootDomain}
                     onChange={(event) => setRootDomain(event.target.value)}
@@ -866,7 +866,7 @@ export function UserDomainsPage() {
               </div>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="outline">取消</Button>
+                  <Button variant="outline">Cancel</Button>
                 </DialogClose>
                 <Button
                   disabled={!rootDomain.trim() || createDomainMutation.isPending || creatingDomainWithVerification}
@@ -875,10 +875,10 @@ export function UserDomainsPage() {
                   {createDomainMutation.isPending || creatingDomainWithVerification ? (
                     <>
                       <LoaderCircle className="size-4 animate-spin" />
-                      验证 DNS 中...
+                      Verifying DNS...
                     </>
                   ) : (
-                    "添加根域名"
+                    "Add Root Domain"
                   )}
                 </Button>
               </DialogFooter>
@@ -888,37 +888,37 @@ export function UserDomainsPage() {
           <Dialog open={isGenerateDialogOpen} onOpenChange={setGenerateDialogOpen}>
             <DialogContent className="sm:max-w-2xl">
               <DialogHeader>
-                <DialogTitle>批量生成子域名</DialogTitle>
-                <DialogDescription>从已有根域名批量生成多级子域名，适合 MX、relay、edge 等前缀。</DialogDescription>
+                <DialogTitle>Generate Subdomains</DialogTitle>
+                <DialogDescription>Generate multi-level subdomains from an existing root domain, suitable for prefixes like MX, relay, and edge.</DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
-                <WorkspaceField label="选择根域名">
+                <WorkspaceField label="Select Root Domain">
                   <OptionCombobox
-                    ariaLabel="选择根域名"
-                    emptyLabel="没有可选根域名"
+                    ariaLabel="Select root domain"
+                    emptyLabel="No root domains available"
                     options={rootDomains.map((item) => ({
                       value: String(item.id),
                       label: item.domain,
                       keywords: [item.rootDomain],
                     }))}
-                    placeholder="选择根域名"
-                    searchPlaceholder="搜索根域名"
+                    placeholder="Select root domain"
+                    searchPlaceholder="Search root domains"
                     value={selectedBaseDomainId === "" ? undefined : String(selectedBaseDomainId)}
                     onValueChange={(value) => setSelectedBaseDomainId(value ? Number(value) : "")}
                   />
                 </WorkspaceField>
-                <WorkspaceField label="多级前缀">
+                <WorkspaceField label="Multi-level Prefixes">
                   <Textarea
                     rows={6}
                     value={prefixInput}
                     onChange={(event) => setPrefixInput(event.target.value)}
-                    placeholder={"一行一个前缀，例如：\nmx\nmx.edge\nrelay.cn.hk"}
+                    placeholder={"One prefix per line, for example:\nmx\nmx.edge\nrelay.cn.hk"}
                   />
                 </WorkspaceField>
               </div>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="outline">取消</Button>
+                  <Button variant="outline">Cancel</Button>
                 </DialogClose>
                 <Button
                   disabled={selectedBaseDomainId === "" || generateMutation.isPending || generatingDomainsWithVerification}
@@ -927,10 +927,10 @@ export function UserDomainsPage() {
                   {generateMutation.isPending || generatingDomainsWithVerification ? (
                     <>
                       <LoaderCircle className="size-4 animate-spin" />
-                      验证 DNS 中...
+                      Verifying DNS...
                     </>
                   ) : (
-                    "批量生成子域名"
+                    "Generate Subdomains"
                   )}
                 </Button>
               </DialogFooter>
@@ -949,21 +949,21 @@ export function UserDomainsPage() {
           >
             <DialogContent className="sm:max-w-xl">
               <DialogHeader>
-                <DialogTitle>{bindingDomain?.providerAccountId ? "更换 DNS 服务商" : "绑定 DNS 服务商"}</DialogTitle>
+                <DialogTitle>{bindingDomain?.providerAccountId ? "Change DNS Provider" : "Bind DNS Provider"}</DialogTitle>
                 <DialogDescription>
                   {bindingDomain
-                    ? `为 ${bindingDomain.domain} 选择一个已添加的 DNS 服务商账号，后续即可直接进入对应 Zone 工作区。`
-                    : "选择一个 DNS 服务商账号。"}
+                    ? `Select an existing DNS provider account for ${bindingDomain.domain}. You can then open the matching Zone workspace directly.`
+                    : "Select a DNS provider account."}
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
-                <WorkspaceField label="当前域名">
+                <WorkspaceField label="Current Domain">
                   <Input readOnly value={bindingDomain?.domain ?? ""} />
                 </WorkspaceField>
                 {bindingDomain ? (
                   <div className="grid gap-3 sm:grid-cols-3">
                     <div className="rounded-xl border border-border/60 bg-background/50 px-3 py-3">
-                      <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">当前状态</div>
+                      <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Current Status</div>
                       <div className="mt-2 flex items-center gap-2 text-sm font-medium">
                         <DomainStatusIcon
                           className={getDomainStatusMeta(getDomainStatusGroup(bindingDomain)).iconClassName}
@@ -973,22 +973,22 @@ export function UserDomainsPage() {
                       </div>
                     </div>
                     <div className="rounded-xl border border-border/60 bg-background/50 px-3 py-3">
-                      <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">当前 Provider</div>
-                      <div className="mt-2 truncate text-sm font-medium">{bindingDomain.providerDisplayName ?? "未绑定"}</div>
+                      <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Current Provider</div>
+                      <div className="mt-2 truncate text-sm font-medium">{bindingDomain.providerDisplayName ?? "Unbound"}</div>
                     </div>
                     <div className="rounded-xl border border-border/60 bg-background/50 px-3 py-3">
-                      <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">建议动作</div>
+                      <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Suggested Action</div>
                       <div className="mt-2 text-sm text-muted-foreground">{getDomainStatusMeta(getDomainStatusGroup(bindingDomain)).description}</div>
                     </div>
                   </div>
                 ) : null}
-                <WorkspaceField label="DNS 服务商">
+                <WorkspaceField label="DNS Provider">
                   <OptionCombobox
-                    ariaLabel="选择 DNS 服务商"
-                    emptyLabel="还没有可用的 DNS 服务商"
+                    ariaLabel="Select DNS provider"
+                    emptyLabel="No DNS providers available"
                     options={providerOptions}
-                    placeholder="选择 DNS 服务商"
-                    searchPlaceholder="搜索 DNS 服务商"
+                    placeholder="Select DNS provider"
+                    searchPlaceholder="Search DNS providers"
                     value={selectedProviderAccountId || undefined}
                     onValueChange={(value) => setSelectedProviderAccountId(value || "")}
                   />
@@ -1005,17 +1005,17 @@ export function UserDomainsPage() {
                       bindProviderMutation.mutate({ domainId: bindingDomain.id, providerAccountId: undefined });
                     }}
                   >
-                    解绑
+                    Unbind
                   </Button>
                 ) : null}
                 <DialogClose asChild>
-                  <Button variant="outline">取消</Button>
+                  <Button variant="outline">Cancel</Button>
                 </DialogClose>
                 <Button
                   disabled={!bindingDomain || !selectedProviderAccountId || bindProviderMutation.isPending}
                   onClick={handleSaveProviderBinding}
                 >
-                  {bindProviderMutation.isPending ? "保存中..." : "保存绑定"}
+                  {bindProviderMutation.isPending ? "Saving..." : "Save Binding"}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -1024,37 +1024,37 @@ export function UserDomainsPage() {
           <div className="grid gap-3 lg:grid-cols-6">
             <Card className="border-border/60 bg-card/85 shadow-none lg:col-span-2">
               <CardContent className="space-y-2 py-4">
-                <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">资产概览</div>
+                <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Asset Overview</div>
                 <div className="text-2xl font-semibold">{domainSummary.roots}</div>
-                <div className="text-sm text-muted-foreground">根域名 {domainSummary.roots} 个 · 子域名 {domainSummary.children} 个</div>
+                <div className="text-sm text-muted-foreground">{domainSummary.roots} root domains · {domainSummary.children} subdomains</div>
               </CardContent>
             </Card>
             <Card className="border-emerald-500/20 bg-emerald-500/5 shadow-none">
               <CardContent className="space-y-2 py-4">
-                <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">已验证</div>
+                <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Verified</div>
                 <div className="text-2xl font-semibold">{domainSummary.verified}</div>
-                <div className="text-sm text-muted-foreground">可直接创建邮箱</div>
+                <div className="text-sm text-muted-foreground">Ready to create mailboxes</div>
               </CardContent>
             </Card>
             <Card className="border-rose-500/20 bg-rose-500/5 shadow-none">
               <CardContent className="space-y-2 py-4">
-                <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">待验证</div>
+                <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Pending</div>
                 <div className="text-2xl font-semibold">{domainSummary.pending}</div>
-                <div className="text-sm text-muted-foreground">需要继续校验记录</div>
+                <div className="text-sm text-muted-foreground">Record verification needed</div>
               </CardContent>
             </Card>
             <Card className="border-amber-500/20 bg-amber-500/5 shadow-none">
               <CardContent className="space-y-2 py-4">
-                <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">未绑定 DNS</div>
+                <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">DNS Unbound</div>
                 <div className="text-2xl font-semibold">{domainSummary.unbound}</div>
-                <div className="text-sm text-muted-foreground">需要先绑定服务商</div>
+                <div className="text-sm text-muted-foreground">Bind a provider first</div>
               </CardContent>
             </Card>
             <Card className="border-border/60 bg-card/85 shadow-none">
               <CardContent className="space-y-2 py-4">
                 <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Provider</div>
                 <div className="text-2xl font-semibold">{domainSummary.providers}</div>
-                <div className="text-sm text-muted-foreground">可用 DNS 服务商账号</div>
+                <div className="text-sm text-muted-foreground">Available DNS provider accounts</div>
               </CardContent>
             </Card>
           </div>
@@ -1080,7 +1080,7 @@ export function UserDomainsPage() {
                         <p className="text-xs text-muted-foreground">{groupMeta.description}</p>
                       </div>
                       <WorkspaceBadge variant="outline">
-                        {sectionRoots.length} / {groupedRootDomains[group].length} 个根域
+                        {sectionRoots.length} / {groupedRootDomains[group].length} root domains
                       </WorkspaceBadge>
                     </CardContent>
                   </Card>
@@ -1120,26 +1120,26 @@ export function UserDomainsPage() {
                               verified={rootStatusTone === "verified"}
                             />
                             {rootStatusTone === "verified"
-                              ? "已验证"
+                              ? "Verified"
                               : rootStatusTone === "unbound"
-                                ? "未绑定 DNS"
-                                : "待验证"}
+                                ? "DNS not bound"
+                                : "Pending verification"}
                           </span>
                           <WorkspaceBadge>{root.status}</WorkspaceBadge>
                           <WorkspaceBadge variant="outline">{root.visibility}</WorkspaceBadge>
                           <WorkspaceBadge variant="outline">{root.publicationStatus}</WorkspaceBadge>
-                          <WorkspaceBadge variant="outline">验证分 {root.verificationScore}</WorkspaceBadge>
+                          <WorkspaceBadge variant="outline">Score {root.verificationScore}</WorkspaceBadge>
                         </div>
                         <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                          <span>健康：{root.healthStatus}</span>
-                          <span>权重：{root.weight}</span>
-                          <span>子域名：{children.length}</span>
-                          <span>DNS：{root.providerDisplayName || "前往 DNS 配置绑定"}</span>
+                          <span>Health: {root.healthStatus}</span>
+                          <span>Weight: {root.weight}</span>
+                          <span>Subdomains: {children.length}</span>
+                          <span>DNS: {root.providerDisplayName || "Bind in DNS Settings"}</span>
                         </div>
                       </div>
                       <div className="flex flex-wrap items-center gap-2">
                         <Button size="sm" variant="ghost" onClick={() => openBindProviderDialog(root)}>
-                          {root.providerAccountId ? "更换服务商" : "绑定服务商"}
+                          {root.providerAccountId ? "Change Provider" : "Bind Provider"}
                         </Button>
                         <Button
                           size="sm"
@@ -1147,19 +1147,19 @@ export function UserDomainsPage() {
                           disabled={verifyDomainMutation.isPending && verifyingDomainId === root.id}
                           onClick={() => verifyDomainMutation.mutate(root.id)}
                         >
-                          {verifyDomainMutation.isPending && verifyingDomainId === root.id ? "验证中..." : "验证"}
+                          {verifyDomainMutation.isPending && verifyingDomainId === root.id ? "Verifying..." : "Verify"}
                         </Button>
                         <Button asChild size="sm" variant="outline">
                           <Link to={getUserDomainDnsLink(root.id, root.providerAccountId)}>
-                            {root.providerAccountId ? "配置 DNS" : "绑定 DNS"}
+                            {root.providerAccountId ? "Configure DNS" : "Bind DNS"}
                           </Link>
                         </Button>
                         <Button asChild size="sm" variant="secondary">
-                          <Link to={`/dashboard/mailboxes?domainId=${root.id}`}>创建邮箱</Link>
+                          <Link to={`/dashboard/mailboxes?domainId=${root.id}`}>Create Mailbox</Link>
                         </Button>
                         {(root.visibility === "private" || root.publicationStatus === "rejected") ? (
                           <Button size="sm" variant="outline" onClick={() => publishMutation.mutate(root.id)}>
-                            申请加入公共池
+                            Request Public Pool
                           </Button>
                         ) : null}
                         {root.visibility === "public_pool" ? (
@@ -1172,12 +1172,12 @@ export function UserDomainsPage() {
                                 domain: root.domain,
                                 label:
                                   root.publicationStatus === "pending_review"
-                                    ? "撤回申请"
-                                    : "下线公共池",
+                                    ? "Withdraw Request"
+                                    : "Remove from Public Pool",
                               })
                             }
                           >
-                            {root.publicationStatus === "pending_review" ? "撤回申请" : "下线公共池"}
+                            {root.publicationStatus === "pending_review" ? "Withdraw Request" : "Remove from Public Pool"}
                           </Button>
                         ) : null}
                         <Button
@@ -1189,11 +1189,11 @@ export function UserDomainsPage() {
                             setDeleteDomainDialog({
                               id: root.id,
                               domain: root.domain,
-                              label: "根域名",
+                              label: "root domain",
                             });
                           }}
                         >
-                          <Trash2 className="size-4" />删除
+                          <Trash2 className="size-4" />Delete
                         </Button>
                       </div>
                     </div>
@@ -1210,20 +1210,20 @@ export function UserDomainsPage() {
                             <div className="rounded-xl border border-border/60 bg-background/70 p-4">
                               <div className="space-y-3 text-sm">
                                 <div className="flex items-center justify-between gap-3">
-                                  <span className="text-muted-foreground">DNS 服务商</span>
-                                  <span className="truncate font-medium">{root.providerDisplayName ?? "未绑定"}</span>
+                                  <span className="text-muted-foreground">DNS Provider</span>
+                                  <span className="truncate font-medium">{root.providerDisplayName ?? "Unbound"}</span>
                                 </div>
                                 <div className="flex items-center justify-between gap-3">
-                                  <span className="text-muted-foreground">公共池状态</span>
+                                  <span className="text-muted-foreground">Public Pool Status</span>
                                   <span className="font-medium">{root.publicationStatus}</span>
                                 </div>
                                 <div className="flex items-center justify-between gap-3">
-                                  <span className="text-muted-foreground">可见性</span>
+                                  <span className="text-muted-foreground">Visibility</span>
                                   <span className="font-medium">{root.visibility}</span>
                                 </div>
                                 <div className="flex items-center justify-between gap-3">
-                                  <span className="text-muted-foreground">创建邮箱</span>
-                                  <span className="font-medium">{rootStatusTone === "verified" ? "可直接创建" : "建议先完成 DNS"}</span>
+                                  <span className="text-muted-foreground">Create Mailbox</span>
+                                  <span className="font-medium">{rootStatusTone === "verified" ? "Ready" : "Complete DNS first"}</span>
                                 </div>
                               </div>
                             </div>
@@ -1231,12 +1231,12 @@ export function UserDomainsPage() {
                             <div className="rounded-xl border border-border/60 bg-card/60 p-4">
                               <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div className="space-y-1">
-                                  <div className="text-sm font-semibold">子域名资产</div>
-                                  <p className="text-xs text-muted-foreground">这里集中展示当前根域下的多级子域名和它们各自的 DNS / 验证状态。</p>
+                                  <div className="text-sm font-semibold">Subdomain Assets</div>
+                                  <p className="text-xs text-muted-foreground">Multi-level subdomains under this root domain and their DNS / verification status are shown here.</p>
                                 </div>
                                 <div className="flex flex-wrap gap-2">
-                                  <WorkspaceBadge variant="outline">{children.length} 个子域名</WorkspaceBadge>
-                                  <WorkspaceBadge variant="outline">验证分 {root.verificationScore}</WorkspaceBadge>
+                                  <WorkspaceBadge variant="outline">{children.length} subdomains</WorkspaceBadge>
+                                  <WorkspaceBadge variant="outline">Score {root.verificationScore}</WorkspaceBadge>
                                 </div>
                               </div>
                             </div>
@@ -1269,22 +1269,22 @@ export function UserDomainsPage() {
                                           verified={childStatusTone === "verified"}
                                         />
                                         {childStatusTone === "verified"
-                                          ? "已验证"
+                                          ? "Verified"
                                           : childStatusTone === "unbound"
-                                            ? "未绑定 DNS"
-                                            : "待验证"}
+                                            ? "DNS not bound"
+                                            : "Pending verification"}
                                       </span>
                                     </div>
                                     <div className="mt-1 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                                      <span>层级 {child.level}</span>
-                                      <span>根域 {child.rootDomain}</span>
-                                      <span>DNS {child.providerDisplayName || "未绑定"}</span>
-                                      <span>验证分 {child.verificationScore}</span>
+                                      <span>Level {child.level}</span>
+                                      <span>Root {child.rootDomain}</span>
+                                      <span>DNS {child.providerDisplayName || "Unbound"}</span>
+                                      <span>Score {child.verificationScore}</span>
                                     </div>
                                   </div>
                                   <div className="flex flex-wrap items-center gap-2">
                                     <Button size="sm" variant="ghost" onClick={() => openBindProviderDialog(child)}>
-                                      {child.providerAccountId ? "更换服务商" : "绑定服务商"}
+                                      {child.providerAccountId ? "Change Provider" : "Bind Provider"}
                                     </Button>
                                     <Button
                                       size="sm"
@@ -1292,15 +1292,15 @@ export function UserDomainsPage() {
                                       disabled={verifyDomainMutation.isPending && verifyingDomainId === child.id}
                                       onClick={() => verifyDomainMutation.mutate(child.id)}
                                     >
-                                      {verifyDomainMutation.isPending && verifyingDomainId === child.id ? "验证中..." : "验证"}
+                                      {verifyDomainMutation.isPending && verifyingDomainId === child.id ? "Verifying..." : "Verify"}
                                     </Button>
                                     <Button asChild size="sm" variant="outline">
                                       <Link to={getUserDomainDnsLink(child.id, child.providerAccountId)}>
-                                        {child.providerAccountId ? "配置 DNS" : "绑定 DNS"}
+                                        {child.providerAccountId ? "Configure DNS" : "Bind DNS"}
                                       </Link>
                                     </Button>
                                     <Button asChild size="sm" variant="secondary">
-                                      <Link to={`/dashboard/mailboxes?domainId=${child.id}`}>创建邮箱</Link>
+                                      <Link to={`/dashboard/mailboxes?domainId=${child.id}`}>Create Mailbox</Link>
                                     </Button>
                                     <WorkspaceBadge variant="outline">{child.publicationStatus}</WorkspaceBadge>
                                     <Button
@@ -1312,11 +1312,11 @@ export function UserDomainsPage() {
                                         setDeleteDomainDialog({
                                           id: child.id,
                                           domain: child.domain,
-                                          label: "子域名",
+                                          label: "subdomain",
                                         });
                                       }}
                                     >
-                                      <Trash2 className="size-4" />删除
+                                      <Trash2 className="size-4" />Delete
                                     </Button>
                                   </div>
                                 </div>
@@ -1330,8 +1330,8 @@ export function UserDomainsPage() {
                         </>
                         ) : (
                           <WorkspaceEmpty
-                            title="还没有子域名"
-                            description="点击上方“新增子域名”即可基于这个根域名批量生成。"
+                            title="No subdomains yet"
+                            description="Click Add Subdomains above to generate them from this root domain."
                           />
                         )}
                       </div>
@@ -1345,12 +1345,12 @@ export function UserDomainsPage() {
             })
           ) : (
             <WorkspaceEmpty
-              title="暂无私有根域名"
-              description="添加一个根域名后，就能继续批量生成多级子域名；Provider 与 DNS 配置请前往 DNS 配置页处理。"
+              title="No private root domains"
+              description="After adding a root domain, you can generate multi-level subdomains. Manage providers and DNS configuration on the DNS Settings page."
             />
           )}
           <PaginationControls
-            itemLabel="根域名"
+            itemLabel="root domains"
             onPageChange={setRootDomainsPage}
             page={paginatedRootDomains.page}
             pageSize={USER_DOMAINS_PAGE_SIZE}

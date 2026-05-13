@@ -3,3 +3,17 @@ node_modules/
 dist/
 coverage/
 .env
+.env.*
+!.env.example
+*.local
+*.log
+*.tmp
+*.bak
+*.backup
+*.dump
+*.sql
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+.DS_Store

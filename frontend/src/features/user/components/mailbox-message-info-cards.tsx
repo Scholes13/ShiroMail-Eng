@@ -36,7 +36,7 @@ export function MetaCard({ label, value }: { label: string; value: string }) {
 function SecurityStatusCard({ label, value }: { label: string; value: string }) {
   const normalized = value.toLowerCase();
   const variant =
-    normalized.includes("pass") || normalized.includes("通过")
+    normalized.includes("pass") || normalized.includes("Text")
       ? "secondary"
       : normalized.includes("fail") || normalized.includes("reject")
         ? "destructive"
@@ -60,7 +60,7 @@ export function SecurityCard({ messageSecuritySummary }: { messageSecuritySummar
   return (
     <Card className="border-border/60 bg-background/60 shadow-none">
       <CardContent className="space-y-3 py-4">
-        <div className="text-sm font-medium">投递与认证摘要</div>
+        <div className="text-sm font-medium">Text</div>
         <div className="grid gap-3 md:grid-cols-3">
           <SecurityStatusCard label="SPF" value={messageSecuritySummary.spf} />
           <SecurityStatusCard label="DKIM" value={messageSecuritySummary.dkim} />
@@ -80,14 +80,14 @@ export function ReceivedPathCard({ receivedTimeline }: { receivedTimeline: Recei
   return (
     <Card className="border-border/60 bg-background/60 shadow-none">
       <CardContent className="space-y-3 py-4">
-        <div className="text-sm font-medium">Received 路径</div>
+        <div className="text-sm font-medium">Received Text</div>
         {receivedTimeline.length ? (
           <div className="space-y-3">
             {receivedTimeline.map((item, index) => (
               <div className="rounded-xl border border-border/60 bg-muted/10 p-3" key={`${item.date}-${index}`}>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <WorkspaceBadge variant="outline">#{index + 1}</WorkspaceBadge>
-                  <span className="text-xs text-muted-foreground">{item.date || "时间未知"}</span>
+                  <span className="text-xs text-muted-foreground">{item.date || "Text"}</span>
                 </div>
                 <div className="mt-2 text-sm font-medium">{item.route}</div>
                 {item.raw ? (
@@ -97,14 +97,14 @@ export function ReceivedPathCard({ receivedTimeline }: { receivedTimeline: Recei
                 ) : null}
                 {item.isRawTruncated ? (
                   <p className="mt-2 text-[11px] text-muted-foreground">
-                    该节点原始头已截断，完整内容请查看 Raw 原文。
+                    Text，Text Raw Text。
                   </p>
                 ) : null}
               </div>
             ))}
           </div>
         ) : (
-          <WorkspaceEmpty description="当前邮件没有可解析的 Received 路径。" title="暂无投递路径" />
+          <WorkspaceEmpty description="Text Received Text。" title="Text" />
         )}
       </CardContent>
     </Card>
@@ -115,9 +115,9 @@ export function ExtractionsCard({ extractionsQuery }: { extractionsQuery: { isLo
   return (
     <Card className="border-border/60 bg-background/60 shadow-none">
       <CardContent className="space-y-3 py-4">
-        <div className="text-sm font-medium">提取结果</div>
+        <div className="text-sm font-medium">Text</div>
         {extractionsQuery.isLoading ? (
-          <WorkspaceEmpty description="正在分析这封邮件的提取规则命中情况。" title="正在计算提取结果" />
+          <WorkspaceEmpty description="TextExtraction rulesText。" title="Text" />
         ) : extractionsQuery.data?.items.length ? (
           <div className="space-y-3">
             {extractionsQuery.data.items.map((item, index) => (
@@ -133,7 +133,7 @@ export function ExtractionsCard({ extractionsQuery }: { extractionsQuery: { isLo
             ))}
           </div>
         ) : (
-          <WorkspaceEmpty description="当前邮件没有命中任何已启用的提取规则。" title="暂无提取结果" />
+          <WorkspaceEmpty description="TextEnableTextExtraction rules。" title="Text" />
         )}
       </CardContent>
     </Card>

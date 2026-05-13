@@ -34,22 +34,22 @@ export function DeliveryTestPanel({
     <>
       <div className="mt-4 flex flex-col gap-3 rounded-xl border border-border/60 bg-muted/20 p-3 md:flex-row md:items-end">
         <div className="flex-1 space-y-2">
-          <div className="text-sm font-medium">测试收件邮箱</div>
+          <div className="text-sm font-medium">Text</div>
           <Input
-            aria-label="测试收件邮箱"
-            placeholder="默认使用发件邮箱"
+            aria-label="Text"
+            placeholder="Text"
             value={recipient}
             onChange={(event) => onRecipientChange(event.target.value)}
           />
         </div>
         <Button disabled={isPending} onClick={onSendTest}>
-          {isPending ? "发送中..." : "发送测试邮件"}
+          {isPending ? "Text..." : "TextTest message"}
         </Button>
       </div>
       {diagnosticState.status !== "idle" ? (
         <div className="mt-4 rounded-xl border border-border/60 bg-card/70 p-3">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="text-sm font-medium">最近一次 SMTP 测试</div>
+            <div className="text-sm font-medium">Text SMTP Text</div>
             <WorkspaceBadge
               variant={
                 diagnosticState.status === "success"
@@ -80,17 +80,17 @@ export function DeliveryTestPanel({
           </div>
           <div className="mt-3 space-y-3">
             <WorkspaceListRow
-              title={diagnosticState.message ?? "暂无诊断信息"}
+              title={diagnosticState.message ?? "Text"}
               description={
                 diagnosticState.diagnostic?.hint ??
                 (diagnosticState.status === "success"
-                  ? "如果未收到邮件，请再检查上游 SMTP 日志、垃圾箱或延迟投递情况。"
-                  : "后端未返回结构化诊断时，会自动回退到原始错误信息。")
+                  ? "Text and Text，Text SMTP Text、Text。"
+                  : "Text，Text and Text。")
               }
               meta={
                 <>
                   <WorkspaceBadge variant="outline">
-                    {diagnosticState.recipient || "未指定收件人"}
+                    {diagnosticState.recipient || "TextRecipient"}
                   </WorkspaceBadge>
                   {diagnosticState.diagnostic?.stage ? (
                     <WorkspaceBadge variant="secondary">

@@ -162,8 +162,8 @@ export function MailboxMessageDetail({
   return (
     <WorkspacePanel
       className="xl:sticky xl:top-20"
-      description={selectedMailbox ? (selectedMailbox.permanent ? "永久邮箱" : `到期时间 ${formatDate(selectedMailbox.expiresAt)}`) : "先从左侧选择一个邮箱。"}
-      title={selectedMailbox?.address ?? "消息预览"}
+      description={selectedMailbox ? (selectedMailbox.permanent ? "PermanentText" : ` and Text ${formatDate(selectedMailbox.expiresAt)}`) : "Text。"}
+      title={selectedMailbox?.address ?? "Text"}
     >
       {selectedMailbox ? (
         <div className="flex flex-col xl:h-[calc(100vh-12rem)]">
@@ -204,33 +204,33 @@ export function MailboxMessageDetail({
               <CardContent className="space-y-4 py-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1">
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">邮件详情</p>
-                    <h3 className="text-base font-medium">{decodeMimeHeaderValue(selectedMessageSummary.subject) || "(无主题)"}</h3>
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Text</p>
+                    <h3 className="text-base font-medium">{decodeMimeHeaderValue(selectedMessageSummary.subject) || "(No subject)"}</h3>
                   </div>
                   <Button
                     onClick={() => {
                       onFeedback(null);
                       void downloadMailboxMessageRaw(selectedMailbox.id, selectedMessageSummary.id).catch(() => {
-                        onFeedback("下载原文失败，请稍后重试。");
+                        onFeedback("Text，Text。");
                       });
                     }}
                     size="sm"
                     variant="secondary"
                   >
                     <Download className="size-4" />
-                    下载原文
+                    Text
                   </Button>
                 </div>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                  <MetaCard label="发件人" value={decodeMimeHeaderValue(selectedMessageSummary.fromAddr)} />
-                  <MetaCard label="收件人" value={decodeMimeHeaderValue(selectedMessageSummary.toAddr)} />
-                  <MetaCard label="来源" value={selectedMessageSummary.sourceKind || "smtp"} />
-                  <MetaCard label="接收时间" value={formatDate(selectedMessageSummary.receivedAt)} />
+                  <MetaCard label="Sender" value={decodeMimeHeaderValue(selectedMessageSummary.fromAddr)} />
+                  <MetaCard label="Recipient" value={decodeMimeHeaderValue(selectedMessageSummary.toAddr)} />
+                  <MetaCard label="Text" value={selectedMessageSummary.sourceKind || "smtp"} />
+                  <MetaCard label="Text" value={formatDate(selectedMessageSummary.receivedAt)} />
                 </div>
 
                 {isMessageDetailLoading && !selectedMessage ? (
-                  <WorkspaceEmpty description="正在加载邮件详情，请稍候。" title="正在同步详情" />
+                  <WorkspaceEmpty description="Text，Text。" title="Text" />
                 ) : selectedMessage ? (
                   <>
                     <SecurityCard messageSecuritySummary={messageSecuritySummary} />
@@ -261,14 +261,14 @@ export function MailboxMessageDetail({
                     />
                   </>
                 ) : (
-                  <WorkspaceEmpty description="暂时无法加载这封邮件详情，请刷新重试。" title="详情不可用" />
+                  <WorkspaceEmpty description="Text，TextRefreshText。" title="Text" />
                 )}
               </CardContent>
             </Card>
           ) : null}
         </div>
       ) : (
-        <WorkspaceEmpty description="选择邮箱后，这里会展示最近收到的邮件。" title="还没有选中邮箱" />
+        <WorkspaceEmpty description="Text，Text and Text。" title="Text" />
       )}
     </WorkspacePanel>
   );
@@ -293,7 +293,7 @@ function MailboxActions({
     <div className="flex flex-wrap items-center gap-2">
       <Button disabled={isExtendPending} onClick={onExtend} size="sm" variant="secondary">
         <TimerReset className="size-4" />
-        续期 24 小时
+        Text 24 hours
       </Button>
       <Button
         disabled={isReleasePending || selectedMailbox.status === "released"}
@@ -302,15 +302,15 @@ function MailboxActions({
         variant="outline"
       >
         <Trash2 className="size-4" />
-        {selectedMailbox.status === "released" ? "已释放" : "释放邮箱"}
+        {selectedMailbox.status === "released" ? "Text" : "Text"}
       </Button>
       <Badge className="rounded-full" variant="outline">
         <Clock3 className="mr-1 size-3.5" />
-        {selectedMailbox.permanent ? "永久" : `剩余 ${formatRemainingHours(selectedMailbox.expiresAt)}`}
+        {selectedMailbox.permanent ? "Permanent" : `Text ${formatRemainingHours(selectedMailbox.expiresAt)}`}
       </Badge>
       <Badge className="rounded-full" variant={selectedMailbox.status === "active" ? "secondary" : "outline"}>
         <ShieldCheck className="mr-1 size-3.5" />
-        {selectedMailbox.status === "active" ? "可接收邮件" : "已停止接收"}
+        {selectedMailbox.status === "active" ? "Text" : "Text"}
       </Badge>
     </div>
   );
@@ -412,7 +412,7 @@ function MessageList({
         </div>
       )}
       {isLoading ? (
-        <WorkspaceEmpty description="正在同步消息列表，请稍候。" title="正在加载消息" />
+        <WorkspaceEmpty description="Text，Text。" title="Text" />
       ) : !messages.length && hasActiveSearch ? (
         <WorkspaceEmpty description={noResultsHint} title={noResultsTitle} />
       ) : !messages.length ? (
@@ -435,26 +435,26 @@ function MessageList({
                     <div className="flex items-start justify-between gap-3">
                       <div className="space-y-1">
                         <div className={`text-sm font-medium ${message.isRead ? "" : "font-semibold"}`}>
-                          {message.subject ? `主题 · ${decodeMimeHeaderValue(message.subject)}` : "(无主题)"}
+                          {message.subject ? `Text · ${decodeMimeHeaderValue(message.subject)}` : "(No subject)"}
                         </div>
                         <p className="text-xs text-muted-foreground">{decodeMimeHeaderValue(message.fromAddr)}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         {!message.isRead && (
-                          <span className="size-2 rounded-full bg-primary" title="未读" />
+                          <span className="size-2 rounded-full bg-primary" title="Text" />
                         )}
                         <span className="text-xs text-muted-foreground">{formatDate(message.receivedAt)}</span>
                       </div>
                     </div>
                     <p className="line-clamp-2 text-sm leading-6 text-muted-foreground">
-                      {message.textPreview || message.htmlPreview || "暂无预览内容"}
+                      {message.textPreview || message.htmlPreview || "Text"}
                     </p>
                     <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
                       <span className="inline-flex items-center gap-1.5">
                         <Inbox className="size-3.5" />
                         {decodeMimeHeaderValue(message.toAddr)}
                       </span>
-                      <span>{message.attachmentCount} 个附件</span>
+                      <span>{message.attachmentCount} Text</span>
                     </div>
                   </CardContent>
                 </Card>

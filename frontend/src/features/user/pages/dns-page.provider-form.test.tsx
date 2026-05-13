@@ -87,15 +87,15 @@ describe("UserDnsPage provider form", () => {
   it("switches credential fields when auth mode changes", async () => {
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: "新增 Provider" }));
-    const dialog = await screen.findByRole("dialog", { name: "新增 Provider" });
+    fireEvent.click(await screen.findByRole("button", { name: "Text Provider" }));
+    const dialog = await screen.findByRole("dialog", { name: "Text Provider" });
     const dialogQueries = within(dialog);
 
     expect(dialogQueries.getByLabelText("API Token")).toBeInTheDocument();
     expect(dialogQueries.queryByLabelText("Account Email")).not.toBeInTheDocument();
     expect(dialogQueries.queryByLabelText("Global API Key")).not.toBeInTheDocument();
 
-    fireEvent.click(dialogQueries.getByRole("combobox", { name: "鉴权方式" }));
+    fireEvent.click(dialogQueries.getByRole("combobox", { name: "Text" }));
     fireEvent.click(await screen.findByRole("option", { name: "Global API Key + Email" }));
 
     expect(dialogQueries.queryByLabelText("API Token")).not.toBeInTheDocument();
@@ -115,21 +115,21 @@ describe("UserDnsPage provider form", () => {
   it("submits only the active auth fields for global api key mode", async () => {
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: "新增 Provider" }));
-    const dialog = await screen.findByRole("dialog", { name: "新增 Provider" });
+    fireEvent.click(await screen.findByRole("button", { name: "Text Provider" }));
+    const dialog = await screen.findByRole("dialog", { name: "Text Provider" });
     const dialogQueries = within(dialog);
 
-    expect(dialogQueries.queryByLabelText("能力")).not.toBeInTheDocument();
-    expect(dialogQueries.getByLabelText("权限")).toBeInTheDocument();
+    expect(dialogQueries.queryByLabelText("Text")).not.toBeInTheDocument();
+    expect(dialogQueries.getByLabelText("Text")).toBeInTheDocument();
 
-    fireEvent.change(dialogQueries.getByPlaceholderText("例如 My Cloudflare"), {
+    fireEvent.change(dialogQueries.getByPlaceholderText("Text My Cloudflare"), {
       target: { value: "CF Global" },
     });
-    fireEvent.click(dialogQueries.getByRole("combobox", { name: "鉴权方式" }));
+    fireEvent.click(dialogQueries.getByRole("combobox", { name: "Text" }));
     fireEvent.click(await screen.findByRole("option", { name: "Global API Key + Email" }));
-    const permissionCombobox = dialogQueries.getByRole("combobox", { name: "权限" });
+    const permissionCombobox = dialogQueries.getByRole("combobox", { name: "Text" });
     fireEvent.click(permissionCombobox);
-    fireEvent.click(await screen.findByRole("option", { name: "DNS 读取" }));
+    fireEvent.click(await screen.findByRole("option", { name: "DNS Text" }));
 
     fireEvent.change(dialogQueries.getByLabelText("Account Email"), {
       target: { value: " user@example.com " },
@@ -139,7 +139,7 @@ describe("UserDnsPage provider form", () => {
     });
 
     const submitButton = screen
-      .getAllByText("创建 Provider")
+      .getAllByText("Text Provider")
       .map((node) => node.closest("button"))
       .find((button): button is HTMLButtonElement => !!button && !button.disabled);
 
@@ -183,18 +183,18 @@ describe("UserDnsPage provider form", () => {
 
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: "My Cloudflare 编辑" }));
+    fireEvent.click(await screen.findByRole("button", { name: "My Cloudflare Text" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "编辑 Provider" });
+    const dialog = await screen.findByRole("dialog", { name: "Text Provider" });
     const dialogQueries = within(dialog);
 
     expect(dialogQueries.getByDisplayValue("My Cloudflare")).toBeInTheDocument();
-    fireEvent.change(dialogQueries.getByPlaceholderText("例如 My Cloudflare"), {
+    fireEvent.change(dialogQueries.getByPlaceholderText("Text My Cloudflare"), {
       target: { value: "My Cloudflare Updated" },
     });
 
     const submitButton = screen
-      .getAllByText("保存 Provider")
+      .getAllByText("Text Provider")
       .map((node) => node.closest("button"))
       .find((button): button is HTMLButtonElement => !!button && !button.disabled);
 
@@ -256,13 +256,13 @@ describe("UserDnsPage provider form", () => {
 
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: "Bound Cloudflare 编辑" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Bound Cloudflare Text" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "编辑 Provider" });
+    const dialog = await screen.findByRole("dialog", { name: "Text Provider" });
     const dialogQueries = within(dialog);
 
     expect(dialogQueries.getByRole("combobox", { name: "Provider" })).toBeDisabled();
-    expect(dialogQueries.getByRole("combobox", { name: "鉴权方式" })).toBeDisabled();
-    expect(dialogQueries.getByText("当前 Provider 已绑定域名，可继续更新显示名称、凭据、状态和权限，但不能改服务商类型或鉴权方式。")).toBeInTheDocument();
+    expect(dialogQueries.getByRole("combobox", { name: "Text" })).toBeDisabled();
+    expect(dialogQueries.getByText("Text Provider TextDomain，Text、Text、Text，Text。")).toBeInTheDocument();
   });
 });

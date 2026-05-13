@@ -225,7 +225,7 @@ export function AdminSettingsPage() {
     },
     onSuccess: async () => {
       setFeedbackVariant("success");
-      setFeedback("系统设置已保存。");
+      setFeedback("Text。");
       await queryClient.invalidateQueries({
         queryKey: ["admin-settings-sections"],
       });
@@ -236,7 +236,7 @@ export function AdminSettingsPage() {
     },
     onError: (error) => {
       setFeedbackVariant("error");
-      setFeedback(getAPIErrorMessage(error, "系统设置保存失败，请稍后重试。"));
+      setFeedback(getAPIErrorMessage(error, "Text，Text。"));
       window.setTimeout(() => setFeedback(null), 5000);
     },
   });
@@ -252,10 +252,10 @@ export function AdminSettingsPage() {
         status: "success",
         recipient: result.recipient,
         testedAt,
-        message: `测试邮件已提交到 ${result.recipient}。`,
+        message: `Test messageText and  ${result.recipient}。`,
       });
       setFeedbackVariant("success");
-      setFeedback(`测试邮件已发送至 ${result.recipient}。`);
+      setFeedback(`Test messageText ${result.recipient}。`);
       window.setTimeout(() => setFeedback(null), 5000);
     },
     onError: (error) => {
@@ -268,14 +268,14 @@ export function AdminSettingsPage() {
         diagnostic: diagnostic ?? undefined,
         message: getMailDeliveryErrorMessage(
           error,
-          "测试邮件发送失败，请检查 SMTP 配置后重试。",
+          "Test messageText，Text SMTP Text。",
         ),
       });
       setFeedbackVariant("error");
       setFeedback(
         getMailDeliveryErrorMessage(
           error,
-          "测试邮件发送失败，请检查 SMTP 配置后重试。",
+          "Test messageText，Text SMTP Text。",
         ),
       );
       window.setTimeout(() => setFeedback(null), 5000);
@@ -284,10 +284,10 @@ export function AdminSettingsPage() {
 
   const loadingText = useMemo(() => {
     if (settingsQuery.isLoading) {
-      return "正在加载系统设置...";
+      return "Text...";
     }
     if (saveMutation.isPending) {
-      return "正在保存系统设置...";
+      return "Text...";
     }
     return null;
   }, [saveMutation.isPending, settingsQuery.isLoading]);
@@ -336,14 +336,14 @@ export function AdminSettingsPage() {
   return (
     <WorkspacePage>
       <WorkspacePanel
-        title="系统设置"
-        description="按站点、OAuth、用户策略和其他系统项分组管理，避免整页长表单堆叠。"
+        title="Text"
+        description="Text、OAuth、Text，Text。"
         action={
           <Button
             disabled={saveMutation.isPending || settingsQuery.isLoading}
             onClick={handleSaveSettings}
           >
-            {saveMutation.isPending ? "保存中..." : "保存设置"}
+            {saveMutation.isPending ? "Text..." : "Text"}
           </Button>
         }
       >
@@ -361,37 +361,37 @@ export function AdminSettingsPage() {
 
       <Tabs defaultValue="site" className="gap-4">
         <WorkspacePanel
-          title="设置分组"
-          description="先选分类，再编辑对应配置；保存按钮仍然一次性提交全部当前设置。"
+          title="Text"
+          description="Text，Text；Text。"
         >
           <TabsList className="h-auto w-full flex-wrap justify-start gap-2 rounded-2xl bg-muted/40 p-1.5">
             <TabsTrigger className="h-10 flex-none px-3.5" value="site">
               <Globe className="size-4" />
-              网站设置
+              Text
             </TabsTrigger>
             <TabsTrigger className="h-10 flex-none px-3.5" value="oauth">
               <KeyRound className="size-4" />
-              OAuth 设置
+              OAuth Text
             </TabsTrigger>
             <TabsTrigger className="h-10 flex-none px-3.5" value="users">
               <Users className="size-4" />
-              用户设置
+              Text
             </TabsTrigger>
             <TabsTrigger className="h-10 flex-none px-3.5" value="api">
               <Activity className="size-4" />
-              API 设置
+              API Text
             </TabsTrigger>
             <TabsTrigger className="h-10 flex-none px-3.5" value="other">
               <Settings2 className="size-4" />
-              其他设置
+              Text
             </TabsTrigger>
           </TabsList>
         </WorkspacePanel>
 
         <TabsContent value="site">
           <WorkspacePanel
-            title="网站设置"
-            description="维护站点名称、支持邮箱、默认语言与时区等基础站点信息。"
+            title="Text"
+            description="Text、Text、Text。"
           >
             <SiteSettingsForm
               identity={siteIdentity}
@@ -402,8 +402,8 @@ export function AdminSettingsPage() {
 
         <TabsContent value="oauth">
           <WorkspacePanel
-            title="OAuth 设置"
-            description="管理登录页展示、OAuth 2.1 / PKCE provider 端点与客户端凭据。"
+            title="OAuth Text"
+            description="Text、OAuth 2.1 / PKCE provider Text。"
           >
             <AuthSettingsForm
               registration={registration}
@@ -423,8 +423,8 @@ export function AdminSettingsPage() {
 
         <TabsContent value="users">
           <WorkspacePanel
-            title="用户设置"
-            description="控制注册开放、密码规则、会话策略与用户侧认证约束。"
+            title="Text"
+            description="Text、Text、Text。"
           >
             <AuthSettingsForm
               registration={registration}
@@ -444,8 +444,8 @@ export function AdminSettingsPage() {
 
         <TabsContent value="api">
           <WorkspacePanel
-            title="API 设置"
-            description="细分匿名、已认证、登录注册与邮箱写操作限流，并支持严格 IP 桶。"
+            title="API Text"
+            description="Text、Text、Text，Text IP Text。"
           >
             <APIRuntimeStatus data={apiLimitsRuntimeQuery.data} />
             <APISettingsForm value={apiLimits} onChange={setAPILimits} />

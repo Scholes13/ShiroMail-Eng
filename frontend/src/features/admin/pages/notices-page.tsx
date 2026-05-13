@@ -99,48 +99,48 @@ export function AdminNoticesPage() {
 
   return (
     <WorkspacePage>
-      <WorkspacePanel description="发布、编辑和撤回面向前台用户的公告内容。" title="公告中心">
+      <WorkspacePanel description="Text、TextNoticesText。" title="NoticesText">
         <Card className="border-border/60 bg-muted/10 shadow-none">
           <CardContent className="space-y-4 py-4">
-            <WorkspaceField label="公告标题">
+            <WorkspaceField label="NoticesSubject">
               <Input
                 className="h-9"
                 onChange={(event) => setDraft((current) => ({ ...current, title: event.target.value }))}
-                placeholder="公告标题"
+                placeholder="NoticesSubject"
                 value={draft.title}
               />
             </WorkspaceField>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <WorkspaceField label="分类">
+              <WorkspaceField label="Text">
                 <OptionCombobox
-                  ariaLabel="公告分类"
-                  emptyLabel="没有匹配的分类"
+                  ariaLabel="NoticesText"
+                  emptyLabel="Text"
                   value={draft.category}
                   onValueChange={(value) => setDraft((current) => ({ ...current, category: value }))}
                   options={categoryOptions}
-                  placeholder="选择分类"
-                  searchPlaceholder="搜索分类"
+                  placeholder="Text"
+                  searchPlaceholder="Text"
                 />
               </WorkspaceField>
 
-              <WorkspaceField label="级别">
+              <WorkspaceField label="Text">
                 <OptionCombobox
-                  ariaLabel="公告级别"
-                  emptyLabel="没有匹配的级别"
+                  ariaLabel="NoticesText"
+                  emptyLabel="Text"
                   value={draft.level}
                   onValueChange={(value) => setDraft((current) => ({ ...current, level: value }))}
                   options={levelOptions}
-                  placeholder="选择级别"
-                  searchPlaceholder="搜索级别"
+                  placeholder="Text"
+                  searchPlaceholder="Text"
                 />
               </WorkspaceField>
             </div>
 
-            <WorkspaceField label="公告正文">
+            <WorkspaceField label="NoticesBody">
               <Textarea
                 onChange={(event) => setDraft((current) => ({ ...current, body: event.target.value }))}
-                placeholder="公告正文"
+                placeholder="NoticesBody"
                 rows={5}
                 value={draft.body}
               />
@@ -148,7 +148,7 @@ export function AdminNoticesPage() {
 
             <div className="flex justify-end">
               <Button disabled={createMutation.isPending} onClick={() => createMutation.mutate(draft)}>
-                {createMutation.isPending ? "发布中..." : "发布公告"}
+                {createMutation.isPending ? "Text..." : "TextNotices"}
               </Button>
             </div>
           </CardContent>
@@ -157,65 +157,65 @@ export function AdminNoticesPage() {
         <Dialog onOpenChange={(open) => !open && setEditingNotice(null)} open={editingNotice !== null}>
           <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle>编辑公告</DialogTitle>
-              <DialogDescription>更新标题、分类、级别和正文，保存后前台会立即读取新内容。</DialogDescription>
+              <DialogTitle>TextNotices</DialogTitle>
+              <DialogDescription>TextSubject、Text、TextBody，Text。</DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4">
-              <WorkspaceField label="公告标题">
+              <WorkspaceField label="NoticesSubject">
                 <Input
                   onChange={(event) =>
                     setEditingNotice((current) =>
                       current ? { ...current, title: event.target.value } : current,
                     )
                   }
-                  placeholder="公告标题"
+                  placeholder="NoticesSubject"
                   value={editingNotice?.title ?? ""}
                 />
               </WorkspaceField>
 
               <div className="grid gap-4 md:grid-cols-2">
-                <WorkspaceField label="分类">
+                <WorkspaceField label="Text">
                   <OptionCombobox
-                    ariaLabel="编辑公告分类"
-                    emptyLabel="没有匹配的分类"
+                    ariaLabel="TextNoticesText"
+                    emptyLabel="Text"
                     onValueChange={(value) =>
                       setEditingNotice((current) =>
                         current ? { ...current, category: value } : current,
                       )
                     }
                     options={categoryOptions}
-                    placeholder="选择分类"
-                    searchPlaceholder="搜索分类"
+                    placeholder="Text"
+                    searchPlaceholder="Text"
                     value={editingNotice?.category ?? "platform"}
                   />
                 </WorkspaceField>
 
-                <WorkspaceField label="级别">
+                <WorkspaceField label="Text">
                   <OptionCombobox
-                    ariaLabel="编辑公告级别"
-                    emptyLabel="没有匹配的级别"
+                    ariaLabel="TextNoticesText"
+                    emptyLabel="Text"
                     onValueChange={(value) =>
                       setEditingNotice((current) =>
                         current ? { ...current, level: value } : current,
                       )
                     }
                     options={levelOptions}
-                    placeholder="选择级别"
-                    searchPlaceholder="搜索级别"
+                    placeholder="Text"
+                    searchPlaceholder="Text"
                     value={editingNotice?.level ?? "info"}
                   />
                 </WorkspaceField>
               </div>
 
-              <WorkspaceField label="公告正文">
+              <WorkspaceField label="NoticesBody">
                 <Textarea
                   onChange={(event) =>
                     setEditingNotice((current) =>
                       current ? { ...current, body: event.target.value } : current,
                     )
                   }
-                  placeholder="公告正文"
+                  placeholder="NoticesBody"
                   rows={6}
                   value={editingNotice?.body ?? ""}
                 />
@@ -224,7 +224,7 @@ export function AdminNoticesPage() {
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline">取消</Button>
+                <Button variant="outline">Cancel</Button>
               </DialogClose>
               <Button
                 disabled={!editingNotice || updateMutation.isPending}
@@ -243,7 +243,7 @@ export function AdminNoticesPage() {
                   });
                 }}
               >
-                {updateMutation.isPending ? "保存中..." : "保存修改"}
+                {updateMutation.isPending ? "Text..." : "Text"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -259,9 +259,9 @@ export function AdminNoticesPage() {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>删除公告</AlertDialogTitle>
+              <AlertDialogTitle>TextNotices</AlertDialogTitle>
               <AlertDialogDescription>
-                删除后前台将不再显示这条公告，该操作不可撤销。
+                TextNotices，Text。
               </AlertDialogDescription>
             </AlertDialogHeader>
             <div className="rounded-lg border border-border/60 bg-muted/10 px-3 py-3 text-sm">
@@ -269,12 +269,12 @@ export function AdminNoticesPage() {
               <div className="mt-1 text-muted-foreground">{pendingDeleteNotice?.category ?? "-"}</div>
             </div>
             <AlertDialogFooter>
-              <AlertDialogCancel>取消</AlertDialogCancel>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 disabled={deleteMutation.isPending}
                 onClick={() => pendingDeleteNotice && deleteMutation.mutate(pendingDeleteNotice.id)}
               >
-                {deleteMutation.isPending ? "删除中..." : "确认删除"}
+                {deleteMutation.isPending ? "Text..." : "Text"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -292,10 +292,10 @@ export function AdminNoticesPage() {
                   </div>
                   <div className="flex gap-2">
                     <Button onClick={() => setEditingNotice(item)} size="sm" variant="outline">
-                      编辑
+                      Text
                     </Button>
                     <Button onClick={() => setPendingDeleteNotice(item)} size="sm" variant="destructive">
-                      删除
+                      Text
                     </Button>
                   </div>
                 </div>

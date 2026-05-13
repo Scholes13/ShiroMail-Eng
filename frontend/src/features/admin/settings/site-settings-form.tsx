@@ -18,15 +18,15 @@ import type { SiteIdentitySettings } from "./types";
 function getIconSourceLabel(siteIconUrl: string) {
   const trimmed = siteIconUrl.trim();
   if (!trimmed) {
-    return "默认图标";
+    return "Text";
   }
   if (trimmed.startsWith("data:image/")) {
-    return "已上传图标";
+    return "Text";
   }
   if (trimmed.startsWith("/")) {
-    return "站内路径";
+    return "Text";
   }
-  return "外部 URL";
+  return "Text URL";
 }
 
 function CheckboxField({
@@ -47,20 +47,20 @@ function CheckboxField({
 }
 
 const seasonLabels: Record<AmbientSeason, string> = {
-  spring: "Spring · 春",
-  summer: "Summer · 夏",
-  autumn: "Autumn · 秋",
-  winter: "Winter · 冬",
+  spring: "Spring · Text",
+  summer: "Summer · Text",
+  autumn: "Autumn · Text",
+  winter: "Winter · Text",
 };
 
 const timeSegmentLabels: Record<AmbientTimeSegment, string> = {
-  midnight: "Midnight · 午夜",
-  predawn: "Predawn · 凌晨",
-  dawn: "Dawn · 清晨",
-  morning: "Morning · 上午",
-  noon: "Noon · 正午",
-  afternoon: "Afternoon · 午后",
-  dusk: "Dusk · 黄昏",
+  midnight: "Midnight · Text",
+  predawn: "Predawn · Text",
+  dawn: "Dawn · Text",
+  morning: "Morning · Text",
+  noon: "Noon · Text",
+  afternoon: "Afternoon · Text",
+  dusk: "Dusk · Text",
 };
 
 export function SiteSettingsForm({
@@ -119,13 +119,13 @@ export function SiteSettingsForm({
     ]);
 
     if (!allowedTypes.has(file.type)) {
-      setIconUploadError("仅支持 SVG、PNG、JPG、WEBP 或 ICO 图标。");
+      setIconUploadError("Text SVG、PNG、JPG、WEBP Text ICO Text。");
       setIconUploadHint(null);
       return;
     }
 
     if (file.size > 512 * 1024) {
-      setIconUploadError("图标文件不能超过 512 KB。");
+      setIconUploadError("Text must be at most 512 KB。");
       setIconUploadHint(null);
       return;
     }
@@ -147,15 +147,15 @@ export function SiteSettingsForm({
       setIconUploadError(null);
       setIconUploadHint(
         file.type === "image/svg+xml"
-          ? "已应用 SVG 图标，将按原样显示，不做裁切。"
-          : `已应用 ${file.name}，当前直接作为站点图标使用。`,
+          ? "Text SVG Text，Text，Text。"
+          : `Text ${file.name}，Text。`,
       );
       onIdentityChange({
         ...identity,
         siteIconUrl: dataUrl,
       });
     } catch {
-      setIconUploadError("图标读取失败，请重试。");
+      setIconUploadError("Text，Text。");
       setIconUploadHint(null);
     }
   }
@@ -168,9 +168,9 @@ export function SiteSettingsForm({
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      <WorkspaceField label="站点名称">
+      <WorkspaceField label="Text">
         <Input
-          aria-label="站点名称"
+          aria-label="Text"
           value={identity.siteName}
           onChange={(event) =>
             onIdentityChange({ ...identity, siteName: event.target.value })
@@ -178,9 +178,9 @@ export function SiteSettingsForm({
         />
       </WorkspaceField>
 
-      <WorkspaceField label="支持邮箱">
+      <WorkspaceField label="Text">
         <Input
-          aria-label="支持邮箱"
+          aria-label="Text"
           value={identity.supportEmail}
           onChange={(event) =>
             onIdentityChange({
@@ -191,9 +191,9 @@ export function SiteSettingsForm({
         />
       </WorkspaceField>
 
-      <WorkspaceField label="站点地址">
+      <WorkspaceField label="Text">
         <Input
-          aria-label="站点地址"
+          aria-label="Text"
           value={identity.appBaseUrl}
           onChange={(event) =>
             onIdentityChange({
@@ -204,7 +204,7 @@ export function SiteSettingsForm({
         />
       </WorkspaceField>
 
-      <WorkspaceField label="站点图标 URL">
+      <WorkspaceField label="Text URL">
         <div className="space-y-3">
           <div
             className={[
@@ -246,13 +246,13 @@ export function SiteSettingsForm({
               </div>
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <p className="text-sm font-medium">拖拽图标到这里，或点击下方按钮上传</p>
+                  <p className="text-sm font-medium">Text and Text，Text</p>
                   <span className="rounded-full border border-border/60 bg-background/80 px-2 py-0.5 text-[11px] text-muted-foreground">
                     {iconSourceLabel}
                   </span>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  SVG 原样使用；PNG / JPG / WEBP / ICO 直接作为站点图标，不做额外裁切。
+                  SVG Text；PNG / JPG / WEBP / ICO Text，Text。
                 </p>
               </div>
             </div>
@@ -266,7 +266,7 @@ export function SiteSettingsForm({
               />
             </div>
             <Input
-              aria-label="站点图标 URL"
+              aria-label="Text URL"
               placeholder="https://example.com/icon.svg"
               value={identity.siteIconUrl}
               onChange={(event) =>
@@ -291,7 +291,7 @@ export function SiteSettingsForm({
               variant="outline"
               onClick={() => fileInputRef.current?.click()}
             >
-              上传图标
+              Text
             </Button>
             <Button
               size="sm"
@@ -299,16 +299,16 @@ export function SiteSettingsForm({
               variant="ghost"
               onClick={() => {
                 setIconUploadError(null);
-                setIconUploadHint("已恢复默认站点图标。");
+                setIconUploadHint("Text。");
                 onIdentityChange({
                   ...identity,
                   siteIconUrl: "",
                 });
               }}
             >
-              恢复默认
+              Text
             </Button>
-            <p className="text-xs text-muted-foreground">支持 URL 或直接上传，建议使用 SVG，最大 512 KB。</p>
+            <p className="text-xs text-muted-foreground">Text URL Text，Text SVG，Text 512 KB。</p>
           </div>
           {iconUploadError ? (
             <p className="text-xs text-destructive">{iconUploadError}</p>
@@ -318,15 +318,15 @@ export function SiteSettingsForm({
           ) : null}
           {!iconUploadError && !iconUploadHint ? (
             <p className="text-xs text-muted-foreground">
-              当前来源：{iconSourceLabel}。建议优先使用 SVG，以获得最清晰的缩放显示效果。
+              Text：{iconSourceLabel}。Text SVG，Text。
             </p>
           ) : null}
         </div>
       </WorkspaceField>
 
-      <WorkspaceField label="默认语言">
+      <WorkspaceField label="Text">
         <Input
-          aria-label="默认语言"
+          aria-label="Text"
           value={identity.defaultLanguage}
           onChange={(event) =>
             onIdentityChange({
@@ -337,9 +337,9 @@ export function SiteSettingsForm({
         />
       </WorkspaceField>
 
-      <WorkspaceField label="默认时区">
+      <WorkspaceField label="Text">
         <Input
-          aria-label="默认时区"
+          aria-label="Text"
           value={identity.defaultTimeZone}
           onChange={(event) =>
             onIdentityChange({
@@ -351,9 +351,9 @@ export function SiteSettingsForm({
       </WorkspaceField>
 
       <div className="md:col-span-2">
-        <WorkspaceField label="站点标语">
+        <WorkspaceField label="Text">
           <Input
-            aria-label="站点标语"
+            aria-label="Text"
             value={identity.slogan}
             onChange={(event) =>
               onIdentityChange({ ...identity, slogan: event.target.value })
@@ -364,11 +364,11 @@ export function SiteSettingsForm({
 
       <div className="md:col-span-2">
         <div className="grid gap-3 rounded-2xl border border-border/60 bg-muted/15 p-4 md:grid-cols-[1.1fr_0.9fr]">
-          <WorkspaceField label="动态主题">
+          <WorkspaceField label="Text">
             <div className="space-y-3">
               <CheckboxField
                 checked={identity.ambientThemeEnabled}
-                label="启用按用户本地时间与季节自动微调主题配色"
+                label="EnableText"
                 onCheckedChange={(ambientThemeEnabled) =>
                   onIdentityChange({
                     ...identity,
@@ -377,23 +377,23 @@ export function SiteSettingsForm({
                 }
               />
               <p className="text-xs text-muted-foreground">
-                不改变用户选择的亮色 / 暗色 / 跟随系统，仅在当前主题内部做无感渐变切换。
+                Text / Text / Text，Text。
               </p>
               <div className="flex flex-wrap gap-2">
                 <span className="rounded-full border border-border/60 bg-background/80 px-2 py-1 text-[11px] text-muted-foreground">
-                  当前季节：{seasonLabels[currentAmbientSnapshot.season]}
+                  Text：{seasonLabels[currentAmbientSnapshot.season]}
                 </span>
                 <span className="rounded-full border border-border/60 bg-background/80 px-2 py-1 text-[11px] text-muted-foreground">
-                  当前时段：{timeSegmentLabels[currentAmbientSnapshot.timeSegment]}
+                  Text：{timeSegmentLabels[currentAmbientSnapshot.timeSegment]}
                 </span>
               </div>
             </div>
           </WorkspaceField>
 
-          <WorkspaceField label="动态主题强度">
+          <WorkspaceField label="Text">
             <div className="space-y-2">
               <BasicSelect
-                aria-label="动态主题强度"
+                aria-label="Text"
                 value={identity.ambientThemeIntensity}
                 onChange={(event) =>
                   onIdentityChange({
@@ -402,12 +402,12 @@ export function SiteSettingsForm({
                   })
                 }
               >
-                <option value="subtle">Subtle · 极轻微</option>
-                <option value="balanced">Balanced · 默认平衡</option>
-                <option value="vivid">Vivid · 更明显</option>
+                <option value="subtle">Subtle · Text</option>
+                <option value="balanced">Balanced · Text</option>
+                <option value="vivid">Vivid · Text</option>
               </BasicSelect>
               <p className="text-xs text-muted-foreground">
-                `Subtle` 适合后台长时间使用；`Vivid` 会让黄昏、清晨、四季差异更明显。
+                `Subtle` Text；`Vivid` Text、Text、Text。
               </p>
             </div>
           </WorkspaceField>
@@ -417,7 +417,7 @@ export function SiteSettingsForm({
       <div className="md:col-span-2">
         <div className="grid gap-3 rounded-2xl border border-border/60 bg-card/70 p-4 md:grid-cols-[0.95fr_1.05fr]">
           <div className="space-y-3">
-            <WorkspaceField label="主题预览模式">
+            <WorkspaceField label="Text">
               <div className="space-y-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-full border border-border/60 bg-background px-2 py-1 text-[11px] text-muted-foreground">
@@ -430,7 +430,7 @@ export function SiteSettingsForm({
                   </span>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  这里只影响当前管理员页面的视觉预览，不会直接改写真实用户的本地时间判定。
+                  Text，Text。
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Button
@@ -443,7 +443,7 @@ export function SiteSettingsForm({
                       setPreviewTimeSegment(currentAmbientSnapshot.timeSegment);
                     }}
                   >
-                    预览当前时段
+                    Text
                   </Button>
                   <Button
                     size="sm"
@@ -451,7 +451,7 @@ export function SiteSettingsForm({
                     variant={previewEnabled ? "default" : "outline"}
                     onClick={() => setPreviewEnabled(true)}
                   >
-                    强制预览指定时段
+                    Text
                   </Button>
                 </div>
               </div>
@@ -459,9 +459,9 @@ export function SiteSettingsForm({
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <WorkspaceField label="预览季节">
+            <WorkspaceField label="Text">
               <BasicSelect
-                aria-label="预览季节"
+                aria-label="Text"
                 disabled={!previewEnabled}
                 value={previewSeason}
                 onChange={(event) => setPreviewSeason(event.target.value as AmbientSeason)}
@@ -474,9 +474,9 @@ export function SiteSettingsForm({
               </BasicSelect>
             </WorkspaceField>
 
-            <WorkspaceField label="预览时段">
+            <WorkspaceField label="Text">
               <BasicSelect
-                aria-label="预览时段"
+                aria-label="Text"
                 disabled={!previewEnabled}
                 value={previewTimeSegment}
                 onChange={(event) => setPreviewTimeSegment(event.target.value as AmbientTimeSegment)}

@@ -95,33 +95,33 @@ function getAdminDomainStatus(domain: {
 function getAdminDomainStatusMeta(status: ReturnType<typeof getAdminDomainStatus>) {
   if (status === "review") {
     return {
-      label: "待审核",
+      label: "Text",
       iconClassName: "text-sky-500",
       cardClassName: "border-sky-500/20 bg-sky-500/5",
-      description: "这些域名正在等待管理员决定是否进入公共域名池。",
+      description: "TextDomainTextDomainText。",
     };
   }
   if (status === "unbound") {
     return {
-      label: "未绑定 DNS",
+      label: "Text DNS",
       iconClassName: "text-amber-500",
       cardClassName: "border-amber-500/20 bg-amber-500/5",
-      description: "这些域名还没有 Provider 绑定，先补绑定再进入 DNS 工作区。",
+      description: "TextDomainText Provider Text，Text DNS Text。",
     };
   }
   if (status === "verified") {
     return {
-      label: "已验证",
+      label: "Text",
       iconClassName: "text-emerald-500",
       cardClassName: "border-emerald-500/20 bg-emerald-500/5",
-      description: "这些域名已经处于可稳定使用状态。",
+      description: "TextDomainText。",
     };
   }
   return {
-    label: "待验证",
+    label: "Text",
     iconClassName: "text-rose-400",
     cardClassName: "border-rose-500/20 bg-rose-500/5",
-    description: "这些域名已绑定 Provider，但还需要继续核对与修复记录。",
+    description: "TextDomainText Provider，Text。",
   };
 }
 
@@ -180,14 +180,14 @@ function PaginationControls({
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-background/60 px-3 py-2">
       <p className="text-xs text-muted-foreground">
-        第 {page} / {totalPages} 页 · 共 {total} 条{itemLabel}
+        Text {page} / {totalPages} Text · Text {total} Text{itemLabel}
       </p>
       <div className="flex items-center gap-2">
         <Button disabled={page <= 1} size="sm" type="button" variant="outline" onClick={() => onPageChange(page - 1)}>
-          上一页
+          Text
         </Button>
         <Button disabled={page >= totalPages} size="sm" type="button" variant="outline" onClick={() => onPageChange(page + 1)}>
-          下一页
+          Text
         </Button>
       </div>
     </div>
@@ -202,7 +202,7 @@ function buildRecommendedDomainRecords(domain: DomainOption): DomainGuideRecord[
       type: "MX",
       name: domain.domain,
       value: "mx.shiro.email (priority 10)",
-      status: "待配置",
+      status: "Text",
       verified: false,
     },
     {
@@ -210,7 +210,7 @@ function buildRecommendedDomainRecords(domain: DomainOption): DomainGuideRecord[
       type: "TXT",
       name: domain.domain,
       value: "v=spf1 include:spf.shiro.email ~all",
-      status: "待配置",
+      status: "Text",
       verified: false,
     },
     {
@@ -218,7 +218,7 @@ function buildRecommendedDomainRecords(domain: DomainOption): DomainGuideRecord[
       type: "TXT",
       name: `_dmarc.${rootName}`,
       value: "v=DMARC1; p=quarantine; rua=mailto:dmarc@shiro.email",
-      status: "待配置",
+      status: "Text",
       verified: false,
     },
   ];
@@ -228,7 +228,7 @@ function formatVerificationTypeLabel(value: string) {
   const normalized = value.trim().toLowerCase();
   const labels: Record<string, string> = {
     mx: "MX",
-    inbound_mx: "收件 MX",
+    inbound_mx: "Text MX",
     spf: "SPF",
     dkim: "DKIM",
     dmarc: "DMARC",
@@ -242,15 +242,15 @@ function formatVerificationTypeLabel(value: string) {
 
 function formatVerificationStatusLabel(status: string) {
   if (status === "verified") {
-    return "已通过";
+    return "Text";
   }
   if (status === "drifted") {
-    return "记录漂移";
+    return "Text";
   }
   if (status === "missing") {
-    return "记录缺失";
+    return "Text";
   }
-  return "待处理";
+  return "Text";
 }
 
 function formatDnsRecord(record: {
@@ -272,7 +272,7 @@ function formatDnsRecord(record: {
 
 function formatVerificationTimestamp(value?: string) {
   if (!value) {
-    return "尚未检查";
+    return "Text";
   }
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -304,10 +304,10 @@ function DomainVerificationDetails({
     .sort()
     .at(-1);
   const propagationLabel = result.passed
-    ? "传播已通过"
+    ? "Text"
     : pendingProfiles.length && result.verifiedCount > 0
-      ? "传播部分通过"
-      : "传播未通过";
+      ? "Text"
+      : "Text";
 
   return (
     <div
@@ -319,7 +319,7 @@ function DomainVerificationDetails({
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="text-sm font-semibold">{result.passed ? "最近一次验证已通过" : "最近一次验证未通过"}</div>
+            <div className="text-sm font-semibold">{result.passed ? "Text" : "Text"}</div>
             <WorkspaceBadge variant="outline">
               {result.verifiedCount} / {result.totalCount}
             </WorkspaceBadge>
@@ -328,21 +328,21 @@ function DomainVerificationDetails({
           <p className="text-sm text-muted-foreground">{result.summary}</p>
         </div>
         <Button asChild size="sm" variant="outline">
-          <Link to={dnsLink}>前往 DNS 配置</Link>
+          <Link to={dnsLink}>Text DNS Text</Link>
         </Button>
       </div>
 
       <div className="mt-4 grid gap-3 md:grid-cols-3">
         <div className="rounded-lg border border-border/60 bg-background/70 px-3 py-2.5">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">传播状态</div>
+          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">Text</div>
           <div className="mt-1 text-sm font-medium">{propagationLabel}</div>
         </div>
         <div className="rounded-lg border border-border/60 bg-background/70 px-3 py-2.5">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">待修复项</div>
-          <div className="mt-1 text-sm font-medium">{pendingProfiles.length} 项</div>
+          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">Text</div>
+          <div className="mt-1 text-sm font-medium">{pendingProfiles.length} Text</div>
         </div>
         <div className="rounded-lg border border-border/60 bg-background/70 px-3 py-2.5">
-          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">最近检查</div>
+          <div className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">Text</div>
           <div className="mt-1 text-sm font-medium">{formatVerificationTimestamp(latestCheckedAt)}</div>
         </div>
       </div>
@@ -358,7 +358,7 @@ function DomainVerificationDetails({
               <p className="mt-2 text-sm text-muted-foreground">{profile.summary}</p>
               {profile.repairRecords.length ? (
                 <div className="mt-3 space-y-1.5">
-                  <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">建议修复记录</div>
+                  <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Text</div>
                   {profile.repairRecords.slice(0, 3).map((record, index) => (
                     <div
                       key={`${profile.verificationType}-${record.type}-${record.name}-${index}`}
@@ -585,12 +585,12 @@ export function AdminDomainsPage() {
       setCreatingDomainWithVerification(true);
       setDomainMutationError(null);
       setDomainDeleteError(null);
-      let notice = isEditingDomain ? "域名配置已更新。" : "域名已添加。";
+      let notice = isEditingDomain ? "DomainText。" : "DomainText。";
       try {
         clearAdminVerificationResults([created.id]);
         const results = await autoVerifyAdminDomains([created]);
         if (results.length === 1) {
-          notice = `${isEditingDomain ? "域名配置已更新" : "域名已添加"}，${results[0].passed ? "DNS 验证通过" : "DNS 验证未通过"}。`;
+          notice = `${isEditingDomain ? "DomainText" : "DomainText"}，${results[0].passed ? "DNS Text" : "DNS Text"}。`;
         }
       } finally {
         setCreatingDomainWithVerification(false);
@@ -603,7 +603,7 @@ export function AdminDomainsPage() {
       await queryClient.invalidateQueries({ queryKey: ["admin-overview"] });
     },
     onError: (error) => {
-      setDomainMutationError(getAPIErrorMessage(error, "保存域名失败，请检查配置后重试。"));
+      setDomainMutationError(getAPIErrorMessage(error, "TextDomainText，Text。"));
     },
   });
 
@@ -611,7 +611,7 @@ export function AdminDomainsPage() {
     mutationFn: deleteAdminDomain,
     onSuccess: async (_, domainId) => {
       setDomainDeleteError(null);
-      setDomainActionNotice("域名已删除。");
+      setDomainActionNotice("DomainText。");
       queryClient.setQueryData<Awaited<ReturnType<typeof fetchAdminDomains>>>(["admin-domains"], (current) =>
         (current ?? []).filter((item) => item.id !== domainId),
       );
@@ -638,7 +638,7 @@ export function AdminDomainsPage() {
       await queryClient.invalidateQueries({ queryKey: ["admin-overview"] });
     },
     onError: (error) => {
-      setDomainDeleteError(getAPIErrorMessage(error, "删除域名失败，请先清理子域名或邮箱实例。"));
+      setDomainDeleteError(getAPIErrorMessage(error, "TextDomainText，TextDomainText。"));
     },
   });
 
@@ -648,13 +648,13 @@ export function AdminDomainsPage() {
       setGeneratingDomainsWithVerification(true);
       setSubdomainMutationError(null);
       setDomainDeleteError(null);
-      let notice = "子域名已批量生成。";
+      let notice = "TextDomainText。";
       try {
         clearAdminVerificationResults(createdItems.map((item) => item.id));
         const results = await autoVerifyAdminDomains(createdItems);
         if (results.length) {
           const passedCount = results.filter((item) => item.passed).length;
-          notice = `子域名已批量生成，已自动验证 ${results.length} 个，${passedCount} 个通过。`;
+          notice = `TextDomainText，Text ${results.length} Text，${passedCount} Text。`;
         }
       } finally {
         setGeneratingDomainsWithVerification(false);
@@ -665,7 +665,7 @@ export function AdminDomainsPage() {
       await queryClient.invalidateQueries({ queryKey: ["admin-overview"] });
     },
     onError: (error) => {
-      setSubdomainMutationError(getAPIErrorMessage(error, "批量生成子域名失败，请稍后重试。"));
+      setSubdomainMutationError(getAPIErrorMessage(error, "TextDomainText，Text。"));
     },
   });
 
@@ -675,7 +675,7 @@ export function AdminDomainsPage() {
     onSuccess: async (_, variables) => {
       setDomainDeleteError(null);
       setDomainActionNotice(
-        variables.decision === "approve" ? "域名已批准进入公共域名池。" : "域名已拒绝发布。",
+        variables.decision === "approve" ? "DomainTextDomainText。" : "DomainText。",
       );
       await queryClient.invalidateQueries({ queryKey: ["admin-domains"] });
       await queryClient.invalidateQueries({ queryKey: ["user-domains"] });
@@ -695,7 +695,7 @@ export function AdminDomainsPage() {
       await queryClient.invalidateQueries({ queryKey: ["user-dashboard"] });
     },
     onError: (error) => {
-      setDomainDeleteError(getAPIErrorMessage(error, "验证域名失败，请先检查 DNS 绑定和记录传播。"));
+      setDomainDeleteError(getAPIErrorMessage(error, "TextDomainText，Text DNS Text。"));
     },
     onSettled: () => {
       setVerifyingDomainId(null);
@@ -741,11 +741,11 @@ export function AdminDomainsPage() {
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={() => void refreshAdminDomainData()}>
               <RefreshCcw className={domainsQuery.isRefetching ? "size-4 animate-spin" : "size-4"} />
-              刷新
+              Refresh
             </Button>
             <Button onClick={openCreateDomainDialog}>
               <Plus className="size-4" />
-              添加域名
+              TextDomain
             </Button>
             <Button
               variant="outline"
@@ -755,12 +755,12 @@ export function AdminDomainsPage() {
               }}
             >
               <Plus className="size-4" />
-              新增子域名
+              TextDomain
             </Button>
           </div>
         }
-        description="待验证域名、验证入口和域名级 DNS 引导都集中在这里；DNS 配置页只保留服务商、Zone、Records、Verification 和变更工作区。"
-        title="域名管理"
+        description="TextDomain、TextDomainText DNS Text；DNS Text、Zone、Records、Verification Text。"
+        title="DomainText"
       >
         <div className="space-y-4">
           <AlertDialog
@@ -773,15 +773,15 @@ export function AdminDomainsPage() {
           >
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>删除域名？</AlertDialogTitle>
+                <AlertDialogTitle>TextDomain？</AlertDialogTitle>
                 <AlertDialogDescription>
                   {deleteDomainDialog
-                    ? `确认删除域名 ${deleteDomainDialog.domain}？删除后该域名将从当前列表中移除。`
+                    ? `TextDomain ${deleteDomainDialog.domain}？TextDomainText。`
                     : ""}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>取消</AlertDialogCancel>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
                     if (!deleteDomainDialog) {
@@ -791,7 +791,7 @@ export function AdminDomainsPage() {
                     setDeleteDomainDialog(null);
                   }}
                 >
-                  确认删除
+                  Text
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -806,15 +806,15 @@ export function AdminDomainsPage() {
           >
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>拒绝域名发布？</AlertDialogTitle>
+                <AlertDialogTitle>TextDomainText？</AlertDialogTitle>
                 <AlertDialogDescription>
                   {reviewRejectDialog
-                    ? `确认拒绝域名 ${reviewRejectDialog.domain} 进入公共域名池？该域名会退出当前审核流。`
+                    ? `TextDomain ${reviewRejectDialog.domain} TextDomainText？TextDomainText。`
                     : ""}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>取消</AlertDialogCancel>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => {
                     if (!reviewRejectDialog) {
@@ -827,7 +827,7 @@ export function AdminDomainsPage() {
                     setReviewRejectDialog(null);
                   }}
                 >
-                  确认拒绝
+                  Text
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -846,16 +846,16 @@ export function AdminDomainsPage() {
           >
             <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
               <DialogHeader>
-                <DialogTitle>{isEditingDomain ? "编辑域名" : "添加域名"}</DialogTitle>
+                <DialogTitle>{isEditingDomain ? "TextDomain" : "TextDomain"}</DialogTitle>
                 <DialogDescription>
                   {isEditingDomain
-                    ? "这里只维护域名资产本身；Provider 绑定、Zone 与 Record 操作都在 DNS 配置页完成。"
-                    : "添加自定义域名后，需要前往 DNS 配置页完成 Provider 绑定和记录校验。"}
+                    ? "TextDomainText；Provider Text、Zone Text Record Text DNS Text。"
+                    : "TextDomainText，Text DNS Text Provider Text。"}
                 </DialogDescription>
               </DialogHeader>
 
               <div className="space-y-4">
-                <WorkspaceField label="名称">
+                <WorkspaceField label="Text">
                   <Input
                     className="h-12 rounded-xl text-base"
                     value={draft.domain}
@@ -865,25 +865,25 @@ export function AdminDomainsPage() {
                 </WorkspaceField>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                  <WorkspaceField label="状态">
+                  <WorkspaceField label="Text">
                     <OptionCombobox
-                      ariaLabel="域名状态"
-                      emptyLabel="没有匹配的状态"
+                      ariaLabel="DomainText"
+                      emptyLabel="Text"
                       options={statusOptions}
-                      placeholder="选择状态"
-                      searchPlaceholder="搜索状态"
+                      placeholder="Text"
+                      searchPlaceholder="Text"
                       value={draft.status}
                       onValueChange={(value) => setDraft((current) => ({ ...current, status: value || "active" }))}
                     />
                   </WorkspaceField>
 
-                  <WorkspaceField label="可见性">
+                  <WorkspaceField label="Text">
                     <OptionCombobox
-                      ariaLabel="域名可见性"
-                      emptyLabel="没有匹配的可见性"
+                      ariaLabel="DomainText"
+                      emptyLabel="Text"
                       options={visibilityOptions}
-                      placeholder="选择可见性"
-                      searchPlaceholder="搜索可见性"
+                      placeholder="Text"
+                      searchPlaceholder="Text"
                       value={draft.visibility}
                       onValueChange={(value) => setDraft((current) => ({ ...current, visibility: value || "private" }))}
                     />
@@ -891,13 +891,13 @@ export function AdminDomainsPage() {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                  <WorkspaceField label="发布状态">
+                  <WorkspaceField label="Text">
                     <OptionCombobox
-                      ariaLabel="域名发布状态"
-                      emptyLabel="没有匹配的发布状态"
+                      ariaLabel="DomainText"
+                      emptyLabel="Text"
                       options={publicationOptions}
-                      placeholder="选择发布状态"
-                      searchPlaceholder="搜索发布状态"
+                      placeholder="Text"
+                      searchPlaceholder="Text"
                       value={draft.publicationStatus}
                       onValueChange={(value) =>
                         setDraft((current) => ({ ...current, publicationStatus: value || "draft" }))
@@ -905,17 +905,17 @@ export function AdminDomainsPage() {
                     />
                   </WorkspaceField>
 
-                  <WorkspaceField label="健康状态">
+                  <WorkspaceField label="Text">
                     <OptionCombobox
-                      ariaLabel="域名健康状态"
-                      emptyLabel="没有匹配的健康状态"
+                      ariaLabel="DomainText"
+                      emptyLabel="Text"
                       options={[
                         { value: "healthy", label: "healthy" },
                         { value: "unknown", label: "unknown" },
                         { value: "degraded", label: "degraded" },
                       ]}
-                      placeholder="选择健康状态"
-                      searchPlaceholder="搜索健康状态"
+                      placeholder="Text"
+                      searchPlaceholder="Text"
                       value={draft.healthStatus}
                       onValueChange={(value) => setDraft((current) => ({ ...current, healthStatus: value || "unknown" }))}
                     />
@@ -923,20 +923,20 @@ export function AdminDomainsPage() {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                  <WorkspaceField label="DNS 服务商">
+                  <WorkspaceField label="DNS Text">
                     <OptionCombobox
-                      ariaLabel="DNS 服务商"
-                      emptyLabel="还没有可用服务商"
+                      ariaLabel="DNS Text"
+                      emptyLabel="Text"
                       options={providerOptions}
-                      placeholder="选择 DNS 服务商"
-                      searchPlaceholder="搜索 DNS 服务商"
+                      placeholder="Text DNS Text"
+                      searchPlaceholder="Text DNS Text"
                       value={draft.providerAccountId || undefined}
                       onValueChange={(value) =>
                         setDraft((current) => ({ ...current, providerAccountId: value || "" }))
                       }
                     />
                   </WorkspaceField>
-                  <WorkspaceField label="权重">
+                  <WorkspaceField label="Text">
                     <Input
                       className="h-9"
                       min={0}
@@ -958,7 +958,7 @@ export function AdminDomainsPage() {
                     }
                   />
                   <Label className="text-sm" htmlFor="admin-domain-default">
-                    设为默认
+                    Text
                   </Label>
                 </div>
               </div>
@@ -970,13 +970,13 @@ export function AdminDomainsPage() {
                   </NoticeBanner>
                 ) : null}
                 <DialogClose asChild>
-                  <Button variant="outline">取消</Button>
+                  <Button variant="outline">Cancel</Button>
                 </DialogClose>
                 <Button
                   disabled={upsertMutation.isPending || creatingDomainWithVerification || draft.domain.trim() === ""}
                   onClick={() => {
                     if (!isEditingDomain && !isRootDomainInput(draft.domain)) {
-                      setDomainMutationError("这里仅支持直接添加根域名，多级子域请通过“批量生成子域名”创建。");
+                      setDomainMutationError("TextDomain，Text“TextDomain”Text。");
                       return;
                     }
                     upsertMutation.mutate({
@@ -989,12 +989,12 @@ export function AdminDomainsPage() {
                   {upsertMutation.isPending || creatingDomainWithVerification ? (
                     <>
                       <LoaderCircle className="size-4 animate-spin" />
-                      验证 DNS 中...
+                      Text DNS Text...
                     </>
                   ) : isEditingDomain ? (
-                    "保存变更"
+                    "Text"
                   ) : (
-                    "添加"
+                    "Text"
                   )}
                 </Button>
               </DialogFooter>
@@ -1012,33 +1012,33 @@ export function AdminDomainsPage() {
           >
             <DialogContent className="sm:max-w-2xl">
               <DialogHeader>
-                <DialogTitle>批量生成子域名</DialogTitle>
-                <DialogDescription>从现有根域批量生成子域前缀，适合统一下发 MX、relay、edge 等记录入口。</DialogDescription>
+                <DialogTitle>TextDomain</DialogTitle>
+                <DialogDescription>Text，Text MX、relay、edge Text。</DialogDescription>
               </DialogHeader>
 
               <div className="space-y-4">
-                <WorkspaceField label="选择根域名">
+                <WorkspaceField label="TextDomain">
                   <OptionCombobox
-                    ariaLabel="选择根域名"
-                    emptyLabel="没有匹配根域名"
+                    ariaLabel="TextDomain"
+                    emptyLabel="TextDomain"
                     options={rootDomains.map((item) => ({
                       value: String(item.id),
                       label: item.domain,
                       keywords: [item.rootDomain],
                     }))}
-                    placeholder="选择根域名"
-                    searchPlaceholder="搜索根域名"
+                    placeholder="TextDomain"
+                    searchPlaceholder="TextDomain"
                     value={selectedBaseDomainId === "" ? undefined : String(selectedBaseDomainId)}
                     onValueChange={(value) => setSelectedBaseDomainId(value ? Number(value) : "")}
                   />
                 </WorkspaceField>
 
-                <WorkspaceField label="多级前缀">
+                <WorkspaceField label="Text">
                   <Textarea
                     rows={6}
                     value={prefixInput}
                     onChange={(event) => setPrefixInput(event.target.value)}
-                    placeholder={"一行一个前缀，例如：\nmx\nmx.edge\nrelay.cn.hk"}
+                    placeholder={"Text，Example: \nmx\nmx.edge\nrelay.cn.hk"}
                   />
                 </WorkspaceField>
               </div>
@@ -1050,7 +1050,7 @@ export function AdminDomainsPage() {
                   </NoticeBanner>
                 ) : null}
                 <DialogClose asChild>
-                  <Button variant="outline">取消</Button>
+                  <Button variant="outline">Cancel</Button>
                 </DialogClose>
                 <Button
                   disabled={selectedBaseDomainId === "" || generateMutation.isPending || generatingDomainsWithVerification}
@@ -1072,10 +1072,10 @@ export function AdminDomainsPage() {
                   {generateMutation.isPending || generatingDomainsWithVerification ? (
                     <>
                       <LoaderCircle className="size-4 animate-spin" />
-                      验证 DNS 中...
+                      Text DNS Text...
                     </>
                   ) : (
-                    "批量生成子域名"
+                    "TextDomain"
                   )}
                 </Button>
               </DialogFooter>
@@ -1098,37 +1098,37 @@ export function AdminDomainsPage() {
               <div className="grid gap-3 lg:grid-cols-6">
                 <Card className="border-border/60 bg-card shadow-none lg:col-span-2">
                   <CardContent className="space-y-2 py-4">
-                    <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">域名资产</div>
+                    <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">DomainText</div>
                     <div className="text-2xl font-semibold">{domainSummary.total}</div>
-                    <div className="text-sm text-muted-foreground">根域 {domainSummary.root} 个 · Provider 待绑定 {domainSummary.unbound} 个</div>
+                    <div className="text-sm text-muted-foreground">Text {domainSummary.root} Text · Provider Text {domainSummary.unbound} Text</div>
                   </CardContent>
                 </Card>
                 <Card className="border-sky-500/20 bg-sky-500/5 shadow-none">
                   <CardContent className="space-y-2 py-4">
-                    <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">待审核</div>
+                    <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Text</div>
                     <div className="text-2xl font-semibold">{domainSummary.review}</div>
-                    <div className="text-sm text-muted-foreground">等待管理员批准进入公共池</div>
+                    <div className="text-sm text-muted-foreground">Text</div>
                   </CardContent>
                 </Card>
                 <Card className="border-amber-500/20 bg-amber-500/5 shadow-none">
                   <CardContent className="space-y-2 py-4">
-                    <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">未绑定 DNS</div>
+                    <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Text DNS</div>
                     <div className="text-2xl font-semibold">{domainSummary.unbound}</div>
-                    <div className="text-sm text-muted-foreground">需要配置 Provider</div>
+                    <div className="text-sm text-muted-foreground">Text Provider</div>
                   </CardContent>
                 </Card>
                 <Card className="border-rose-500/20 bg-rose-500/5 shadow-none">
                   <CardContent className="space-y-2 py-4">
-                    <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">待验证</div>
+                    <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Text</div>
                     <div className="text-2xl font-semibold">{domainSummary.pending}</div>
-                    <div className="text-sm text-muted-foreground">需继续核对记录</div>
+                    <div className="text-sm text-muted-foreground">Text</div>
                   </CardContent>
                 </Card>
                 <Card className="border-emerald-500/20 bg-emerald-500/5 shadow-none">
                   <CardContent className="space-y-2 py-4">
-                    <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">已验证</div>
+                    <div className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Text</div>
                     <div className="text-2xl font-semibold">{domainSummary.verified}</div>
-                    <div className="text-sm text-muted-foreground">可作为稳定可用域名</div>
+                    <div className="text-sm text-muted-foreground">TextDomain</div>
                   </CardContent>
                 </Card>
               </div>
@@ -1152,7 +1152,7 @@ export function AdminDomainsPage() {
                           </div>
                           <p className="text-xs text-muted-foreground">{groupMeta.description}</p>
                         </div>
-                        <WorkspaceBadge variant="outline">{domains.length} 个域名</WorkspaceBadge>
+                        <WorkspaceBadge variant="outline">{domains.length} TextDomain</WorkspaceBadge>
                       </CardContent>
                     </Card>
 
@@ -1194,12 +1194,12 @@ export function AdminDomainsPage() {
                                 )}
                               />
                               {statusTone === "verified"
-                                ? "已验证"
+                                ? "Text"
                                 : statusTone === "review"
-                                  ? "待审核"
+                                  ? "Text"
                                   : statusTone === "unbound"
-                                    ? "未绑定 DNS"
-                                    : "待验证"}
+                                    ? "Text DNS"
+                                    : "Text"}
                             </span>
                           </div>
                           <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
@@ -1209,7 +1209,7 @@ export function AdminDomainsPage() {
                             {domain.providerDisplayName ? (
                               <WorkspaceBadge variant="outline">{domain.providerDisplayName}</WorkspaceBadge>
                             ) : null}
-                            <WorkspaceBadge variant="outline">验证分 {domain.verificationScore}</WorkspaceBadge>
+                            <WorkspaceBadge variant="outline">Text {domain.verificationScore}</WorkspaceBadge>
                           </div>
                         </div>
 
@@ -1222,7 +1222,7 @@ export function AdminDomainsPage() {
                             }
                           >
                             {isExpanded ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
-                            {isExpanded ? "收起" : "展开"}
+                            {isExpanded ? "Text" : "Text"}
                           </Button>
                           <Button
                             size="sm"
@@ -1230,15 +1230,15 @@ export function AdminDomainsPage() {
                             disabled={verifyDomainMutation.isPending && verifyingDomainId === domain.id}
                             onClick={() => verifyDomainMutation.mutate(domain.id)}
                           >
-                            {verifyDomainMutation.isPending && verifyingDomainId === domain.id ? "验证中..." : "验证"}
+                            {verifyDomainMutation.isPending && verifyingDomainId === domain.id ? "Text..." : "Text"}
                           </Button>
                           <Button asChild size="sm" variant="outline">
                             <Link to={getAdminDomainDnsLink(domain.id, domain.providerAccountId)}>
-                              {domain.providerAccountId ? "配置 DNS" : "绑定 DNS"}
+                              {domain.providerAccountId ? "Text DNS" : "Text DNS"}
                             </Link>
                           </Button>
                           <Button size="sm" variant="outline" onClick={() => openEditDomainDialog(domain)}>
-                            编辑
+                            Text
                           </Button>
                           {domain.publicationStatus === "pending_review" ? (
                             <>
@@ -1250,7 +1250,7 @@ export function AdminDomainsPage() {
                                   reviewPublicationMutation.mutate({ domainId: domain.id, decision: "approve" });
                                 }}
                               >
-                                批准
+                                Text
                               </Button>
                               <Button
                                 size="sm"
@@ -1263,7 +1263,7 @@ export function AdminDomainsPage() {
                                   });
                                 }}
                               >
-                                拒绝
+                                Text
                               </Button>
                             </>
                           ) : null}
@@ -1278,7 +1278,7 @@ export function AdminDomainsPage() {
                               });
                             }}
                           >
-                            删除
+                            Text
                           </Button>
                         </div>
                       </div>
@@ -1291,26 +1291,26 @@ export function AdminDomainsPage() {
                           />
                         <div className="grid gap-3 lg:grid-cols-[180px_1fr]">
                           <div className="rounded-2xl border border-border/60 bg-background/50 p-4">
-                            <p className="text-sm font-semibold">域名状态</p>
+                            <p className="text-sm font-semibold">DomainText</p>
                             <div className="mt-4 space-y-3 text-sm">
                               <div className="flex items-center justify-between gap-3">
-                                <span className="text-muted-foreground">健康度</span>
+                                <span className="text-muted-foreground">Text</span>
                                 <WorkspaceBadge variant="outline">{domain.healthStatus}</WorkspaceBadge>
                               </div>
                               <div className="flex items-center justify-between gap-3">
-                                <span className="text-muted-foreground">根域</span>
+                                <span className="text-muted-foreground">Text</span>
                                 <span className="truncate font-medium">{domain.rootDomain}</span>
                               </div>
                               <div className="flex items-center justify-between gap-3">
-                                <span className="text-muted-foreground">已就绪记录</span>
+                                <span className="text-muted-foreground">Text</span>
                                 <span className="font-medium">{verifiedCount}</span>
                               </div>
                               <div className="flex items-center justify-between gap-3">
-                                <span className="text-muted-foreground">待处理记录</span>
+                                <span className="text-muted-foreground">Text</span>
                                 <span className="font-medium">{pendingCount}</span>
                               </div>
                               <div className="flex items-center justify-between gap-3">
-                                <span className="text-muted-foreground">公共池</span>
+                                <span className="text-muted-foreground">Text</span>
                                 <span className="font-medium">{domain.publicationStatus}</span>
                               </div>
                             </div>
@@ -1319,14 +1319,14 @@ export function AdminDomainsPage() {
                           <div className="rounded-2xl border border-border/60 bg-background/35 p-4">
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                               <div className="space-y-1">
-                                <p className="text-sm font-semibold">域名摘要</p>
+                                <p className="text-sm font-semibold">DomainText</p>
                                 <p className="text-sm text-muted-foreground">
-                                  域名管理页仅展示当前域名资产概览；Provider 绑定、真实 DNS 工作区、验证和变更操作已迁移到独立的 DNS 配置页。
+                                  DomainTextDomainText；Provider Text、Text DNS Text、Text and Text DNS Text。
                                 </p>
                               </div>
                               <div className="flex flex-wrap gap-2">
-                                <WorkspaceBadge variant="outline">{domain.providerDisplayName ?? "未绑定 Provider"}</WorkspaceBadge>
-                                <WorkspaceBadge variant="outline">{guideRecords.length} 条建议记录</WorkspaceBadge>
+                                <WorkspaceBadge variant="outline">{domain.providerDisplayName ?? "Text Provider"}</WorkspaceBadge>
+                                <WorkspaceBadge variant="outline">{guideRecords.length} Text</WorkspaceBadge>
                               </div>
                             </div>
 
@@ -1347,35 +1347,35 @@ export function AdminDomainsPage() {
                               <div className="rounded-xl border border-border/60 bg-card/50 p-4">
                                 <div className="space-y-3 text-sm">
                                   <div className="flex items-center justify-between gap-3">
-                                    <span className="text-muted-foreground">DNS 绑定</span>
-                                    <span className="truncate font-medium">{domain.providerDisplayName ?? "未绑定"}</span>
+                                    <span className="text-muted-foreground">DNS Text</span>
+                                    <span className="truncate font-medium">{domain.providerDisplayName ?? "Text"}</span>
                                   </div>
                                   <div className="flex items-center justify-between gap-3">
-                                    <span className="text-muted-foreground">公共池审批</span>
+                                    <span className="text-muted-foreground">Text</span>
                                     <span className="font-medium">{domain.publicationStatus}</span>
                                   </div>
                                   <div className="flex items-center justify-between gap-3">
-                                    <span className="text-muted-foreground">就绪度</span>
+                                    <span className="text-muted-foreground">Text</span>
                                     <span className="font-medium">
                                       {statusTone === "verified"
-                                        ? "可稳定使用"
+                                        ? "Text"
                                         : statusTone === "review"
-                                          ? "等待审核"
+                                          ? "Text"
                                           : statusTone === "unbound"
-                                            ? "需先绑定 DNS"
-                                            : "需继续校验"}
+                                            ? "Text DNS"
+                                            : "Text"}
                                     </span>
                                   </div>
                                   <div className="flex items-center justify-between gap-3">
-                                    <span className="text-muted-foreground">建议动作</span>
+                                    <span className="text-muted-foreground">Text</span>
                                     <span className="font-medium">
                                       {statusTone === "review"
-                                        ? "处理审核"
+                                        ? "Text"
                                         : statusTone === "unbound"
-                                          ? "绑定 Provider"
+                                          ? "Text Provider"
                                           : statusTone === "pending"
-                                            ? "进入 DNS 配置"
-                                            : "保持监控"}
+                                            ? "Text DNS Text"
+                                            : "Text"}
                                     </span>
                                   </div>
                                 </div>
@@ -1383,7 +1383,7 @@ export function AdminDomainsPage() {
                             </div>
 
                             <div className="mt-4 text-xs text-muted-foreground">
-                              如需绑定 Provider、校验记录或应用变更，请前往独立的 DNS 配置页。
+                              Text Provider、Text，Text DNS Text。
                             </div>
                           </div>
                         </div>
@@ -1391,35 +1391,35 @@ export function AdminDomainsPage() {
                       ) : (
                         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 rounded-xl border border-border/60 bg-background/30 px-4 py-3 text-sm">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">状态</span>
+                            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Text</span>
                             <span className="font-medium">
                               {statusTone === "verified"
-                                ? "已验证"
+                                ? "Text"
                                 : statusTone === "review"
-                                  ? "待审核"
+                                  ? "Text"
                                   : statusTone === "unbound"
-                                    ? "未绑定 DNS"
-                                    : "待验证"}
+                                    ? "Text DNS"
+                                    : "Text"}
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">健康度</span>
+                            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Text</span>
                             <span className="font-medium">{domain.healthStatus}</span>
                           </div>
                           <div className="flex min-w-0 items-center gap-2">
-                            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">根域</span>
+                            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Text</span>
                             <span className="truncate font-medium">{domain.rootDomain}</span>
                           </div>
                           <div className="flex min-w-0 items-center gap-2">
                             <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Provider</span>
-                            <span className="truncate font-medium">{domain.providerDisplayName ?? "未绑定 Provider"}</span>
+                            <span className="truncate font-medium">{domain.providerDisplayName ?? "Text Provider"}</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">建议记录</span>
-                            <span className="font-medium">{guideRecords.length} 条</span>
+                            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Text</span>
+                            <span className="font-medium">{guideRecords.length} Text</span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">待处理</span>
+                            <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Text</span>
                             <span className="font-medium">{pendingCount}</span>
                           </div>
                         </div>
@@ -1432,7 +1432,7 @@ export function AdminDomainsPage() {
                 );
               })}
               <PaginationControls
-                itemLabel="域名"
+                itemLabel="Domain"
                 page={paginatedDomains.page}
                 pageSize={ADMIN_DOMAINS_PAGE_SIZE}
                 total={paginatedDomains.total}
@@ -1441,7 +1441,7 @@ export function AdminDomainsPage() {
               />
             </div>
           ) : (
-            <WorkspaceEmpty title="暂无域名" description="当前还没有域名数据。" />
+            <WorkspaceEmpty title="TextDomain" description="TextDomainText。" />
           )}
         </div>
       </WorkspacePanel>

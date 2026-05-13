@@ -355,7 +355,7 @@ export function AdminDnsPage() {
     const cooldownUntil = zoneFailureCooldowns[zoneKey] ?? 0;
     if (!input.force && cooldownUntil > Date.now()) {
       const waitSeconds = Math.max(1, Math.ceil((cooldownUntil - Date.now()) / 1000));
-      throw new Error(`DNS 服务商当前仍在冷却中，请约 ${waitSeconds} 秒后再刷新此 Zone。`);
+      throw new Error(`DNS Text，Text ${waitSeconds} secTextRefreshText Zone。`);
     }
     try {
       const [records, changeSets, verifications] = await Promise.all([
@@ -376,7 +376,7 @@ export function AdminDnsPage() {
         setDesiredRecordsDraft(recordsToEditable(records));
       }
     } catch (error) {
-      const message = getAPIErrorMessage(error, "载入 DNS 工作区失败");
+      const message = getAPIErrorMessage(error, "Text DNS Text");
       if (isProviderRateLimitedError(message)) {
         setZoneFailureCooldowns((current) => ({ ...current, [zoneKey]: Date.now() + PROVIDER_ZONE_FAILURE_COOLDOWN_MS }));
       }
@@ -398,7 +398,7 @@ export function AdminDnsPage() {
       void refreshProviderRecordWorkspace(input).catch((error) => {
         setProviderZoneError(
           describeAdminProviderWorkspaceError(
-            getAPIErrorMessage(error, options?.onErrorMessage ?? "重新拉取 DNS 记录失败。"),
+            getAPIErrorMessage(error, options?.onErrorMessage ?? "Text DNS Text。"),
           ),
         );
       });
@@ -488,7 +488,7 @@ export function AdminDnsPage() {
     setProviderActionNotice(null);
     setProviderZoneError(null);
     setProviderValidationError(null);
-    setProviderDeleteError("Provider 账号已不存在，已自动刷新管理员 Provider 列表。");
+    setProviderDeleteError("Provider Text，TextRefreshText Provider Text。");
     return null;
   }
 
@@ -525,7 +525,7 @@ export function AdminDnsPage() {
       await queryClient.invalidateQueries({ queryKey: ["admin-overview"] });
     },
     onError: (error) => {
-      setDomainMutationError(getAPIErrorMessage(error, "保存域名失败，请检查配置后重试。"));
+      setDomainMutationError(getAPIErrorMessage(error, "TextDomainText，Text。"));
     },
   });
 
@@ -538,7 +538,7 @@ export function AdminDnsPage() {
       await queryClient.invalidateQueries({ queryKey: ["admin-overview"] });
     },
     onError: (error) => {
-      setSubdomainMutationError(getAPIErrorMessage(error, "批量生成子域名失败，请稍后重试。"));
+      setSubdomainMutationError(getAPIErrorMessage(error, "TextDomainText，Text。"));
     },
   });
 
@@ -547,13 +547,13 @@ export function AdminDnsPage() {
     onSuccess: async () => {
       setProviderMutationError(null);
       setProviderDeleteError(null);
-      setProviderActionNotice("Provider 账号已添加。");
+      setProviderActionNotice("Provider Text。");
       resetProviderForm();
       setCreateProviderDialogOpen(false);
       await queryClient.invalidateQueries({ queryKey: ["admin-domain-providers"] });
     },
     onError: (error) => {
-      setProviderMutationError(getAPIErrorMessage(error, "新增 Provider 账号失败，请检查凭据或会话状态。"));
+      setProviderMutationError(getAPIErrorMessage(error, "Text Provider Text，Text。"));
     },
   });
   const updateProviderMutation = useMutation({
@@ -562,14 +562,14 @@ export function AdminDnsPage() {
     onSuccess: async () => {
       setProviderMutationError(null);
       setProviderDeleteError(null);
-      setProviderActionNotice("Provider 账号已更新。");
+      setProviderActionNotice("Provider Text。");
       resetProviderForm();
       setCreateProviderDialogOpen(false);
       await queryClient.invalidateQueries({ queryKey: ["admin-domain-providers"] });
       await queryClient.invalidateQueries({ queryKey: ["admin-domains"] });
     },
     onError: (error) => {
-      setProviderMutationError(getAPIErrorMessage(error, "更新 Provider 账号失败，请检查字段和绑定关系。"));
+      setProviderMutationError(getAPIErrorMessage(error, "Text Provider Text，Text。"));
     },
   });
 
@@ -577,7 +577,7 @@ export function AdminDnsPage() {
     mutationFn: deleteAdminDomainProvider,
     onSuccess: async (_, providerId) => {
       setProviderDeleteError(null);
-      setProviderActionNotice("Provider 账号已删除。");
+      setProviderActionNotice("Provider Text。");
       queryClient.setQueryData<Awaited<ReturnType<typeof fetchAdminDomainProviders>>>(["admin-domain-providers"], (current) =>
         (current ?? []).filter((item) => item.id !== providerId),
       );
@@ -588,7 +588,7 @@ export function AdminDnsPage() {
       await queryClient.invalidateQueries({ queryKey: ["admin-domains"] });
     },
     onError: (error) => {
-      setProviderDeleteError(getAPIErrorMessage(error, "删除 Provider 账号失败，请先解除域名绑定。"));
+      setProviderDeleteError(getAPIErrorMessage(error, "Text Provider Text，TextDomainText。"));
     },
   });
 
@@ -596,11 +596,11 @@ export function AdminDnsPage() {
     mutationFn: validateAdminDomainProvider,
     onSuccess: async () => {
       setProviderValidationError(null);
-      setProviderActionNotice("Provider 连接校验完成。");
+      setProviderActionNotice("Provider Text。");
       await queryClient.invalidateQueries({ queryKey: ["admin-domain-providers"] });
     },
     onError: (error) => {
-      setProviderValidationError(getAPIErrorMessage(error, "校验 Provider 账号失败，请检查鉴权方式与凭据。"));
+      setProviderValidationError(getAPIErrorMessage(error, "Text Provider Text，Text。"));
     },
   });
 
@@ -611,14 +611,14 @@ export function AdminDnsPage() {
     },
     onSuccess: (payload) => {
       setProviderZoneError(null);
-      setProviderActionNotice(`已载入 ${payload.displayName} 的 Zone 列表。`);
+      setProviderActionNotice(`Text ${payload.displayName} Text Zone Text。`);
       setProviderZonePanel(payload);
       setProviderZonesPage(1);
       setActiveDnsTab("zones");
       resetChangeWorkspace({ keepZonePanel: true });
     },
     onError: (error) => {
-      setProviderZoneError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "拉取 Provider Zones 失败，请检查连接与凭据。")));
+      setProviderZoneError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "Text Provider Zones Text，Text。")));
       resetChangeWorkspace();
     },
   });
@@ -630,14 +630,14 @@ export function AdminDnsPage() {
         await refreshProviderRecordWorkspace(payload);
         setChangeSetPreview(null);
         setChangeSetError(null);
-        setChangeSetNotice(`已载入 ${payload.zoneName} 的 DNS Records。`);
+        setChangeSetNotice(`Text ${payload.zoneName} Text DNS Records。`);
         setProviderZoneError(null);
         setProviderRecordsPage(1);
         setChangeSetEditorPage(1);
         setChangeSetHistoryPage(1);
         setActiveDnsTab("records");
       } catch (error) {
-        setProviderZoneError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, `载入 ${payload.zoneName} 的 DNS Records 失败。`)));
+        setProviderZoneError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, `Text ${payload.zoneName} Text DNS Records Text。`)));
       }
     },
   });
@@ -650,11 +650,11 @@ export function AdminDnsPage() {
       setSelectedChangeSetID(payload.id);
       setChangeSetHistory((current) => [payload, ...current.filter((item) => item.id !== payload.id)]);
       setChangeSetError(null);
-      setChangeSetNotice(`Change Set 已生成：${payload.summary}`);
+      setChangeSetNotice(`Change Set Text：${payload.summary}`);
       setActiveDnsTab("records");
     },
     onError: (error) => {
-      setChangeSetError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "预览自动配置失败")));
+      setChangeSetError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "Text")));
     },
   });
 
@@ -665,17 +665,17 @@ export function AdminDnsPage() {
       setSelectedChangeSetID(payload.id);
       setChangeSetHistory((current) => [payload, ...current.filter((item) => item.id !== payload.id)]);
       setChangeSetError(null);
-      setChangeSetNotice(payload.appliedAt ? "Change Set 已应用到上游 DNS。" : "Change Set 已更新。");
+      setChangeSetNotice(payload.appliedAt ? "Change Set Text and Text DNS。" : "Change Set Text。");
       setActiveDnsTab("records");
       if (providerRecordPanel) {
         scheduleProviderWorkspaceRefresh(
           { providerId: providerRecordPanel.providerId, zoneId: providerRecordPanel.zoneId, zoneName: providerRecordPanel.zoneName, preserveDesiredInput: true },
-          { onErrorMessage: "变更已应用，但重新拉取 DNS 记录失败。" },
+          { onErrorMessage: "Text，Text DNS Text。" },
         );
       }
     },
     onError: (error) => {
-      setChangeSetError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "应用自动配置失败")));
+      setChangeSetError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "Text")));
     },
   });
 
@@ -690,7 +690,7 @@ export function AdminDnsPage() {
       setSelectedChangeSetID(payload.id);
       setChangeSetHistory((current) => [payload, ...current.filter((item) => item.id !== payload.id)]);
       setChangeSetError(null);
-      setChangeSetNotice("已保存并同步到 DNS 服务商。");
+      setChangeSetNotice("Text and  DNS Text。");
       setActiveDnsTab("records");
       if (providerRecordPanel) {
         setProviderRecordPanel({ providerId: variables.providerId, zoneId: variables.zoneId, zoneName: variables.zoneName, records: variables.records });
@@ -698,12 +698,12 @@ export function AdminDnsPage() {
         setDesiredRecordsDraft(recordsToEditable(variables.records));
         scheduleProviderWorkspaceRefresh(
           { providerId: providerRecordPanel.providerId, zoneId: providerRecordPanel.zoneId, zoneName: providerRecordPanel.zoneName, preserveDesiredInput: false },
-          { onErrorMessage: "记录已保存，但重新拉取 DNS 记录失败。" },
+          { onErrorMessage: "Text，Text DNS Text。" },
         );
       }
     },
     onError: (error) => {
-      setChangeSetError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "保存 DNS 记录到服务商失败")));
+      setChangeSetError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "Text DNS Text and Text")));
     },
   });
   const validatingProviderID = validateProviderMutation.isPending ? validateProviderMutation.variables ?? null : null;
@@ -747,12 +747,12 @@ export function AdminDnsPage() {
     setChangeSetNotice(null);
     setChangeSetPreview(null);
     if (!domain.providerAccountId) {
-      setProviderZoneError(`域名 ${domain.domain} 尚未绑定 DNS 服务商，请先回域名管理完成绑定。`);
+      setProviderZoneError(`Domain ${domain.domain} Text DNS Text，TextDomainText。`);
       resetChangeWorkspace();
       return;
     }
     if (!(providersQuery.data ?? []).some((item) => item.id === domain.providerAccountId)) {
-      setProviderZoneError("当前域名绑定的是独立私有 Provider，管理员 DNS 配置页不会接管这条绑定，请在对应面板处理或重新绑定管理员 Provider。");
+      setProviderZoneError("TextDomainText Provider，Text DNS Text，Text Provider。");
       resetChangeWorkspace();
       return;
     }
@@ -765,7 +765,7 @@ export function AdminDnsPage() {
       setProviderZonesPage(1);
       const targetZone = zones.find((zone) => zone.name === domain.rootDomain) ?? zones.find((zone) => zone.name === domain.domain) ?? null;
       if (!targetZone) {
-        setProviderZoneError(`已载入 ${displayName} 的 Zone 列表，但没有匹配到 ${domain.rootDomain} 或 ${domain.domain}。请先确认域名真实托管在当前 Provider 账号下。`);
+        setProviderZoneError(`Text ${displayName} Text Zone Text，Text and  ${domain.rootDomain} Text ${domain.domain}。TextDomainText Provider Text。`);
         resetChangeWorkspace({ keepZonePanel: true });
         return;
       }
@@ -777,9 +777,9 @@ export function AdminDnsPage() {
       setProviderRecordsPage(1);
       setChangeSetEditorPage(1);
       setChangeSetHistoryPage(1);
-      setProviderActionNotice(`已按域名 ${domain.domain} 定位到 Zone ${targetZone.name}。`);
+      setProviderActionNotice(`TextDomain ${domain.domain} Text and  Zone ${targetZone.name}。`);
     } catch (error) {
-      setProviderZoneError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "暂时无法加载该域名的 DNS 工作区，请先校验连接或检查凭据。")));
+      setProviderZoneError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "TextDomainText DNS Text，Text。")));
       resetChangeWorkspace({ keepZonePanel: true });
     }
   }, [providerZonePanel, providersQuery.data, refreshProviderRecordWorkspace, resetChangeWorkspace]);
@@ -796,7 +796,7 @@ export function AdminDnsPage() {
       const requestKey = `domain:${requestedDomain.id}:${requestedDomain.providerAccountId ?? 0}:${requestedDomain.rootDomain}:${requestedDomain.domain}`;
       if (!requestedDomain.providerAccountId) {
         autoWorkspaceRequestRef.current = requestKey;
-        setProviderZoneError(`域名 ${requestedDomain.domain} 尚未绑定 DNS 服务商，请先回域名管理完成绑定。`);
+        setProviderZoneError(`Domain ${requestedDomain.domain} Text DNS Text，TextDomainText。`);
         return;
       }
       if (!providerRecordPanel || requestedDomain.providerAccountId !== providerRecordPanel.providerId || (providerRecordPanel.zoneName !== requestedDomain.rootDomain && providerRecordPanel.zoneName !== requestedDomain.domain)) {
@@ -868,32 +868,32 @@ export function AdminDnsPage() {
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" onClick={() => navigate("/admin/domains")}>
               <Globe className="size-4" />
-              域名管理
+              DomainText
             </Button>
             <Button variant="outline" onClick={openCreateProviderDialog}>
               <Plus className="size-4" />
-              新增 Provider 账号
+              Text Provider Text
             </Button>
             <Button variant="outline" onClick={() => { void refreshAdminDomainData(); }}>
               <RefreshCcw className={isRefreshingDomainData ? "size-4 animate-spin" : "size-4"} />
-              刷新
+              Refresh
             </Button>
           </div>
         }
-        description="将 Zone、Records、验证与 Change Set 拆分为独立工作区。"
-        title="DNS 配置"
+        description="Text Zone、Records、Text Change Set Text。"
+        title="DNS Text"
       >
         <div className="space-y-4">
           <AlertDialog open={providerDeleteDialog !== null} onOpenChange={(open) => { if (!open) setProviderDeleteDialog(null); }}>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>删除 DNS 服务商账号？</AlertDialogTitle>
+                <AlertDialogTitle>Text DNS Text？</AlertDialogTitle>
                 <AlertDialogDescription>
-                  {providerDeleteDialog ? `确认删除 Provider 账号 ${providerDeleteDialog.name}？删除后将无法继续读取 Zone，也无法继续修改对应 DNS 记录。` : ""}
+                  {providerDeleteDialog ? `Text Provider Text ${providerDeleteDialog.name}？Text Zone，Text DNS Text。` : ""}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>取消</AlertDialogCancel>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction onClick={async () => {
                   if (!providerDeleteDialog) return;
                   const liveProvider = await resolveLiveAdminProvider(providerDeleteDialog.id);
@@ -901,7 +901,7 @@ export function AdminDnsPage() {
                   deleteProviderMutation.mutate(liveProvider.id);
                   setProviderDeleteDialog(null);
                 }}>
-                  确认删除
+                  Text
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -910,20 +910,20 @@ export function AdminDnsPage() {
             <Card className="border-border/60 bg-card/85 shadow-none">
               <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
                 <div className="space-y-1">
-                  <div className="text-sm font-medium">当前上下文</div>
+                  <div className="text-sm font-medium">Text</div>
                   <p className="text-xs text-muted-foreground">
                     {requestedDomain
-                      ? `已根据域名 ${requestedDomain.domain} 自动打开 DNS 工作区。`
+                      ? `TextDomain ${requestedDomain.domain} Text DNS Text。`
                       : requestedProvider
-                        ? `已根据 Provider ${requestedProvider.displayName} 自动定位 Zone 工作区。`
-                        : `当前查看 ${providerRecordPanel?.zoneName ?? providerZonePanel?.displayName ?? "DNS 工作区"}。`}
+                        ? `Text Provider ${requestedProvider.displayName} Text Zone Text。`
+                        : `Text ${providerRecordPanel?.zoneName ?? providerZonePanel?.displayName ?? "DNS Text"}。`}
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {requestedDomain ? <WorkspaceBadge variant="outline">域名：{requestedDomain.domain}</WorkspaceBadge> : null}
+                  {requestedDomain ? <WorkspaceBadge variant="outline">Domain：{requestedDomain.domain}</WorkspaceBadge> : null}
                   {requestedProvider ? <WorkspaceBadge variant="outline">Provider：{requestedProvider.displayName}</WorkspaceBadge> : null}
                   {providerRecordPanel ? <WorkspaceBadge variant="outline">Zone：{providerRecordPanel.zoneName}</WorkspaceBadge> : null}
-                  {requestedDomain ? <WorkspaceBadge variant="outline">根域：{requestedDomain.rootDomain}</WorkspaceBadge> : null}
+                  {requestedDomain ? <WorkspaceBadge variant="outline">Text：{requestedDomain.rootDomain}</WorkspaceBadge> : null}
                 </div>
               </CardContent>
             </Card>
@@ -932,15 +932,15 @@ export function AdminDnsPage() {
             <CardContent className="space-y-3 py-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="space-y-1">
-                  <div className="text-sm font-medium">操作提示</div>
+                  <div className="text-sm font-medium">Text</div>
                   <p className="text-xs text-muted-foreground">
-                    先定位 Provider 或域名，再处理 Zone、验证和 Change Set；根域记录通常用 `@`，子域记录只填前缀即可。
+                    Text Provider TextDomain，Text Zone、Text Change Set；Text `@`，Text。
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <WorkspaceBadge variant="outline">1. 选择域名</WorkspaceBadge>
-                  <WorkspaceBadge variant="outline">2. 校验记录</WorkspaceBadge>
-                  <WorkspaceBadge variant="outline">3. 应用变更</WorkspaceBadge>
+                  <WorkspaceBadge variant="outline">1. TextDomain</WorkspaceBadge>
+                  <WorkspaceBadge variant="outline">2. Text</WorkspaceBadge>
+                  <WorkspaceBadge variant="outline">3. Text</WorkspaceBadge>
                 </div>
               </div>
             </CardContent>
@@ -994,8 +994,8 @@ export function AdminDnsPage() {
               <CardContent className="space-y-4 py-4">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="space-y-1">
-                    <div className="text-sm font-medium">DNS 工作台</div>
-                    <p className="text-sm text-muted-foreground">使用 Tabs 划分 Provider、Zone 与 Zone 工作区。</p>
+                    <div className="text-sm font-medium">DNS Text</div>
+                    <p className="text-sm text-muted-foreground">Text Tabs Text Provider、Zone Text Zone Text。</p>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     <WorkspaceBadge variant="outline">Provider {(providersQuery.data?.length ?? 0)}</WorkspaceBadge>
@@ -1019,9 +1019,9 @@ export function AdminDnsPage() {
 
                 <Tabs className="min-w-0" value={activeDnsTab} onValueChange={(value) => setActiveDnsTab(value as DnsWorkspaceTab)}>
                   <TabsList className="w-full justify-start overflow-x-auto" variant="line">
-                    <TabsTrigger value="providers">Provider 账号</TabsTrigger>
+                    <TabsTrigger value="providers">Provider Text</TabsTrigger>
                     <TabsTrigger value="zones">Zone</TabsTrigger>
-                    <TabsTrigger value="records">Zone 工作区</TabsTrigger>
+                    <TabsTrigger value="records">Zone Text</TabsTrigger>
                   </TabsList>
 
                   <TabsContent className="space-y-3" value="providers">
@@ -1087,13 +1087,13 @@ export function AdminDnsPage() {
                         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-background/80 px-3 py-3">
                           <div>
                             <div className="text-sm font-medium">{providerRecordPanel.zoneName} · DNS Workspace</div>
-                            <p className="text-xs text-muted-foreground">Records、Verification Health 和 DNS Change Set 现在为同级并排面板。</p>
+                            <p className="text-xs text-muted-foreground">Records、Verification Health Text DNS Change Set Text。</p>
                           </div>
                           <div className="flex flex-wrap items-center gap-2">
                             <WorkspaceBadge variant="outline">Zone ID · {providerRecordPanel.zoneId}</WorkspaceBadge>
-                            <WorkspaceBadge variant="outline">历史 {sortedChangeSetHistory.length}</WorkspaceBadge>
-                            <WorkspaceBadge variant="outline">已验证 {verificationStatusSummary.verified}</WorkspaceBadge>
-                            <WorkspaceBadge variant="outline">待修复 {verificationStatusSummary.drifted}</WorkspaceBadge>
+                            <WorkspaceBadge variant="outline">Text {sortedChangeSetHistory.length}</WorkspaceBadge>
+                            <WorkspaceBadge variant="outline">Text {verificationStatusSummary.verified}</WorkspaceBadge>
+                            <WorkspaceBadge variant="outline">Text {verificationStatusSummary.drifted}</WorkspaceBadge>
                             {isAutoRefreshing ? (
                               <span className="flex items-center gap-1 text-xs text-muted-foreground">
                                 <RefreshCcw className="size-3 animate-spin" />
@@ -1110,12 +1110,12 @@ export function AdminDnsPage() {
                               onClick={() => {
                                 setProviderZoneError(null);
                                 void refreshProviderRecordWorkspace({ providerId: providerRecordPanel.providerId, zoneId: providerRecordPanel.zoneId, zoneName: providerRecordPanel.zoneName, preserveDesiredInput: true, force: true })
-                                  .then(() => { setChangeSetNotice(`已刷新 ${providerRecordPanel.zoneName} 的 DNS 工作区。`); })
-                                  .catch((error) => { setProviderZoneError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "刷新 DNS 工作区失败"))); });
+                                  .then(() => { setChangeSetNotice(`TextRefresh ${providerRecordPanel.zoneName} Text DNS Text。`); })
+                                  .catch((error) => { setProviderZoneError(describeAdminProviderWorkspaceError(getAPIErrorMessage(error, "Refresh DNS Text"))); });
                               }}
                             >
                               <RefreshCcw className={loadingRecordsZoneKey === `${providerRecordPanel.providerId}:${providerRecordPanel.zoneId}` ? "size-4 animate-spin" : "size-4"} />
-                              刷新当前 Zone
+                              RefreshText Zone
                             </Button>
                           </div>
                         </div>
@@ -1137,7 +1137,7 @@ export function AdminDnsPage() {
                             expanded={verificationExpanded}
                             onToggleExpanded={() => setVerificationExpanded((c) => !c)}
                             onLoadRepairRecords={(profile) => {
-                              setChangeSetNotice(`已载入 ${profile.verificationType} 修复建议。`);
+                              setChangeSetNotice(`Text ${profile.verificationType} Text。`);
                               setDesiredRecordsDraft((current) => applyVerificationRepairRecords(current, profile.repairRecords));
                             }}
                           />
@@ -1202,7 +1202,7 @@ export function AdminDnsPage() {
                               setChangeSetPreview(item);
                               setSelectedChangeSetID(item.id);
                               setChangeSetError(null);
-                              setChangeSetNotice(`已载入历史 Change Set #${item.id}。`);
+                              setChangeSetNotice(`Text Change Set #${item.id}。`);
                             }}
                             onRestore={(item) => {
                               const records = restoreEditableRecordsFromChangeSet(providerRecordPanel?.records ?? [], item);
@@ -1210,15 +1210,15 @@ export function AdminDnsPage() {
                               setChangeSetPreview(item);
                               setSelectedChangeSetID(item.id);
                               setChangeSetError(null);
-                              setChangeSetNotice(`已从 Change Set #${item.id} 恢复到编辑器。`);
+                              setChangeSetNotice(`Text Change Set #${item.id} Text and Text。`);
                             }}
                           />
                         </div>
                       </div>
                     ) : (
                       <WorkspaceEmpty
-                        title="先进入 Zone 工作区"
-                        description={'在 Zone 页点击"查看 Records"后，这里会显示 Records、验证和 Change Set。'}
+                        title="Text Zone Text"
+                        description={'Text Zone Text"Text Records"Text，Text Records、Text Change Set。'}
                       />
                     )}
                   </TabsContent>
@@ -1228,7 +1228,7 @@ export function AdminDnsPage() {
           </div>
 
           <NoticeBanner variant="info">
-            待验证域名、验证入口和域名级引导已移动到 `域名管理` 页面；这里现在只处理 Provider 账号、Zone、Records、Verification 和 Change Set。
+            TextDomain、TextDomainText and  `DomainText` Text；Text Provider Text、Zone、Records、Verification Text Change Set。
           </NoticeBanner>
         </div>
       </WorkspacePanel>

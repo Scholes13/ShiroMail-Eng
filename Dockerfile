@@ -31,7 +31,8 @@ COPY --from=frontend-builder /frontend/dist /usr/share/nginx/html
 COPY frontend/nginx.conf /etc/nginx/http.d/default.conf
 COPY docker/start-app.sh /usr/local/bin/start-app
 
-RUN chmod +x /usr/local/bin/start-app \
+RUN sed -i 's/\r$//' /usr/local/bin/start-app \
+    && chmod +x /usr/local/bin/start-app \
     && sed -i '/^user /d' /etc/nginx/nginx.conf \
     && mkdir -p /app/data/mail /run/nginx /var/lib/nginx/tmp /var/log/nginx \
     && chown -R shiro:shiro /app /run/nginx /var/lib/nginx /var/log/nginx /usr/share/nginx/html

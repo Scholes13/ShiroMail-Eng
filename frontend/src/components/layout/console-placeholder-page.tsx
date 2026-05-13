@@ -25,7 +25,7 @@ export function ConsolePlaceholderPage({
           </Button>
         }
         description={description}
-        title="该模块已经预留入口"
+        title="Text"
       />
     </WorkspacePanel>
   );

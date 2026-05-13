@@ -31,14 +31,14 @@ export function DomainPolicyForm({
   return (
     <div className="grid gap-3">
       <CheckboxField
-        label="公开域发布需要审核"
+        label="Text"
         checked={value.requiresReview}
         onCheckedChange={(requiresReview) => onChange({ requiresReview })}
       />
       <div className="rounded-xl border border-border/60 bg-muted/10 px-4 py-3">
-        <p className="text-sm font-medium">平台治理说明</p>
+        <p className="text-sm font-medium">Text</p>
         <p className="mt-1 text-sm leading-6 text-muted-foreground">
-          这里收口公共域池审核、后续风控开关，以及整站级域名平台治理策略。
+          Text、Text，TextDomainText。
         </p>
       </div>
     </div>

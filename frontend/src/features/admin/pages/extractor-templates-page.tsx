@@ -31,11 +31,11 @@ import type { MailExtractorRule } from "../../user/api";
 import { emptyRuleDraft, normalizeMailExtractorRule, toRuleDraft, validateRuleDraft, type RuleDraft } from "../../user/extractor-rule-form";
 
 const targetFieldOptions = [
-  { value: "subject", label: "标题" },
-  { value: "from_addr", label: "发件人" },
-  { value: "to_addr", label: "收件人" },
-  { value: "text_body", label: "正文" },
-  { value: "html_text", label: "HTML 文本" },
+  { value: "subject", label: "Subject" },
+  { value: "from_addr", label: "Sender" },
+  { value: "to_addr", label: "Recipient" },
+  { value: "text_body", label: "Body" },
+  { value: "html_text", label: "HTML Text" },
   { value: "raw_text", label: "Raw" },
 ] as const;
 
@@ -80,23 +80,23 @@ export function AdminExtractorTemplatesPage() {
       return updateAdminMailExtractorRule(selectedRuleId, payload);
     },
     onSuccess: async (savedRule) => {
-      setFeedback("默认提取模板已保存。");
+      setFeedback("Text。");
       setSelectedRuleId(savedRule.id);
       setDraft(toRuleDraft(savedRule));
       await queryClient.invalidateQueries({ queryKey: ["admin-mail-extractor-rules"] });
     },
-    onError: (error) => setFeedback(getAPIErrorMessage(error, "保存默认模板失败。")),
+    onError: (error) => setFeedback(getAPIErrorMessage(error, "TextDefault templatesText。")),
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (ruleId: number) => deleteAdminMailExtractorRule(ruleId),
     onSuccess: async () => {
-      setFeedback("默认模板已删除。");
+      setFeedback("Default templatesText。");
       setSelectedRuleId("new");
       setDraft(emptyRuleDraft());
       await queryClient.invalidateQueries({ queryKey: ["admin-mail-extractor-rules"] });
     },
-    onError: (error) => setFeedback(getAPIErrorMessage(error, "删除默认模板失败。")),
+    onError: (error) => setFeedback(getAPIErrorMessage(error, "TextDefault templatesText。")),
   });
 
   const testMutation = useMutation({
@@ -110,7 +110,7 @@ export function AdminExtractorTemplatesPage() {
           ? { mailboxId: Number(resolvedMailboxId), messageId: Number(sampleMessageId) }
           : {},
       ),
-    onError: (error) => setFeedback(getAPIErrorMessage(error, "测试默认模板失败。")),
+    onError: (error) => setFeedback(getAPIErrorMessage(error, "TextDefault templatesText。")),
   });
 
   const rules = (rulesQuery.data ?? []).map(normalizeMailExtractorRule);
@@ -147,8 +147,8 @@ export function AdminExtractorTemplatesPage() {
   return (
     <WorkspacePage>
       <WorkspacePanel
-        title="提取模板"
-        description="管理员维护可供用户启用或复制的默认提取规则模板。"
+        title="Text"
+        description="TextEnableTextExtraction rulesText。"
         action={
           <Button
             size="sm"
@@ -160,7 +160,7 @@ export function AdminExtractorTemplatesPage() {
             }}
           >
             <Plus className="size-4" />
-            新建模板
+            Text
           </Button>
         }
       >
@@ -181,19 +181,19 @@ export function AdminExtractorTemplatesPage() {
                       <div className="flex items-start justify-between gap-3">
                         <div className="space-y-1">
                           <div className="text-sm font-medium">{rule.name}</div>
-                          <div className="text-xs text-muted-foreground">{rule.label || "未设置标签"}</div>
+                          <div className="text-xs text-muted-foreground">{rule.label || "No label set"}</div>
                         </div>
                         <WorkspaceBadge variant={rule.enabled ? "secondary" : "outline"}>
-                          {rule.enabled ? "启用" : "停用"}
+                          {rule.enabled ? "Enable" : "Disable"}
                         </WorkspaceBadge>
                       </div>
-                      <div className="text-xs text-muted-foreground">{rule.targetFields.join(" / ") || "未选择字段"}</div>
+                      <div className="text-xs text-muted-foreground">{rule.targetFields.join(" / ") || "No field selected"}</div>
                     </CardContent>
                   </Card>
                 </button>
                 ))}
                 <PaginationControls
-                  itemLabel="模板"
+                  itemLabel="Text"
                   onPageChange={setRulesPage}
                   page={paginatedRules.page}
                   pageSize={ADMIN_EXTRACTOR_TEMPLATES_PAGE_SIZE}
@@ -202,29 +202,29 @@ export function AdminExtractorTemplatesPage() {
                 />
               </>
             ) : (
-              <WorkspaceEmpty title="暂无默认模板" description="这里创建的模板会显示给所有用户，但只有用户主动启用后才生效。" />
+              <WorkspaceEmpty title="TextDefault templates" description="Text，TextEnableText。" />
             )}
           </div>
 
           <div className="space-y-4">
             <Card className="border-border/60 bg-muted/10 shadow-none">
               <CardContent className="space-y-4 py-4">
-                <div className="text-sm font-medium">{selectedRuleId === "new" ? "新建默认模板" : "编辑默认模板"}</div>
+                <div className="text-sm font-medium">{selectedRuleId === "new" ? "TextDefault templates" : "TextDefault templates"}</div>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                  <WorkspaceField label="模板名称">
-                    <Input aria-label="模板名称" value={draft.name} onChange={(event) => setDraft((current) => ({ ...current, name: event.target.value }))} />
+                  <WorkspaceField label="Text">
+                    <Input aria-label="Text" value={draft.name} onChange={(event) => setDraft((current) => ({ ...current, name: event.target.value }))} />
                   </WorkspaceField>
-                  <WorkspaceField label="结果标签">
-                    <Input aria-label="结果标签" value={draft.label} onChange={(event) => setDraft((current) => ({ ...current, label: event.target.value }))} />
+                  <WorkspaceField label="Result label">
+                    <Input aria-label="Result label" value={draft.label} onChange={(event) => setDraft((current) => ({ ...current, label: event.target.value }))} />
                   </WorkspaceField>
                 </div>
 
-                <WorkspaceField label="描述">
-                  <Textarea aria-label="模板描述" rows={3} value={draft.description} onChange={(event) => setDraft((current) => ({ ...current, description: event.target.value }))} />
+                <WorkspaceField label="Description">
+                  <Textarea aria-label="TextDescription" rows={3} value={draft.description} onChange={(event) => setDraft((current) => ({ ...current, description: event.target.value }))} />
                 </WorkspaceField>
 
-                <WorkspaceField label="提取字段">
+                <WorkspaceField label="Extraction field">
                   <div className="grid gap-2 md:grid-cols-2">
                     {targetFieldOptions.map((option) => (
                       <label className="flex items-center gap-3 rounded-lg border border-border/60 px-3 py-2 text-sm" key={option.value}>
@@ -247,19 +247,19 @@ export function AdminExtractorTemplatesPage() {
 
                 <div className="grid gap-3 md:grid-cols-3">
                   <WorkspaceField label="Flags">
-                    <Input aria-label="正则 Flags" value={draft.flags} onChange={(event) => setDraft((current) => ({ ...current, flags: event.target.value }))} />
+                    <Input aria-label="Regex flags" value={draft.flags} onChange={(event) => setDraft((current) => ({ ...current, flags: event.target.value }))} />
                   </WorkspaceField>
-                  <WorkspaceField label="结果模式">
+                  <WorkspaceField label="Result mode">
                     <BasicSelect value={draft.resultMode} onChange={(event) => setDraft((current) => ({ ...current, resultMode: event.target.value }))}>
-                      <option value="first_match">首个匹配</option>
-                      <option value="all_matches">全部匹配</option>
-                      <option value="capture_group">指定分组</option>
+                      <option value="first_match">First match</option>
+                      <option value="all_matches">All matches</option>
+                      <option value="capture_group">Capture group</option>
                     </BasicSelect>
                   </WorkspaceField>
-                  <WorkspaceField label="捕获分组">
+                  <WorkspaceField label="Capture group">
                     <Input
                       type="number"
-                      aria-label="捕获分组"
+                      aria-label="Capture group"
                       value={String(draft.captureGroupIndex ?? 1)}
                       onChange={(event) => setDraft((current) => ({ ...current, captureGroupIndex: Number(event.target.value || 0) }))}
                       disabled={draft.resultMode !== "capture_group"}
@@ -267,21 +267,21 @@ export function AdminExtractorTemplatesPage() {
                   </WorkspaceField>
                 </div>
 
-                <WorkspaceField label="正则表达式">
-                  <Textarea aria-label="正则表达式" rows={5} value={draft.pattern} onChange={(event) => setDraft((current) => ({ ...current, pattern: event.target.value }))} placeholder="例如：\\b(\\d{6})\\b" />
+                <WorkspaceField label="Regular expression">
+                  <Textarea aria-label="Regular expression" rows={5} value={draft.pattern} onChange={(event) => setDraft((current) => ({ ...current, pattern: event.target.value }))} placeholder="Example: \\b(\\d{6})\\b" />
                 </WorkspaceField>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                  <WorkspaceField label="发件人包含">
-                    <Input aria-label="发件人包含" value={draft.senderContains} onChange={(event) => setDraft((current) => ({ ...current, senderContains: event.target.value }))} placeholder="仅支持普通文本包含，如 noreply@x.ai" />
+                  <WorkspaceField label="SenderText">
+                    <Input aria-label="SenderText" value={draft.senderContains} onChange={(event) => setDraft((current) => ({ ...current, senderContains: event.target.value }))} placeholder="Plain text contains only, e.g. noreply@x.ai" />
                   </WorkspaceField>
-                  <WorkspaceField label="标题包含">
-                    <Input aria-label="标题包含" value={draft.subjectContains} onChange={(event) => setDraft((current) => ({ ...current, subjectContains: event.target.value }))} placeholder="仅支持普通文本包含，如 verification code" />
+                  <WorkspaceField label="SubjectText">
+                    <Input aria-label="SubjectText" value={draft.subjectContains} onChange={(event) => setDraft((current) => ({ ...current, subjectContains: event.target.value }))} placeholder="Plain text contains only, e.g. verification code" />
                   </WorkspaceField>
                 </div>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                  <WorkspaceField label="作用域邮箱（可选）">
+                  <WorkspaceField label="Text（Text）">
                     <BasicSelect
                       value={draft.mailboxIds[0] ? String(draft.mailboxIds[0]) : ""}
                       onChange={(event) =>
@@ -291,7 +291,7 @@ export function AdminExtractorTemplatesPage() {
                         }))
                       }
                     >
-                      <option value="">全部邮箱</option>
+                      <option value="">All mailboxes</option>
                       {mailboxes.map((mailbox: AdminMailbox) => (
                         <option key={mailbox.id} value={mailbox.id}>
                           {mailbox.address}
@@ -299,23 +299,23 @@ export function AdminExtractorTemplatesPage() {
                       ))}
                     </BasicSelect>
                   </WorkspaceField>
-                  <WorkspaceField label="排序权重">
-                    <Input aria-label="排序权重" type="number" value={String(draft.sortOrder)} onChange={(event) => setDraft((current) => ({ ...current, sortOrder: Number(event.target.value || 0) }))} />
+                  <WorkspaceField label="Sort weight">
+                    <Input aria-label="Sort weight" type="number" value={String(draft.sortOrder)} onChange={(event) => setDraft((current) => ({ ...current, sortOrder: Number(event.target.value || 0) }))} />
                   </WorkspaceField>
                 </div>
 
                 <label className="flex items-center gap-3 rounded-lg border border-border/60 px-3 py-2 text-sm">
                   <Checkbox checked={draft.enabled} onCheckedChange={(checked) => setDraft((current) => ({ ...current, enabled: checked === true }))} />
-                  <span>启用此默认模板</span>
+                  <span>EnableTextDefault templates</span>
                 </label>
 
                 <div className="flex flex-wrap gap-2">
                   <Button onClick={handleSave} disabled={saveMutation.isPending}>
-                    {saveMutation.isPending ? "保存中…" : "保存模板"}
+                    {saveMutation.isPending ? "Saving…" : "Text"}
                   </Button>
                   {selectedRuleId !== "new" ? (
                     <Button variant="outline" onClick={() => deleteMutation.mutate(Number(selectedRuleId))} disabled={deleteMutation.isPending}>
-                      删除模板
+                      Text
                     </Button>
                   ) : null}
                 </div>
@@ -325,15 +325,15 @@ export function AdminExtractorTemplatesPage() {
             <Card className="border-border/60 bg-muted/10 shadow-none">
               <CardContent className="space-y-4 py-4">
                 <div className="flex items-center justify-between gap-3">
-                  <div className="text-sm font-medium">模板测试</div>
+                  <div className="text-sm font-medium">Text</div>
                   <Button size="sm" variant="outline" onClick={() => void rulesQuery.refetch()}>
                     <RefreshCw className={`size-4 ${rulesQuery.isFetching ? "animate-spin" : ""}`} />
-                    刷新
+                    Refresh
                   </Button>
                 </div>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                  <WorkspaceField label="测试邮箱">
+                  <WorkspaceField label="Test mailbox">
                     <BasicSelect value={sampleMailboxId || (resolvedMailboxId ? String(resolvedMailboxId) : "")} onChange={(event) => {
                       setSampleMailboxId(event.target.value);
                       setSampleMessageId("");
@@ -345,12 +345,12 @@ export function AdminExtractorTemplatesPage() {
                       ))}
                     </BasicSelect>
                   </WorkspaceField>
-                  <WorkspaceField label="测试邮件">
+                  <WorkspaceField label="Test message">
                     <BasicSelect value={sampleMessageId} onChange={(event) => setSampleMessageId(event.target.value)}>
-                      <option value="">选择一封邮件</option>
+                      <option value="">Select a message</option>
                       {messages.map((message) => (
                         <option key={message.id} value={message.id}>
-                          {(message.subject || "(无主题)").slice(0, 40)}
+                          {(message.subject || "(No subject)").slice(0, 40)}
                         </option>
                       ))}
                     </BasicSelect>
@@ -358,7 +358,7 @@ export function AdminExtractorTemplatesPage() {
                 </div>
 
                 <Button onClick={handleTest} disabled={testMutation.isPending || !sampleMessageId}>
-                  {testMutation.isPending ? "测试中…" : "运行模板测试"}
+                  {testMutation.isPending ? "Testing…" : "Text"}
                 </Button>
 
                 {testMutation.data?.items.length ? (
@@ -374,9 +374,9 @@ export function AdminExtractorTemplatesPage() {
                     ))}
                   </div>
                 ) : testMutation.isSuccess ? (
-                  <WorkspaceEmpty title="没有命中结果" description="当前测试邮件没有匹配到此默认模板。" />
+                  <WorkspaceEmpty title="No matches" description="TextTest messageText and TextDefault templates。" />
                 ) : (
-                  <WorkspaceEmpty title="选择一封邮件开始测试" description="管理员可以先对样例邮件验证模板效果，再提供给用户启用。" />
+                  <WorkspaceEmpty title="Select a messageText" description="Text，TextEnable。" />
                 )}
               </CardContent>
             </Card>

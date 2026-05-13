@@ -76,11 +76,11 @@ describe("ResetPasswordPage", () => {
   it("prefills code from the reset password link and submits reset", async () => {
     renderPage();
 
-    expect(screen.getByLabelText("重置验证码")).toHaveValue("654321");
-    fireEvent.change(screen.getByLabelText("新密码"), {
+    expect(screen.getByLabelText("Textverification code")).toHaveValue("654321");
+    fireEvent.change(screen.getByLabelText("Text"), {
       target: { value: "BetterSecret456!" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "确认重置" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(resetPassword)).toHaveBeenCalledWith({
@@ -94,7 +94,7 @@ describe("ResetPasswordPage", () => {
   it("resends the code and updates the active verification ticket", async () => {
     renderPage("/auth/reset-password?ticket=ticket-1&email=reset-user@example.com");
 
-    fireEvent.click(screen.getByRole("button", { name: "重新发送验证码" }));
+    fireEvent.click(screen.getByRole("button", { name: "Textverification code" }));
 
     await waitFor(() => {
       expect(vi.mocked(resendEmailVerification)).toHaveBeenCalledWith({
@@ -102,13 +102,13 @@ describe("ResetPasswordPage", () => {
       });
     });
 
-    fireEvent.change(screen.getByLabelText("重置验证码"), {
+    fireEvent.change(screen.getByLabelText("Textverification code"), {
       target: { value: "111222" },
     });
-    fireEvent.change(screen.getByLabelText("新密码"), {
+    fireEvent.change(screen.getByLabelText("Text"), {
       target: { value: "BetterSecret456!" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "确认重置" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(resetPassword)).toHaveBeenCalledWith({
@@ -130,13 +130,13 @@ describe("ResetPasswordPage", () => {
 
     renderPage("/auth/reset-password?ticket=ticket-1&email=reset-user@example.com&code=654321");
 
-    fireEvent.change(screen.getByLabelText("新密码"), {
+    fireEvent.change(screen.getByLabelText("Text"), {
       target: { value: "BetterSecret456!" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "重新发送验证码" }));
+    fireEvent.click(screen.getByRole("button", { name: "Textverification code" }));
 
-    expect(screen.getByRole("button", { name: "处理中..." })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "确认重置" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Text..." })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Text" })).toBeDisabled();
 
     resolveResend({
       status: "verification_required",
@@ -146,7 +146,7 @@ describe("ResetPasswordPage", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "重新发送验证码" })).toBeEnabled();
+      expect(screen.getByRole("button", { name: "Textverification code" })).toBeEnabled();
     });
   });
 });

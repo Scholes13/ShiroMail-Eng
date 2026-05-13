@@ -89,8 +89,8 @@ describe("VerifyEmailPage", () => {
   it("prefills the verification code from the email link", async () => {
     renderPage();
 
-    expect(screen.getByLabelText("邮箱验证码")).toHaveValue("123456");
-    fireEvent.click(screen.getByRole("button", { name: "确认验证" }));
+    expect(screen.getByLabelText("Textverification code")).toHaveValue("123456");
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(confirmEmailVerification)).toHaveBeenCalledWith({
@@ -103,7 +103,7 @@ describe("VerifyEmailPage", () => {
   it("uses the latest ticket after resending verification code", async () => {
     renderPage("/auth/verify-email?ticket=ticket-1&email=verify-user@example.com");
 
-    fireEvent.click(screen.getByRole("button", { name: "重新发送验证码" }));
+    fireEvent.click(screen.getByRole("button", { name: "Textverification code" }));
 
     await waitFor(() => {
       expect(vi.mocked(resendEmailVerification)).toHaveBeenCalledWith({
@@ -111,10 +111,10 @@ describe("VerifyEmailPage", () => {
       });
     });
 
-    fireEvent.change(screen.getByLabelText("邮箱验证码"), {
+    fireEvent.change(screen.getByLabelText("Textverification code"), {
       target: { value: "654321" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "确认验证" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(confirmEmailVerification)).toHaveBeenCalledWith({
@@ -135,10 +135,10 @@ describe("VerifyEmailPage", () => {
 
     renderPage("/auth/verify-email?ticket=ticket-1&email=verify-user@example.com");
 
-    fireEvent.click(screen.getByRole("button", { name: "重新发送验证码" }));
+    fireEvent.click(screen.getByRole("button", { name: "Textverification code" }));
 
-    expect(screen.getByRole("button", { name: "处理中..." })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "确认验证" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Text..." })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Text" })).toBeDisabled();
 
     resolveResend({
       status: "verification_required",
@@ -148,7 +148,7 @@ describe("VerifyEmailPage", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "重新发送验证码" })).toBeEnabled();
+      expect(screen.getByRole("button", { name: "Textverification code" })).toBeEnabled();
     });
   });
 });

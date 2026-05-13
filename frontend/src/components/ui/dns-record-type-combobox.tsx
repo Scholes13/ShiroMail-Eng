@@ -29,13 +29,13 @@ export function DNSRecordTypeCombobox({
       onValueChange={(nextValue) => onValueChange(nextValue ?? "")}
     >
       <ComboboxInput
-        aria-label="记录类型"
+        aria-label="Text"
         className="h-9 w-full"
         disabled={disabled}
-        placeholder="选择记录类型"
+        placeholder="Text"
       />
       <ComboboxContent>
-        <ComboboxEmpty>没有匹配的记录类型</ComboboxEmpty>
+        <ComboboxEmpty>Text</ComboboxEmpty>
         <ComboboxList>
           {(item) => (
             <ComboboxItem key={item} value={item}>

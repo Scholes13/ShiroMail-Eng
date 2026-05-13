@@ -94,7 +94,7 @@ describe("AdminJobsPage", () => {
 
     renderPage();
 
-    expect(await screen.findByText("任务队列")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
     expect(await screen.findByText("#1 · inbound_spool")).toBeInTheDocument();
     expect(await screen.findByText("Temporary Parse Failure")).toBeInTheDocument();
     expect(await screen.findByText("#8 · sender@example.com")).toBeInTheDocument();
@@ -104,11 +104,11 @@ describe("AdminJobsPage", () => {
       ),
     ).toHaveLength(2);
     expect(await screen.findByText("Failed Spool")).toBeInTheDocument();
-    expect(await screen.findByText("SMTP 实时指标")).toBeInTheDocument();
+    expect(await screen.findByText("SMTP Text")).toBeInTheDocument();
     expect(await screen.findByText("Attachment Too Large")).toBeInTheDocument();
     expect(await screen.findByText("Mailbox Not Found")).toBeInTheDocument();
     expect(await screen.findAllByText("Retryable")).not.toHaveLength(0);
-    expect(await screen.findByRole("button", { name: /重试/i })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: /Text/i })).toBeInTheDocument();
   });
 
   it("retries failed spool item from the admin page", async () => {
@@ -167,7 +167,7 @@ describe("AdminJobsPage", () => {
 
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: /重试/i }));
+    fireEvent.click(await screen.findByRole("button", { name: /Text/i }));
 
     await waitFor(() => {
       expect(retryAdminInboundSpoolItem).toHaveBeenCalled();
@@ -203,9 +203,9 @@ describe("AdminJobsPage", () => {
 
     renderPage();
 
-    await screen.findByText("任务队列");
+    await screen.findByText("Text");
 
-    expect(screen.getByLabelText("Inbound Spool 失败诊断过滤")).toBeInTheDocument();
+    expect(screen.getByLabelText("Inbound Spool Text")).toBeInTheDocument();
     expect(vi.mocked(fetchAdminInboundSpool)).toHaveBeenCalledWith(
       expect.objectContaining({ failureMode: "all" }),
     );

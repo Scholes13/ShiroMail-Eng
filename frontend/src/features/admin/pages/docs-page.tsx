@@ -94,10 +94,10 @@ export function AdminDocsPage() {
 
   function validateDocInput(input: { title: string; category: string; summary: string; readTimeMin: number }) {
     return (
-      validateRequiredText("文档标题", input.title, { minLength: 2, maxLength: 120 }) ||
-      validateRequiredText("文档分类", input.category, { minLength: 2, maxLength: 40 }) ||
-      validateRequiredText("文档摘要", input.summary, { minLength: 10, maxLength: 2000 }) ||
-      validateIntegerRange("阅读时长", input.readTimeMin, { min: 1, max: 240 })
+      validateRequiredText("TextSubject", input.title, { minLength: 2, maxLength: 120 }) ||
+      validateRequiredText("Text", input.category, { minLength: 2, maxLength: 40 }) ||
+      validateRequiredText("Text", input.summary, { minLength: 10, maxLength: 2000 }) ||
+      validateIntegerRange("Text", input.readTimeMin, { min: 1, max: 240 })
     );
   }
 
@@ -160,10 +160,10 @@ export function AdminDocsPage() {
                   size="sm"
                   variant="outline"
                 >
-                  编辑
+                  Text
                 </Button>
                 <Button onClick={() => setPendingDeleteDoc(doc)} size="sm" variant="destructive">
-                  删除
+                  Text
                 </Button>
               </div>
             </div>
@@ -189,30 +189,30 @@ export function AdminDocsPage() {
   return (
     <WorkspacePage>
       <WorkspacePanel
-        description="维护文档中心条目，普通用户与管理员都会读取同一份文档数据。"
-        title="文档中心"
+        description="Text，Text。"
+        title="Text"
       >
         <Card className="border-border/60 bg-muted/10 shadow-none">
           <CardContent className="space-y-4 py-4">
             <div className="grid gap-4 md:grid-cols-2">
-              <WorkspaceField label="文档标题">
+              <WorkspaceField label="TextSubject">
                 <Input
                   onChange={(event) => setDraft((current) => ({ ...current, title: event.target.value }))}
-                  placeholder="例如：Webhook 事件"
+                  placeholder="Example: Webhook Text"
                   value={draft.title}
                 />
               </WorkspaceField>
-              <WorkspaceField label="文档分类">
+              <WorkspaceField label="Text">
                 <Input
                   onChange={(event) => setDraft((current) => ({ ...current, category: event.target.value }))}
-                  placeholder="例如：开发文档"
+                  placeholder="Example: Text"
                   value={draft.category}
                 />
               </WorkspaceField>
             </div>
 
             <div className="grid gap-4 md:grid-cols-[0.35fr_0.65fr]">
-              <WorkspaceField label="阅读时长（分钟）">
+              <WorkspaceField label="Text（Text）">
                 <Input
                   min="1"
                   onChange={(event) =>
@@ -225,19 +225,19 @@ export function AdminDocsPage() {
                   value={draft.readTimeMin}
                 />
               </WorkspaceField>
-              <WorkspaceField label="标签">
+              <WorkspaceField label="Text">
                 <Input
                   onChange={(event) => setDraft((current) => ({ ...current, tagsText: event.target.value }))}
-                  placeholder="使用逗号分隔，如 API, Webhook, 鉴权"
+                  placeholder="Text，Text API, Webhook, Text"
                   value={draft.tagsText}
                 />
               </WorkspaceField>
             </div>
 
-            <WorkspaceField label="文档摘要">
+            <WorkspaceField label="Text">
               <Textarea
                 onChange={(event) => setDraft((current) => ({ ...current, summary: event.target.value }))}
-                placeholder="输入文档摘要，前台文档中心会直接展示这里的内容。"
+                placeholder="Text，Text。"
                 rows={5}
                 value={draft.summary}
               />
@@ -245,7 +245,7 @@ export function AdminDocsPage() {
 
             <div className="flex justify-end">
               <Button disabled={!canCreate || createMutation.isPending} onClick={handleCreateDoc}>
-                {createMutation.isPending ? "创建中..." : "新增文档"}
+                {createMutation.isPending ? "Text..." : "Text"}
               </Button>
             </div>
             {formError ? <NoticeBanner className="text-sm" onDismiss={() => setFormError(null)} variant="error">{formError}</NoticeBanner> : null}
@@ -263,13 +263,13 @@ export function AdminDocsPage() {
         >
           <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle>编辑文档</DialogTitle>
-              <DialogDescription>保存后普通用户文档中心会立即读取更新后的内容。</DialogDescription>
+              <DialogTitle>Text</DialogTitle>
+              <DialogDescription>Text。</DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
-                <WorkspaceField label="文档标题">
+                <WorkspaceField label="TextSubject">
                   <Input
                     onChange={(event) =>
                       setEditingDoc((current) =>
@@ -279,7 +279,7 @@ export function AdminDocsPage() {
                     value={editingDoc?.title ?? ""}
                   />
                 </WorkspaceField>
-                <WorkspaceField label="文档分类">
+                <WorkspaceField label="Text">
                   <Input
                     onChange={(event) =>
                       setEditingDoc((current) =>
@@ -292,7 +292,7 @@ export function AdminDocsPage() {
               </div>
 
               <div className="grid gap-4 md:grid-cols-[0.35fr_0.65fr]">
-                <WorkspaceField label="阅读时长（分钟）">
+                <WorkspaceField label="Text（Text）">
                   <Input
                     min="1"
                     onChange={(event) =>
@@ -306,7 +306,7 @@ export function AdminDocsPage() {
                     value={editingDoc?.readTimeMin ?? 1}
                   />
                 </WorkspaceField>
-                <WorkspaceField label="标签">
+                <WorkspaceField label="Text">
                   <Input
                     onChange={(event) =>
                       setEditingDoc((current) =>
@@ -318,7 +318,7 @@ export function AdminDocsPage() {
                 </WorkspaceField>
               </div>
 
-              <WorkspaceField label="文档摘要">
+              <WorkspaceField label="Text">
                 <Textarea
                   onChange={(event) =>
                     setEditingDoc((current) =>
@@ -333,13 +333,13 @@ export function AdminDocsPage() {
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button variant="outline">取消</Button>
+                <Button variant="outline">Cancel</Button>
               </DialogClose>
               <Button
                 disabled={!editingDoc || updateMutation.isPending}
                 onClick={handleUpdateDoc}
               >
-                {updateMutation.isPending ? "保存中..." : "保存修改"}
+                {updateMutation.isPending ? "Text..." : "Text"}
               </Button>
             </DialogFooter>
             {formError ? <NoticeBanner className="text-sm" onDismiss={() => setFormError(null)} variant="error">{formError}</NoticeBanner> : null}
@@ -356,9 +356,9 @@ export function AdminDocsPage() {
         >
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>删除文档</AlertDialogTitle>
+              <AlertDialogTitle>Text</AlertDialogTitle>
               <AlertDialogDescription>
-                删除后普通用户和管理员文档中心都会移除这条文档。
+                Text。
               </AlertDialogDescription>
             </AlertDialogHeader>
             <div className="rounded-lg border border-border/60 bg-muted/10 px-3 py-3 text-sm">
@@ -366,12 +366,12 @@ export function AdminDocsPage() {
               <div className="mt-1 text-muted-foreground">{pendingDeleteDoc?.category ?? "-"}</div>
             </div>
             <AlertDialogFooter>
-              <AlertDialogCancel>取消</AlertDialogCancel>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
                 disabled={deleteMutation.isPending}
                 onClick={() => pendingDeleteDoc && deleteMutation.mutate(pendingDeleteDoc.id)}
               >
-                {deleteMutation.isPending ? "删除中..." : "确认删除"}
+                {deleteMutation.isPending ? "Text..." : "Text"}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -380,7 +380,7 @@ export function AdminDocsPage() {
         {docs.length ? (
           <div className="grid gap-4 lg:grid-cols-2">{docCards}</div>
         ) : (
-          <WorkspaceEmpty description="当前还没有可供管理员查看的文档条目。" title="暂无文档内容" />
+          <WorkspaceEmpty description="Text。" title="Text" />
         )}
       </WorkspacePanel>
     </WorkspacePage>

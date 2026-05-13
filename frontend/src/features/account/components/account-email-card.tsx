@@ -56,7 +56,7 @@ export function AccountEmailCard({
       return;
     }
     if (nextEmail.trim().toLowerCase() === profile.email.trim().toLowerCase()) {
-      setError(t("account.newEmail") + "不能与当前邮箱相同。");
+      setError(t("account.newEmail") + "Text。");
       return;
     }
     try {

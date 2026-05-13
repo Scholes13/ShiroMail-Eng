@@ -54,16 +54,16 @@ describe("AuthSettingsForm", () => {
 
     renderForm({ onProvidersChange, onOAuthDisplayChange });
 
-    fireEvent.click(screen.getByRole("button", { name: "添加 OAuth 应用" }));
-    fireEvent.click(screen.getByRole("combobox", { name: "预设模板" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text OAuth Text" }));
+    fireEvent.click(screen.getByRole("combobox", { name: "Text" }));
     fireEvent.click(screen.getByRole("option", { name: "Discord" }));
     fireEvent.change(screen.getByLabelText("OAuth Provider Slug"), {
       target: { value: "discord-sso" },
     });
-    fireEvent.change(screen.getByLabelText("OAuth 应用名称"), {
+    fireEvent.change(screen.getByLabelText("OAuth Text"), {
       target: { value: "Discord SSO" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "从预设创建" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     expect(onProvidersChange).toHaveBeenCalledWith([
       expect.objectContaining({
@@ -100,7 +100,7 @@ describe("AuthSettingsForm", () => {
     expect(slugInput).toHaveValue("github");
     expect(slugInput).toHaveAttribute("readonly");
 
-    fireEvent.click(screen.getByRole("button", { name: "复制" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     expect(clipboardWriteText).toHaveBeenCalledWith(
       "https://example.com/auth/callback/github",
@@ -117,16 +117,16 @@ describe("AuthSettingsForm", () => {
 
     renderForm();
 
-    fireEvent.click(screen.getByRole("button", { name: "添加 OAuth 应用" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text OAuth Text" }));
     fireEvent.change(screen.getByLabelText("OAuth Provider Slug"), {
       target: { value: "gitlab-sso" },
     });
 
-    expect(screen.getByLabelText("新应用回调地址")).toHaveValue(
+    expect(screen.getByLabelText("TextCallback URL")).toHaveValue(
       "http://localhost:3000/auth/callback/gitlab-sso",
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "复制回调地址" }));
+    fireEvent.click(screen.getByRole("button", { name: "TextCallback URL" }));
 
     expect(clipboardWriteText).toHaveBeenCalledWith(
       "http://localhost:3000/auth/callback/gitlab-sso",
@@ -136,11 +136,11 @@ describe("AuthSettingsForm", () => {
   it("uses preset slug for callback preview when custom slug is empty", () => {
     renderForm();
 
-    fireEvent.click(screen.getByRole("button", { name: "添加 OAuth 应用" }));
-    fireEvent.click(screen.getByRole("combobox", { name: "预设模板" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text OAuth Text" }));
+    fireEvent.click(screen.getByRole("combobox", { name: "Text" }));
     fireEvent.click(screen.getByRole("option", { name: "Slack" }));
 
-    expect(screen.getByLabelText("新应用回调地址")).toHaveValue(
+    expect(screen.getByLabelText("TextCallback URL")).toHaveValue(
       "http://localhost:3000/auth/callback/slack",
     );
   });
@@ -150,23 +150,23 @@ describe("AuthSettingsForm", () => {
       providers: [defaultOAuthProviderSettings("Slack", "slack")],
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "添加 OAuth 应用" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text OAuth Text" }));
     fireEvent.change(screen.getByLabelText("OAuth Provider Slug"), {
       target: { value: "slack" },
     });
 
-    expect(screen.getByText("该 Provider Slug 已存在，请更换后再创建。")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "创建自定义应用" })).toBeDisabled();
+    expect(screen.getByText("Text Provider Slug Text，Text。")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Text" })).toBeDisabled();
   });
 
   it("shows selected preset details for quick verification", () => {
     renderForm();
 
-    fireEvent.click(screen.getByRole("button", { name: "添加 OAuth 应用" }));
-    fireEvent.click(screen.getByRole("combobox", { name: "预设模板" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text OAuth Text" }));
+    fireEvent.click(screen.getByRole("combobox", { name: "Text" }));
     fireEvent.click(screen.getByRole("option", { name: "Google" }));
 
-    expect(screen.getByText("预设详情")).toBeInTheDocument();
+    expect(screen.getByText("Text")).toBeInTheDocument();
     expect(screen.getByText("https://accounts.google.com/o/oauth2/v2/auth")).toBeInTheDocument();
     expect(screen.getByText("openid, email, profile")).toBeInTheDocument();
     expect(screen.getByText("PKCE / OAuth 2.1")).toBeInTheDocument();
@@ -177,12 +177,12 @@ describe("AuthSettingsForm", () => {
       providers: [defaultOAuthProviderSettings("Google", "google")],
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "添加 OAuth 应用" }));
-    fireEvent.click(screen.getByRole("combobox", { name: "预设模板" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text OAuth Text" }));
+    fireEvent.click(screen.getByRole("combobox", { name: "Text" }));
 
     const googleOption = screen.getByRole("option", { name: "Google" });
     expect(googleOption).toHaveAttribute("aria-disabled", "true");
-    expect(screen.getByText("已接入的预设模板会自动禁用，避免重复创建。")).toBeInTheDocument();
+    expect(screen.getByText("Text，Text。")).toBeInTheDocument();
   });
 
   it("shows configured state summary for connected providers", () => {
@@ -198,9 +198,9 @@ describe("AuthSettingsForm", () => {
       ],
     });
 
-    expect(screen.getByText("已接入")).toBeInTheDocument();
-    expect(screen.getByText("客户端已配置")).toBeInTheDocument();
-    expect(screen.getByText("2 个 Scope")).toBeInTheDocument();
+    expect(screen.getByText("Text")).toBeInTheDocument();
+    expect(screen.getByText("Text")).toBeInTheDocument();
+    expect(screen.getByText("2 Text Scope")).toBeInTheDocument();
   });
 
   it("removes provider and prunes provider order", () => {
@@ -220,7 +220,7 @@ describe("AuthSettingsForm", () => {
 
     const providerCard = screen.getByText("Discord").closest("div.rounded-xl");
     expect(providerCard).not.toBeNull();
-    fireEvent.click(within(providerCard as HTMLElement).getByRole("button", { name: "删除" }));
+    fireEvent.click(within(providerCard as HTMLElement).getByRole("button", { name: "Text" }));
 
     expect(onProvidersChange).toHaveBeenCalledWith([]);
     expect(onOAuthDisplayChange).toHaveBeenCalledWith(

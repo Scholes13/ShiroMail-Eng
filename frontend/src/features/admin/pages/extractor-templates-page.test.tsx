@@ -29,9 +29,9 @@ describe("AdminExtractorTemplatesPage", () => {
         id: 41,
         sourceType: "admin_default",
         templateKey: "mail-code",
-        name: "系统验证码模板",
-        description: "后台默认模板",
-        label: "验证码",
+        name: "Textverification codeText",
+        description: "TextDefault templates",
+        label: "verification code",
         enabled: true,
         targetFields: ["subject"],
         pattern: "\\b(\\d{6})\\b",
@@ -72,7 +72,7 @@ describe("AdminExtractorTemplatesPage", () => {
         mailboxAddress: "ops@example.test",
         fromAddr: "sender@example.com",
         toAddr: "ops@example.test",
-        subject: "验证码 654321",
+        subject: "verification code 654321",
         textPreview: "body",
         htmlPreview: "",
         hasAttachments: false,
@@ -87,9 +87,9 @@ describe("AdminExtractorTemplatesPage", () => {
       id: 52,
       sourceType: "admin_default",
       templateKey: "created-template",
-      name: "登录验证码模板",
+      name: "Textverification codeText",
       description: "",
-      label: "登录码",
+      label: "Text",
       enabled: true,
       targetFields: ["subject"],
       pattern: "\\b(\\d{6})\\b",
@@ -123,22 +123,22 @@ describe("AdminExtractorTemplatesPage", () => {
   it("renders existing admin extractor templates", async () => {
     renderPage();
 
-    expect(await screen.findByText("系统验证码模板")).toBeInTheDocument();
-    expect(await screen.findByText("验证码")).toBeInTheDocument();
+    expect(await screen.findByText("Textverification codeText")).toBeInTheDocument();
+    expect(await screen.findByText("verification code")).toBeInTheDocument();
   });
 
   it("creates a template", async () => {
     renderPage();
 
-    fireEvent.change((await screen.findAllByLabelText("模板名称"))[0], { target: { value: "登录验证码模板" } });
-    fireEvent.change(screen.getAllByLabelText("正则表达式")[0], {
+    fireEvent.change((await screen.findAllByLabelText("Text"))[0], { target: { value: "Textverification codeText" } });
+    fireEvent.change(screen.getAllByLabelText("Regular expression")[0], {
       target: { value: "\\b(\\d{6})\\b" },
     });
 
-    fireEvent.click(screen.getAllByRole("button", { name: "保存模板" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Text" })[0]);
     await waitFor(() => {
       expect(vi.mocked(createAdminMailExtractorRule).mock.calls[0]?.[0]).toMatchObject({
-        name: "登录验证码模板",
+        name: "Textverification codeText",
       });
     });
   });
@@ -146,8 +146,8 @@ describe("AdminExtractorTemplatesPage", () => {
   it("deletes an existing template", async () => {
     renderPage();
 
-    fireEvent.click((await screen.findAllByText("系统验证码模板"))[0]);
-    fireEvent.click((await screen.findAllByRole("button", { name: "删除模板" }))[0]);
+    fireEvent.click((await screen.findAllByText("Textverification codeText"))[0]);
+    fireEvent.click((await screen.findAllByRole("button", { name: "Text" }))[0]);
 
     await waitFor(() => {
       expect(deleteAdminMailExtractorRule).toHaveBeenCalledWith(41);
@@ -160,7 +160,7 @@ describe("AdminExtractorTemplatesPage", () => {
         id: 61,
         sourceType: "admin_default",
         templateKey: "broken-template",
-        name: "异常模板",
+        name: "Text",
         description: "",
         label: "",
         enabled: true,
@@ -179,6 +179,6 @@ describe("AdminExtractorTemplatesPage", () => {
 
     renderPage();
 
-    expect(await screen.findByText("异常模板")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
   });
 });

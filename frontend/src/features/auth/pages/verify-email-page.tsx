@@ -20,7 +20,7 @@ export function VerifyEmailPage() {
   const [ticket, setTicket] = useState(searchParams.get("ticket") ?? "");
   const [email, setEmail] = useState(searchParams.get("email") ?? "");
   const siteName = useSiteName();
-  usePageTitle(composePageTitle("验证邮箱", siteName));
+  usePageTitle(composePageTitle("Text", siteName));
 
 
   async function handleSubmit() {
@@ -37,7 +37,7 @@ export function VerifyEmailPage() {
       setSession(session);
       navigate(getDefaultRouteForRoles(session.user.roles), { replace: true });
     } catch (currentError) {
-      setError(getAuthErrorMessage(currentError, "邮箱验证码校验失败。"));
+      setError(getAuthErrorMessage(currentError, "Textverification codeText。"));
     } finally {
       setSubmitPending(false);
     }
@@ -53,9 +53,9 @@ export function VerifyEmailPage() {
       const result = await resendEmailVerification({ verificationTicket: ticket });
       setTicket(result.verificationTicket);
       setEmail(result.email);
-      setNotice(`验证码已重新发送至 ${result.email}`);
+      setNotice(`verification codeText ${result.email}`);
     } catch (currentError) {
-      setError(getAuthErrorMessage(currentError, "验证码重发失败。"));
+      setError(getAuthErrorMessage(currentError, "verification codeText。"));
     } finally {
       setResendPending(false);
     }
@@ -64,25 +64,25 @@ export function VerifyEmailPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-6">
       <div className="w-full max-w-md rounded-2xl border border-border/60 bg-card p-6 shadow-sm">
-        <p className="text-base font-semibold text-foreground">验证账户邮箱</p>
+        <p className="text-base font-semibold text-foreground">Text</p>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          我们已向 `{email || "你的邮箱"}` 发送 6 位验证码。输入验证码后即可继续进入工作台。
+          Text `{email || "Text"}` Text 6 Textverification code。Textverification codeText。
         </p>
 
         <div className="mt-5 space-y-3">
           <Input
-            aria-label="邮箱验证码"
-            placeholder="输入 6 位验证码"
+            aria-label="Textverification code"
+            placeholder="Text 6 Textverification code"
             value={code}
             onChange={(event) => setCode(event.target.value)}
           />
           {notice ? <p className="text-xs text-emerald-600">{notice}</p> : null}
           {error ? <p className="text-xs text-destructive">{error}</p> : null}
           <Button className="w-full" disabled={submitPending || resendPending || !ticket || code.trim().length < 6} onClick={handleSubmit}>
-            {submitPending ? "验证中..." : "确认验证"}
+            {submitPending ? "Text..." : "Text"}
           </Button>
           <Button className="w-full" disabled={submitPending || resendPending || !ticket} variant="outline" onClick={handleResend}>
-            {resendPending ? "处理中..." : "重新发送验证码"}
+            {resendPending ? "Text..." : "Textverification code"}
           </Button>
         </div>
       </div>

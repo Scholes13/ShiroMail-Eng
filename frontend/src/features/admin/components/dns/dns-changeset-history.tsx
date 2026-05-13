@@ -45,10 +45,10 @@ export function DnsChangesetHistory({
   return (
     <div className="space-y-2 rounded-xl border border-border/60 bg-background/80 p-3">
       <SectionToggle
-        description="当前 Zone 最近的 preview / apply 历史。"
+        description="Text Zone Text preview / apply Text。"
         expanded={expanded}
-        meta={<WorkspaceBadge variant="outline">{sortedHistory.length} 条历史</WorkspaceBadge>}
-        title="Change Set 历史"
+        meta={<WorkspaceBadge variant="outline">{sortedHistory.length} Text</WorkspaceBadge>}
+        title="Change Set Text"
         onToggle={onToggleExpanded}
       />
       {expanded && sortedHistory.length ? (
@@ -66,16 +66,16 @@ export function DnsChangesetHistory({
               meta={
                 <>
                   <WorkspaceBadge>{item.status}</WorkspaceBadge>
-                  <span>{item.appliedAt ? "已应用" : "待应用"}</span>
+                  <span>{item.appliedAt ? "Text" : "Text"}</span>
                   <span>
                     {item.appliedAt
-                      ? `应用于 ${formatChangeSetTimestamp(item.appliedAt)}`
-                      : `生成于 ${formatChangeSetTimestamp(item.createdAt)}`}
+                      ? `Text ${formatChangeSetTimestamp(item.appliedAt)}`
+                      : `Text ${formatChangeSetTimestamp(item.createdAt)}`}
                   </span>
                   {item.operations.length ? (
-                    <span>{item.operations.length} 条操作</span>
+                    <span>{item.operations.length} Text</span>
                   ) : (
-                    <span>无操作</span>
+                    <span>Text</span>
                   )}
                   <Button
                     disabled={isWorkspaceBusy}
@@ -84,7 +84,7 @@ export function DnsChangesetHistory({
                     variant="outline"
                     onClick={() => onReview(item)}
                   >
-                    回看
+                    Text
                   </Button>
                   <Button
                     disabled={
@@ -96,7 +96,7 @@ export function DnsChangesetHistory({
                     variant="ghost"
                     onClick={() => onRestore(item)}
                   >
-                    恢复到编辑器
+                    Text and Text
                   </Button>
                 </>
               }
@@ -113,8 +113,8 @@ export function DnsChangesetHistory({
         </div>
       ) : expanded ? (
         <WorkspaceEmpty
-          title="暂无 Change Set 历史"
-          description="当前 Zone 还没有 preview / apply 记录。"
+          title="Text Change Set Text"
+          description="Text Zone Text preview / apply Text。"
         />
       ) : null}
     </div>

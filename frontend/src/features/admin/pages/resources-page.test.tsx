@@ -92,12 +92,12 @@ describe("AdminResourcesPage", () => {
       </QueryClientProvider>,
     );
 
-    expect(await screen.findAllByText("Provider 账号")).toHaveLength(2);
-    expect(await screen.findAllByText("配置注册表")).toHaveLength(2);
-    expect(await screen.findAllByText("任务队列")).toHaveLength(2);
-    expect(await screen.findByText("DNS Provider 账号")).toBeInTheDocument();
-    expect(await screen.findByText("系统配置项")).toBeInTheDocument();
-    expect(await screen.findByText("后台任务")).toBeInTheDocument();
+    expect(await screen.findAllByText("Provider Text")).toHaveLength(2);
+    expect(await screen.findAllByText("Text")).toHaveLength(2);
+    expect(await screen.findAllByText("Text")).toHaveLength(2);
+    expect(await screen.findByText("DNS Provider Text")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
     expect(await screen.findByText("Primary Cloudflare")).toBeInTheDocument();
     expect(await screen.findByText("updated by #3")).toBeInTheDocument();
     expect(await screen.findByText("inbound_spool")).toBeInTheDocument();

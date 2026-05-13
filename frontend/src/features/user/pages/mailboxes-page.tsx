@@ -47,15 +47,15 @@ type MessageViewMode = "text" | "html" | "raw";
 const RAW_PREVIEW_AUTOMATIC_LIMIT = 512 * 1024;
 
 const ttlOptions = [
-  { label: "24 小时", value: "24", keywords: ["1 day", "24"] },
-  { label: "72 小时", value: "72", keywords: ["3 days", "72"] },
-  { label: "168 小时", value: "168", keywords: ["7 days", "168"] },
+  { label: "24 hours", value: "24", keywords: ["1 day", "24"] },
+  { label: "72 hours", value: "72", keywords: ["3 days", "72"] },
+  { label: "168 hours", value: "168", keywords: ["7 days", "168"] },
 ];
 const mailboxAutoRefreshOptions = [
-  { label: "手动刷新", value: "0", keywords: ["manual", "off", "0"] },
-  { label: "5 秒", value: "5", keywords: ["5s", "5"] },
-  { label: "15 秒", value: "15", keywords: ["15s", "15"] },
-  { label: "30 秒", value: "30", keywords: ["30s", "30"] },
+  { label: "TextRefresh", value: "0", keywords: ["manual", "off", "0"] },
+  { label: "5 sec", value: "5", keywords: ["5s", "5"] },
+  { label: "15 sec", value: "15", keywords: ["15s", "15"] },
+  { label: "30 sec", value: "30", keywords: ["30s", "30"] },
 ];
 const allowedMailboxTTLValues = ttlOptions.map((item) => Number(item.value));
 const USER_MAILBOXES_PAGE_SIZE = 8;
@@ -72,11 +72,11 @@ function formatDate(value: string) {
 function formatRemainingHours(value: string) {
   const target = new Date(value).getTime();
   if (target > Date.now() + 1000 * 60 * 60 * 24 * 365 * 50) {
-    return "永久";
+    return "Permanent";
   }
   const diff = target - Date.now();
   const hours = Math.max(0, Math.ceil(diff / (1000 * 60 * 60)));
-  return `${hours} 小时`;
+  return `${hours} hours`;
 }
 
 function blobToDataURL(blob: Blob) {
@@ -350,7 +350,7 @@ export function UserMailboxPage() {
       })
       .catch(() => {
         if (!cancelled) {
-          setFeedback("部分内联图片加载失败，已保留正文预览。");
+          setFeedback("Text，TextBodyText。");
         }
       });
 
@@ -375,27 +375,27 @@ export function UserMailboxPage() {
   const createMutation = useMutation({
     mutationFn: createCustomMailbox,
     onSuccess: async (created) => {
-      setFeedback(`已创建邮箱 ${created.address}`);
+      setFeedback(`Created mailbox ${created.address}`);
       setLocalPart("");
       await invalidateMailboxData();
       setMailboxesPage(1);
       setSelectedMailboxId(created.id);
     },
     onError: () => {
-      setFeedback("创建邮箱失败，请稍后重试。");
+      setFeedback("Failed to create mailbox. Please try again later.");
     },
   });
 
   function handleCreateMailbox() {
-    const domainError = validateSelection("域名", effectiveDomainId, domains.map((item) => String(item.id)));
+    const domainError = validateSelection("Domain", effectiveDomainId, domains.map((item) => String(item.id)));
     if (domainError) {
       setFeedback(domainError);
       return;
     }
     if (!permanent) {
       const ttlError =
-        validateIntegerRange("有效期", ttlHours, { min: 24, max: 168 }) ||
-        (!allowedMailboxTTLValues.includes(ttlHours) ? "有效期无效，请重新选择。": null);
+        validateIntegerRange("TTL", ttlHours, { min: 24, max: 168 }) ||
+        (!allowedMailboxTTLValues.includes(ttlHours) ? "TTL is invalid. Please select again.": null);
       if (ttlError) {
         setFeedback(ttlError);
         return;
@@ -425,11 +425,11 @@ export function UserMailboxPage() {
     mutationFn: ({ mailboxId, expiresInHours }: { mailboxId: number; expiresInHours: number }) =>
       extendMailbox(mailboxId, expiresInHours),
     onSuccess: async (updated) => {
-      setFeedback(`已为 ${updated.address} 延长 24 小时`);
+      setFeedback(`Extended ${updated.address} by 24 hours`);
       await invalidateMailboxData();
     },
     onError: () => {
-      setFeedback("续期失败，请稍后重试。");
+      setFeedback("Failed to extend. Please try again later.");
     },
   });
 
@@ -451,10 +451,10 @@ export function UserMailboxPage() {
       queryClient.removeQueries({ queryKey: ["mailbox-messages", updated.id], exact: true });
       setSelectedMailboxId((current) => (current === updated.id ? null : current));
       setSelectedMessageId(null);
-      setFeedback("邮箱已删除");
+      setFeedback("Mailbox deleted");
     },
     onError: () => {
-      setFeedback("释放邮箱失败，请稍后重试。");
+      setFeedback("Failed to release mailbox. Please try again later.");
     },
   });
 
@@ -473,29 +473,29 @@ export function UserMailboxPage() {
             action={
               <div className="flex flex-wrap items-center gap-2">
                 <OptionCombobox
-                  ariaLabel="邮箱自动刷新时间"
+                  ariaLabel="TextRefreshText"
                   className="h-9 w-[96px] min-w-[96px]"
                   contentClassName="w-[112px] min-w-[112px]"
-                  emptyLabel="没有匹配的刷新时间"
+                  emptyLabel="TextRefreshText"
                   onValueChange={(value) => setAutoRefreshSeconds(Number(value || 0))}
                   options={mailboxAutoRefreshOptions}
-                  placeholder="自动刷新"
-                  searchPlaceholder="搜索刷新时间"
+                  placeholder="TextRefresh"
+                  searchPlaceholder="TextRefreshText"
                   value={String(autoRefreshSeconds)}
                 />
                 <Button onClick={() => void refreshMailboxWorkspace()} size="sm" variant="secondary">
                   <RefreshCw className={`size-4 ${isRefreshing ? "animate-spin" : ""}`} />
-                  刷新
+                  Refresh
                 </Button>
               </div>
             }
-            description="创建新的临时邮箱、延长有效期并查看当前收件状态。"
-            title="邮箱管理"
+            description="Text、TextTTLText。"
+            title="Mailbox management"
           >
             <div className="grid gap-4 md:grid-cols-3">
-              <WorkspaceMetric label="邮箱总数" value={dashboardQuery.data?.totalMailboxCount ?? 0} />
-              <WorkspaceMetric label="活跃邮箱" value={dashboardQuery.data?.activeMailboxCount ?? 0} />
-              <WorkspaceMetric label="可用域名" value={domains.length} />
+              <WorkspaceMetric label="Total mailboxes" value={dashboardQuery.data?.totalMailboxCount ?? 0} />
+              <WorkspaceMetric label="Active mailboxes" value={dashboardQuery.data?.activeMailboxCount ?? 0} />
+              <WorkspaceMetric label="TextDomain" value={domains.length} />
             </div>
 
             <MailboxCreateForm
@@ -574,10 +574,10 @@ export function UserMailboxPage() {
           onRelease={async () => {
             if (!selectedMailbox) return;
             const confirmed = await confirm({
-              title: "释放邮箱？",
-              description: `确认释放邮箱 ${selectedMailbox.address}？释放后它会立即从当前列表中移除。`,
-              confirmLabel: "确认释放",
-              cancelLabel: "取消",
+              title: "Release mailbox?",
+              description: `Release mailbox ${selectedMailbox.address}？It will be removed from the current list immediately.`,
+              confirmLabel: "Confirm release",
+              cancelLabel: "Cancel",
               variant: "danger",
             });
             if (confirmed) {

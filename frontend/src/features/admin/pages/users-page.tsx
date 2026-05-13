@@ -37,9 +37,9 @@ import {
 
 const ROLE_OPTIONS = ["user", "admin"] as const;
 const STATUS_OPTIONS = [
-  { value: "active", label: "正常" },
-  { value: "pending_verification", label: "待验证" },
-  { value: "disabled", label: "停用" },
+  { value: "active", label: "Text" },
+  { value: "pending_verification", label: "Text" },
+  { value: "disabled", label: "Disable" },
 ] as const;
 
 const ADMIN_USERS_PAGE_SIZE = 10;
@@ -130,20 +130,20 @@ export function AdminUsersPage() {
         newPassword: input.newPassword.trim() || undefined,
       }),
     onSuccess: async () => {
-      setFeedback("用户信息已更新。");
+      setFeedback("Text。");
       setDialogOpen(false);
       setSelectedUser(null);
       await queryClient.invalidateQueries({ queryKey: ["admin-users"] });
     },
     onError: (error) => {
-      setFeedback(getAPIErrorMessage(error, "保存用户失败，请稍后重试。"));
+      setFeedback(getAPIErrorMessage(error, "Text，Text。"));
     },
   });
 
   const deleteUserMutation = useMutation({
     mutationFn: (userId: number) => deleteAdminUser(userId),
     onSuccess: async (_result, userId) => {
-      setFeedback("用户已删除。");
+      setFeedback("Text。");
       setSelectedIds((prev) => { const next = new Set(prev); next.delete(userId); return next; });
       queryClient.setQueryData<AdminUser[]>(["admin-users"], (current) =>
         (current ?? []).filter((user) => user.id !== userId),
@@ -151,7 +151,7 @@ export function AdminUsersPage() {
       await queryClient.invalidateQueries({ queryKey: ["admin-users"] });
     },
     onError: (error) => {
-      setFeedback(getAPIErrorMessage(error, "删除用户失败，请先清理该用户的邮箱、域名或服务商资源。"));
+      setFeedback(getAPIErrorMessage(error, "Text，Text、DomainText。"));
     },
   });
 
@@ -162,29 +162,29 @@ export function AdminUsersPage() {
       const successCount = result.succeeded.length;
       const failCount = result.failed.length;
       if (failCount === 0) {
-        setFeedback(`批量操作完成，${successCount} 个用户已处理。`);
+        setFeedback(`Text，${successCount} Text。`);
       } else {
         const reasons = result.failed.slice(0, 3).map((f) => f.message).join("; ");
-        setFeedback(`${successCount} 个成功，${failCount} 个失败: ${reasons}`);
+        setFeedback(`${successCount} Text，${failCount} Text: ${reasons}`);
       }
       setSelectedIds(new Set());
       await queryClient.invalidateQueries({ queryKey: ["admin-users"] });
     },
     onError: (error) => {
-      setFeedback(getAPIErrorMessage(error, "批量操作失败，请稍后重试。"));
+      setFeedback(getAPIErrorMessage(error, "Text，Text。"));
     },
   });
 
   async function handleBatchAction(action: "ban" | "unban" | "delete") {
     const ids = [...selectedIds];
-    const labels: Record<string, string> = { ban: "封禁", unban: "解封", delete: "删除" };
+    const labels: Record<string, string> = { ban: "Text", unban: "Text", delete: "Text" };
     const confirmed = await confirm({
-      title: `批量${labels[action]} ${ids.length} 个用户？`,
+      title: `Text${labels[action]} ${ids.length} Text？`,
       description: action === "delete"
-        ? "删除操作不可撤销，仍绑定资源的用户将跳过。"
-        : `将对选中的 ${ids.length} 个用户执行${labels[action]}操作。`,
-      confirmLabel: `确认${labels[action]}`,
-      cancelLabel: "取消",
+        ? "Text，Text。"
+        : `Text ${ids.length} Text${labels[action]}Text。`,
+      confirmLabel: `Text${labels[action]}`,
+      cancelLabel: "Cancel",
       variant: action === "delete" ? "danger" : "default",
     });
     if (confirmed) {
@@ -214,11 +214,11 @@ export function AdminUsersPage() {
             size="sm"
             variant="outline"
           >
-            导出 CSV
+            Text CSV
           </Button>
         }
-        description="查看账号状态、修改绑定信息，并支持管理员编辑或删除用户。"
-        title="用户管理"
+        description="Text、Text，Text。"
+        title="Text"
       >
         {feedback ? (
           <div className="rounded-xl border border-border/60 bg-muted/10 px-4 py-3 text-sm">{feedback}</div>
@@ -234,13 +234,13 @@ export function AdminUsersPage() {
         >
           <DialogContent className="sm:max-w-xl">
             <DialogHeader>
-              <DialogTitle>编辑用户</DialogTitle>
-              <DialogDescription>修改账号基础资料、角色和验证状态；密码留空则保持不变。</DialogDescription>
+              <DialogTitle>Text</DialogTitle>
+              <DialogDescription>Text、Text；Text。</DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
-                <WorkspaceField label="用户名">
+                <WorkspaceField label="Text">
                   <Input
                     onChange={(event) =>
                       setFormState((current) => ({ ...current, username: event.target.value }))
@@ -248,7 +248,7 @@ export function AdminUsersPage() {
                     value={formState.username}
                   />
                 </WorkspaceField>
-                <WorkspaceField label="绑定邮箱">
+                <WorkspaceField label="Text">
                   <Input
                     onChange={(event) =>
                       setFormState((current) => ({ ...current, email: event.target.value }))
@@ -259,7 +259,7 @@ export function AdminUsersPage() {
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
-                <WorkspaceField label="账号状态">
+                <WorkspaceField label="Text">
                   <div className="grid gap-2 rounded-xl border border-border/60 bg-card px-4 py-4">
                     {STATUS_OPTIONS.map((item) => {
                       const statusId = `admin-user-status-${item.value}`;
@@ -282,7 +282,7 @@ export function AdminUsersPage() {
                   </div>
                 </WorkspaceField>
 
-                <WorkspaceField label="验证与密码">
+                <WorkspaceField label="Text">
                   <div className="space-y-3 rounded-xl border border-border/60 bg-card px-4 py-4">
                     <div className="flex items-center gap-2">
                       <Checkbox
@@ -295,13 +295,13 @@ export function AdminUsersPage() {
                           }))
                         }
                       />
-                      <Label htmlFor="admin-user-email-verified">邮箱已验证</Label>
+                      <Label htmlFor="admin-user-email-verified">Text</Label>
                     </div>
                     <Input
                       onChange={(event) =>
                         setFormState((current) => ({ ...current, newPassword: event.target.value }))
                       }
-                      placeholder="输入新密码以覆盖"
+                      placeholder="Text"
                       type="password"
                       value={formState.newPassword}
                     />
@@ -309,7 +309,7 @@ export function AdminUsersPage() {
                 </WorkspaceField>
               </div>
 
-              <WorkspaceField label="角色">
+              <WorkspaceField label="Text">
                 <div className="grid gap-3 rounded-xl border border-border/60 bg-card px-4 py-4">
                   {ROLE_OPTIONS.map((role) => {
                     const checkboxId = `admin-user-role-${role}`;
@@ -342,7 +342,7 @@ export function AdminUsersPage() {
 
             <DialogFooter>
               <Button onClick={() => setDialogOpen(false)} variant="outline">
-                取消
+                Cancel
               </Button>
               <Button
                 disabled={!selectedUser || formState.roles.length === 0 || updateUserMutation.isPending}
@@ -355,7 +355,7 @@ export function AdminUsersPage() {
                     });
                 }}
               >
-                {updateUserMutation.isPending ? "保存中..." : "保存修改"}
+                {updateUserMutation.isPending ? "Text..." : "Text"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -364,21 +364,21 @@ export function AdminUsersPage() {
         {ConfirmDialog}
 
         <div className="grid gap-4 md:grid-cols-3">
-          <WorkspaceMetric hint="后台可见全部账号" label="用户总数" value={users.length} />
-          <WorkspaceMetric hint="含 admin 角色的账号数量" label="管理员" value={adminCount} />
-          <WorkspaceMetric hint="全部用户下的邮箱实例汇总" label="邮箱总量" value={mailboxCount} />
+          <WorkspaceMetric hint="Text" label="Text" value={users.length} />
+          <WorkspaceMetric hint="Text admin Text" label="Text" value={adminCount} />
+          <WorkspaceMetric hint="Text" label="Text" value={mailboxCount} />
         </div>
 
         {users.length ? (
           <div className="space-y-3">
             <div className="flex items-center gap-3 px-1">
               <Checkbox
-                aria-label="全选当前页"
+                aria-label="Text"
                 checked={allPageSelected ? true : somePageSelected ? "indeterminate" : false}
                 onCheckedChange={toggleSelectAll}
               />
               <span className="text-xs text-muted-foreground">
-                {selectedIds.size > 0 ? `已选 ${selectedIds.size} 个用户` : "全选当前页"}
+                {selectedIds.size > 0 ? `Text ${selectedIds.size} Text` : "Text"}
               </span>
             </div>
             {paginatedUsers.items.map((user) => {
@@ -387,7 +387,7 @@ export function AdminUsersPage() {
                 <div className="flex items-start gap-3" key={user.id}>
                   <div className="pt-4">
                     <Checkbox
-                      aria-label={`选择 ${user.username}`}
+                      aria-label={`Text ${user.username}`}
                       checked={selectedIds.has(user.id)}
                       disabled={isCurrentUser}
                       onCheckedChange={() => toggleSelect(user.id)}
@@ -395,25 +395,25 @@ export function AdminUsersPage() {
                   </div>
                   <div className="flex-1">
                     <WorkspaceListRow
-                      description={`${user.email} · ${user.status}${user.emailVerified ? " · 已验证" : " · 未验证"}`}
+                      description={`${user.email} · ${user.status}${user.emailVerified ? " · Text" : " · Text"}`}
                       meta={
                         <>
                           <span className="rounded-full border border-border/60 px-2 py-1">{user.roles.join(", ")}</span>
-                          <span>{user.mailboxes} 个邮箱</span>
+                          <span>{user.mailboxes} Text</span>
                           <Button onClick={() => navigate(`/admin/users/${user.id}`)} size="sm" variant="ghost">
-                            查看
+                            Text
                           </Button>
                           <Button onClick={() => openEditDialog(user)} size="sm" variant="outline">
-                            编辑
+                            Text
                           </Button>
                           <Button
                             disabled={isCurrentUser}
                             onClick={async () => {
                               const confirmed = await confirm({
-                                title: "删除用户？",
-                                description: `确认删除用户 ${user.username}？如果该用户仍绑定邮箱、域名或服务商资源，后端会阻止这次删除。`,
-                                confirmLabel: "确认删除",
-                                cancelLabel: "取消",
+                                title: "Text？",
+                                description: `Text ${user.username}？Text、DomainText，Text。`,
+                                confirmLabel: "Text",
+                                cancelLabel: "Cancel",
                                 variant: "danger",
                               });
                               if (confirmed) {
@@ -424,7 +424,7 @@ export function AdminUsersPage() {
                             size="sm"
                             variant="destructive"
                           >
-                            删除
+                            Text
                           </Button>
                         </>
                       }
@@ -435,7 +435,7 @@ export function AdminUsersPage() {
               );
             })}
             <PaginationControls
-              itemLabel="用户"
+              itemLabel="Text"
               onPageChange={setUsersPage}
               page={paginatedUsers.page}
               pageSize={ADMIN_USERS_PAGE_SIZE}
@@ -444,19 +444,19 @@ export function AdminUsersPage() {
             />
           </div>
         ) : (
-          <WorkspaceEmpty description="当前还没有可管理用户。" title="暂无用户" />
+          <WorkspaceEmpty description="Text。" title="Text" />
         )}
 
         {selectedIds.size > 0 && (
           <div className="fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit items-center gap-3 rounded-xl border border-border/60 bg-card px-5 py-3 shadow-lg">
-            <span className="text-sm font-medium">已选 {selectedIds.size} 个用户</span>
+            <span className="text-sm font-medium">Text {selectedIds.size} Text</span>
             <Button
               disabled={batchMutation.isPending}
               onClick={() => handleBatchAction("ban")}
               size="sm"
               variant="outline"
             >
-              封禁
+              Text
             </Button>
             <Button
               disabled={batchMutation.isPending}
@@ -464,7 +464,7 @@ export function AdminUsersPage() {
               size="sm"
               variant="outline"
             >
-              解封
+              Text
             </Button>
             <Button
               disabled={batchMutation.isPending}
@@ -472,14 +472,14 @@ export function AdminUsersPage() {
               size="sm"
               variant="destructive"
             >
-              删除
+              Text
             </Button>
             <Button
               onClick={() => setSelectedIds(new Set())}
               size="sm"
               variant="ghost"
             >
-              取消选择
+              CancelText
             </Button>
           </div>
         )}

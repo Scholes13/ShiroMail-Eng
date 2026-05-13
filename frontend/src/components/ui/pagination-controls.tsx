@@ -24,14 +24,14 @@ export function PaginationControls({
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-background/60 px-3 py-2">
       <p className="text-xs text-muted-foreground">
-        第 {page} / {totalPages} 页 · 共 {total} 条{itemLabel}
+        Text {page} / {totalPages} Text · Text {total} Text{itemLabel}
       </p>
       <div className="flex items-center gap-2">
         <Button disabled={page <= 1} size="sm" type="button" variant="outline" onClick={() => onPageChange(page - 1)}>
-          上一页
+          Text
         </Button>
         <Button disabled={page >= totalPages} size="sm" type="button" variant="outline" onClick={() => onPageChange(page + 1)}>
-          下一页
+          Text
         </Button>
       </div>
     </div>

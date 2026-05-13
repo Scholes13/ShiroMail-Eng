@@ -83,16 +83,16 @@ export function DnsDomainFormDialog({
     >
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
         <DialogHeader>
-          <DialogTitle>{isEditing ? "编辑域名" : "添加域名"}</DialogTitle>
+          <DialogTitle>{isEditing ? "TextDomain" : "TextDomain"}</DialogTitle>
           <DialogDescription>
             {isEditing
-              ? "直接调整域名状态、发布策略和 Provider 绑定；解除绑定后即可删除不再使用的 Provider。"
-              : "添加自定义域名后，需要配置 DNS 记录并完成验证。"}
+              ? "TextDomainText、Text Provider Text；Text Provider。"
+              : "TextDomainText，Text DNS Text。"}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
-          <WorkspaceField label="名称">
+          <WorkspaceField label="Text">
             <Input
               className="h-12 rounded-xl text-base"
               onChange={(event) =>
@@ -106,24 +106,24 @@ export function DnsDomainFormDialog({
             />
           </WorkspaceField>
           <div className="grid gap-4 md:grid-cols-2">
-            <WorkspaceField label="状态">
+            <WorkspaceField label="Text">
               <OptionCombobox
-                ariaLabel="域名状态"
-                emptyLabel="没有匹配的状态"
+                ariaLabel="DomainText"
+                emptyLabel="Text"
                 onValueChange={(value) =>
                   onDraftChange((current) => ({ ...current, status: value }))
                 }
                 options={statusOptions}
-                placeholder="选择状态"
-                searchPlaceholder="搜索状态"
+                placeholder="Text"
+                searchPlaceholder="Text"
                 value={draft.status}
               />
             </WorkspaceField>
 
-            <WorkspaceField label="可见性">
+            <WorkspaceField label="Text">
               <OptionCombobox
-                ariaLabel="域名可见性"
-                emptyLabel="没有匹配的可见性"
+                ariaLabel="DomainText"
+                emptyLabel="Text"
                 onValueChange={(value) =>
                   onDraftChange((current) => ({
                     ...current,
@@ -131,18 +131,18 @@ export function DnsDomainFormDialog({
                   }))
                 }
                 options={visibilityOptions}
-                placeholder="选择可见性"
-                searchPlaceholder="搜索可见性"
+                placeholder="Text"
+                searchPlaceholder="Text"
                 value={draft.visibility}
               />
             </WorkspaceField>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <WorkspaceField label="发布状态">
+            <WorkspaceField label="Text">
               <OptionCombobox
-                ariaLabel="域名发布状态"
-                emptyLabel="没有匹配的发布状态"
+                ariaLabel="DomainText"
+                emptyLabel="Text"
                 onValueChange={(value) =>
                   onDraftChange((current) => ({
                     ...current,
@@ -150,17 +150,17 @@ export function DnsDomainFormDialog({
                   }))
                 }
                 options={publicationOptions}
-                placeholder="选择发布状态"
-                searchPlaceholder="搜索发布状态"
+                placeholder="Text"
+                searchPlaceholder="Text"
                 value={draft.publicationStatus}
               />
             </WorkspaceField>
 
-            <WorkspaceField label="DNS 服务商账号">
+            <WorkspaceField label="DNS Text">
               <div className="space-y-2">
                 <OptionCombobox
-                  ariaLabel="DNS 服务商账号"
-                  emptyLabel="没有匹配 Provider 账号"
+                  ariaLabel="DNS Text"
+                  emptyLabel="Text Provider Text"
                   onValueChange={(value) =>
                     onDraftChange((current) => ({
                       ...current,
@@ -168,8 +168,8 @@ export function DnsDomainFormDialog({
                     }))
                   }
                   options={providerOptions}
-                  placeholder="选择服务商账号"
-                  searchPlaceholder="搜索服务商账号"
+                  placeholder="Text"
+                  searchPlaceholder="Text"
                   value={draft.providerAccountId || undefined}
                 />
                 {draft.providerAccountId ? (
@@ -185,17 +185,17 @@ export function DnsDomainFormDialog({
                       }))
                     }
                   >
-                    解除 Provider 绑定
+                    Text Provider Text
                   </Button>
                 ) : null}
               </div>
             </WorkspaceField>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            <WorkspaceField label="健康状态">
+            <WorkspaceField label="Text">
               <OptionCombobox
-                ariaLabel="域名健康状态"
-                emptyLabel="没有匹配的健康状态"
+                ariaLabel="DomainText"
+                emptyLabel="Text"
                 onValueChange={(value) =>
                   onDraftChange((current) => ({
                     ...current,
@@ -207,13 +207,13 @@ export function DnsDomainFormDialog({
                   { value: "unknown", label: "unknown" },
                   { value: "degraded", label: "degraded" },
                 ]}
-                placeholder="选择健康状态"
-                searchPlaceholder="搜索健康状态"
+                placeholder="Text"
+                searchPlaceholder="Text"
                 value={draft.healthStatus}
               />
             </WorkspaceField>
 
-            <WorkspaceField label="权重">
+            <WorkspaceField label="Text">
               <Input
                 className="h-9"
                 min={0}
@@ -241,7 +241,7 @@ export function DnsDomainFormDialog({
               }
             />
             <Label className="text-sm" htmlFor="admin-domain-default">
-              设为默认
+              Text
             </Label>
           </div>
         </div>
@@ -253,13 +253,13 @@ export function DnsDomainFormDialog({
             </NoticeBanner>
           ) : null}
           <DialogClose asChild>
-            <Button variant="outline">取消</Button>
+            <Button variant="outline">Cancel</Button>
           </DialogClose>
           <Button
             disabled={isPending || draft.domain.trim() === ""}
             onClick={onSubmit}
           >
-            {isPending ? "提交中..." : isEditing ? "保存变更" : "添加"}
+            {isPending ? "Submitting..." : isEditing ? "Text" : "Text"}
           </Button>
         </DialogFooter>
       </DialogContent>

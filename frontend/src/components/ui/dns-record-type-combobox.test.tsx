@@ -8,7 +8,7 @@ describe("DNSRecordTypeCombobox", () => {
 
     render(<DNSRecordTypeCombobox value="TXT" onValueChange={onValueChange} />);
 
-    const combobox = screen.getByRole("combobox", { name: "记录类型" });
+    const combobox = screen.getByRole("combobox", { name: "Text" });
     expect(combobox).toHaveValue("TXT");
 
     fireEvent.click(screen.getByRole("button", { name: "" }));

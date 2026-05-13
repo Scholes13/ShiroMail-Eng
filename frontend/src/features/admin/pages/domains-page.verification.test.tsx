@@ -77,7 +77,7 @@ describe("AdminDomainsPage verification", () => {
         kind: "root",
       },
       passed: false,
-      summary: "DNS 传播验证未通过，请根据缺失或漂移记录继续修复。",
+      summary: "DNS Text，Text。",
       zoneName: "provider-bound.test",
       verifiedCount: 1,
       totalCount: 2,
@@ -85,7 +85,7 @@ describe("AdminDomainsPage verification", () => {
         {
           verificationType: "dmarc",
           status: "drifted",
-          summary: "DMARC 策略仍未对齐",
+          summary: "DMARC Text",
           expectedRecords: [],
           observedRecords: [],
           repairRecords: [
@@ -107,18 +107,18 @@ describe("AdminDomainsPage verification", () => {
   it("shows verification details and dns link after verify", async () => {
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: "验证" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(verifyAdminDomain)).toHaveBeenCalled();
     });
     expect(vi.mocked(verifyAdminDomain).mock.calls[0]?.[0]).toBe(7);
 
-    expect(await screen.findByText("最近一次验证未通过")).toBeInTheDocument();
-    expect(screen.getByText("传播部分通过")).toBeInTheDocument();
-    expect(screen.getByText("DMARC 策略仍未对齐")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
+    expect(screen.getByText("Text")).toBeInTheDocument();
+    expect(screen.getByText("DMARC Text")).toBeInTheDocument();
     expect(screen.getAllByText(/_dmarc\.provider-bound\.test/).length).toBeGreaterThan(0);
-    expect(screen.getByRole("link", { name: "前往 DNS 配置" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Text DNS Text" })).toHaveAttribute(
       "href",
       "/admin/dns?domainId=7&providerId=1",
     );

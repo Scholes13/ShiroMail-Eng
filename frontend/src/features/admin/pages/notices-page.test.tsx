@@ -30,8 +30,8 @@ describe("AdminNoticesPage", () => {
     vi.mocked(fetchAdminNotices).mockResolvedValue([
       {
         id: 1,
-        title: "平台维护",
-        body: "今晚 23:00 进行数据库升级。",
+        title: "Text",
+        body: "Text 23:00 Text。",
         category: "maintenance",
         level: "warning",
         publishedAt: "2026-04-03T10:00:00Z",
@@ -39,16 +39,16 @@ describe("AdminNoticesPage", () => {
     ]);
     vi.mocked(createAdminNotice).mockResolvedValue({
       id: 2,
-      title: "发布新版本",
-      body: "Webhook 与 API Key 管理已完成升级。",
+      title: "Text",
+      body: "Webhook Text API Key Text。",
       category: "release",
       level: "info",
       publishedAt: "2026-04-03T11:00:00Z",
     });
     vi.mocked(updateAdminNotice).mockResolvedValue({
       id: 1,
-      title: "平台维护更新",
-      body: "维护窗口已调整到 23:30。",
+      title: "Text",
+      body: "Text and  23:30。",
       category: "maintenance",
       level: "warning",
       publishedAt: "2026-04-03T10:00:00Z",
@@ -70,8 +70,8 @@ describe("AdminNoticesPage", () => {
       </QueryClientProvider>,
     );
 
-    expect(await screen.findByText("平台维护")).toBeInTheDocument();
-    expect(await screen.findByText("今晚 23:00 进行数据库升级。")).toBeInTheDocument();
+    expect(await screen.findByText("Text")).toBeInTheDocument();
+    expect(await screen.findByText("Text 23:00 Text。")).toBeInTheDocument();
     expect(await screen.findByText("maintenance")).toBeInTheDocument();
   });
 
@@ -89,18 +89,18 @@ describe("AdminNoticesPage", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.change(await screen.findByPlaceholderText("公告标题"), {
-      target: { value: "发布新版本" },
+    fireEvent.change(await screen.findByPlaceholderText("NoticesSubject"), {
+      target: { value: "Text" },
     });
-    fireEvent.change(screen.getByPlaceholderText("公告正文"), {
-      target: { value: "Webhook 与 API Key 管理已完成升级。" },
+    fireEvent.change(screen.getByPlaceholderText("NoticesBody"), {
+      target: { value: "Webhook Text API Key Text。" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "发布公告" }));
+    fireEvent.click(screen.getByRole("button", { name: "TextNotices" }));
 
     await waitFor(() => {
       expect(vi.mocked(createAdminNotice).mock.calls[0]?.[0]).toEqual({
-        title: "发布新版本",
-        body: "Webhook 与 API Key 管理已完成升级。",
+        title: "Text",
+        body: "Webhook Text API Key Text。",
         category: "platform",
         level: "info",
       });
@@ -121,29 +121,29 @@ describe("AdminNoticesPage", () => {
       </QueryClientProvider>,
     );
 
-    fireEvent.click(await screen.findByRole("button", { name: "编辑" }));
-    fireEvent.change(await screen.findByDisplayValue("平台维护"), {
-      target: { value: "平台维护更新" },
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
+    fireEvent.change(await screen.findByDisplayValue("Text"), {
+      target: { value: "Text" },
     });
-    fireEvent.change(screen.getByDisplayValue("今晚 23:00 进行数据库升级。"), {
-      target: { value: "维护窗口已调整到 23:30。" },
+    fireEvent.change(screen.getByDisplayValue("Text 23:00 Text。"), {
+      target: { value: "Text and  23:30。" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "保存修改" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(updateAdminNotice).mock.calls[0]).toEqual([
         1,
         {
-          title: "平台维护更新",
-          body: "维护窗口已调整到 23:30。",
+          title: "Text",
+          body: "Text and  23:30。",
           category: "maintenance",
           level: "warning",
         },
       ]);
     });
 
-    fireEvent.click(await screen.findByRole("button", { name: "删除" }));
-    fireEvent.click(await screen.findByRole("button", { name: "确认删除" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(deleteAdminNotice).mock.calls[0]?.[0]).toBe(1);

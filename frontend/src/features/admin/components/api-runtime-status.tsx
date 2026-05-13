@@ -15,7 +15,7 @@ export function APIRuntimeStatus({ data }: APIRuntimeStatusProps) {
           {data?.enabled ? "Rate limit enabled" : "Rate limit disabled"}
         </div>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          当前后端读取到的主限流状态。保存后这里会随着轮询刷新自动更新。
+          Text and Text。TextRefreshText。
         </p>
       </div>
       <div className="rounded-2xl border border-border/60 bg-muted/20 p-4">
@@ -26,7 +26,7 @@ export function APIRuntimeStatus({ data }: APIRuntimeStatusProps) {
           {data?.identityMode === "ip" ? "IP only" : "Bearer / IP mixed"}
         </div>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          匿名流量走 IP 桶；已认证流量根据当前策略决定是否按 Bearer Token 分桶。
+          Text IP Text；Text Bearer Token Text。
         </p>
       </div>
       <div className="rounded-2xl border border-border/60 bg-muted/20 p-4">
@@ -39,7 +39,7 @@ export function APIRuntimeStatus({ data }: APIRuntimeStatusProps) {
             : "-- / --"}
         </div>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          左侧是匿名请求每分钟上限，右侧是已认证请求每分钟上限。
+          Text，Text。
         </p>
       </div>
       <div className="rounded-2xl border border-border/60 bg-muted/20 p-4">
@@ -52,7 +52,7 @@ export function APIRuntimeStatus({ data }: APIRuntimeStatusProps) {
             : "Disabled"}
         </div>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          作为第二层兜底桶，适合限制共享代理、出口合并或单源高频打点。
+          Text，Text、Text。
         </p>
       </div>
     </div>

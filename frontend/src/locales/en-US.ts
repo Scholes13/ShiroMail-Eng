@@ -8,7 +8,7 @@ const translation = {
     light: "Light",
     dark: "Dark",
     system: "System",
-    simplifiedChinese: "简体中文",
+    simplifiedChinese: "Simplified Chinese",
     english: "English",
     save: "Save settings",
     saving: "Saving...",

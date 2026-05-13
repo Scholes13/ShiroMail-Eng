@@ -79,8 +79,8 @@ describe("AdminDnsPage provider form", () => {
   it("switches credential fields when auth mode changes", async () => {
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: "新增 Provider 账号" }));
-    const dialog = await screen.findByRole("dialog", { name: "新增 Provider 账号" });
+    fireEvent.click(await screen.findByRole("button", { name: "Text Provider Text" }));
+    const dialog = await screen.findByRole("dialog", { name: "Text Provider Text" });
     const dialogQueries = within(dialog);
 
     expect(dialogQueries.getByLabelText("API Token")).toBeInTheDocument();
@@ -94,7 +94,7 @@ describe("AdminDnsPage provider form", () => {
     expect(dialogQueries.getByLabelText("Account Email")).toBeInTheDocument();
     expect(dialogQueries.getByLabelText("Global API Key")).toBeInTheDocument();
 
-    fireEvent.click(dialogQueries.getByRole("combobox", { name: "DNS 服务商" }));
+    fireEvent.click(dialogQueries.getByRole("combobox", { name: "DNS Text" }));
     fireEvent.click(await screen.findByRole("option", { name: "Spaceship" }));
 
     expect(dialogQueries.queryByLabelText("Account Email")).not.toBeInTheDocument();
@@ -107,21 +107,21 @@ describe("AdminDnsPage provider form", () => {
   it("submits only the active auth fields for global api key mode", async () => {
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: "新增 Provider 账号" }));
-    const dialog = await screen.findByRole("dialog", { name: "新增 Provider 账号" });
+    fireEvent.click(await screen.findByRole("button", { name: "Text Provider Text" }));
+    const dialog = await screen.findByRole("dialog", { name: "Text Provider Text" });
     const dialogQueries = within(dialog);
 
-    expect(dialogQueries.queryByLabelText("能力")).not.toBeInTheDocument();
-    expect(dialogQueries.getByLabelText("权限")).toBeInTheDocument();
+    expect(dialogQueries.queryByLabelText("Text")).not.toBeInTheDocument();
+    expect(dialogQueries.getByLabelText("Text")).toBeInTheDocument();
 
-    fireEvent.change(dialogQueries.getByPlaceholderText("例如：Cloudflare 主账号"), {
+    fireEvent.change(dialogQueries.getByPlaceholderText("Example: Cloudflare Text"), {
       target: { value: "CF Global Admin" },
     });
     fireEvent.click(dialogQueries.getByRole("combobox", { name: "Provider Auth Type" }));
     fireEvent.click(await screen.findByRole("option", { name: "Global API Key + Email" }));
-    const permissionCombobox = dialogQueries.getByRole("combobox", { name: "权限" });
+    const permissionCombobox = dialogQueries.getByRole("combobox", { name: "Text" });
     fireEvent.click(permissionCombobox);
-    fireEvent.click(await screen.findByRole("option", { name: "DNS 读取" }));
+    fireEvent.click(await screen.findByRole("option", { name: "DNS Text" }));
 
     fireEvent.change(dialogQueries.getByLabelText("Account Email"), {
       target: { value: " admin@example.com " },
@@ -131,7 +131,7 @@ describe("AdminDnsPage provider form", () => {
     });
 
     const submitButton = screen
-      .getAllByText("添加 Provider 账号")
+      .getAllByText("Text Provider Text")
       .map((node) => node.closest("button"))
       .find((button): button is HTMLButtonElement => !!button && !button.disabled);
 
@@ -175,20 +175,20 @@ describe("AdminDnsPage provider form", () => {
 
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: "Primary Cloudflare 编辑" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Primary Cloudflare Text" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "编辑 Provider 账号" });
+    const dialog = await screen.findByRole("dialog", { name: "Text Provider Text" });
     const dialogQueries = within(dialog);
 
     expect(dialogQueries.getByDisplayValue("Primary Cloudflare")).toBeInTheDocument();
     expect(dialogQueries.getByLabelText("API Token")).toHaveValue("");
 
-    fireEvent.change(dialogQueries.getByPlaceholderText("例如：Cloudflare 主账号"), {
+    fireEvent.change(dialogQueries.getByPlaceholderText("Example: Cloudflare Text"), {
       target: { value: "Primary Cloudflare Updated" },
     });
 
     const submitButton = screen
-      .getAllByText("保存 Provider 账号")
+      .getAllByText("Text Provider Text")
       .map((node) => node.closest("button"))
       .find((button): button is HTMLButtonElement => !!button && !button.disabled);
 
@@ -248,14 +248,14 @@ describe("AdminDnsPage provider form", () => {
 
     renderPage();
 
-    fireEvent.click(await screen.findByRole("button", { name: "Bound Cloudflare 编辑" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Bound Cloudflare Text" }));
 
-    const dialog = await screen.findByRole("dialog", { name: "编辑 Provider 账号" });
+    const dialog = await screen.findByRole("dialog", { name: "Text Provider Text" });
     const dialogQueries = within(dialog);
 
-    expect(dialogQueries.getByRole("combobox", { name: "DNS 服务商" })).toBeDisabled();
+    expect(dialogQueries.getByRole("combobox", { name: "DNS Text" })).toBeDisabled();
     expect(dialogQueries.getByRole("combobox", { name: "Provider Auth Type" })).toBeDisabled();
-    expect(dialogQueries.getByText("当前 Provider 已绑定域名，可继续更新显示名称、凭据、状态和权限，但不能改服务商类型或鉴权方式。")).toBeInTheDocument();
+    expect(dialogQueries.getByText("Text Provider TextDomain，Text、Text、Text，Text。")).toBeInTheDocument();
   });
 
   it("uses the basic record-type combobox when building a change set", async () => {
@@ -306,20 +306,20 @@ describe("AdminDnsPage provider form", () => {
     renderPage();
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Primary Cloudflare 查看 Zones" }),
+      await screen.findByRole("button", { name: "Primary Cloudflare Text Zones" }),
     );
-    fireEvent.click(await screen.findByRole("button", { name: "example.com 查看 Records" }));
+    fireEvent.click(await screen.findByRole("button", { name: "example.com Text Records" }));
 
     await screen.findByText("mx1.example.com");
 
-    fireEvent.click(screen.getByRole("button", { name: "新增记录" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
-    const typeInputs = await screen.findAllByRole("combobox", { name: "记录类型" });
-    const nameInputs = await screen.findAllByLabelText("记录名称");
-    const valueInputs = await screen.findAllByLabelText("记录值");
+    const typeInputs = await screen.findAllByRole("combobox", { name: "Text" });
+    const nameInputs = await screen.findAllByLabelText("Text");
+    const valueInputs = await screen.findAllByLabelText("Text");
     const ttlInputs = await screen.findAllByLabelText("TTL");
-    const priorityInputs = await screen.findAllByLabelText("优先级");
-    const proxiedInputs = await screen.findAllByLabelText("是否代理");
+    const priorityInputs = await screen.findAllByLabelText("Text");
+    const proxiedInputs = await screen.findAllByLabelText("Text");
 
     const index = typeInputs.length - 1;
 
@@ -333,7 +333,7 @@ describe("AdminDnsPage provider form", () => {
     fireEvent.change(priorityInputs[index], { target: { value: "0" } });
     fireEvent.click(proxiedInputs[index]);
 
-    fireEvent.click(screen.getByRole("button", { name: "预览自动配置" }));
+    fireEvent.click(screen.getByRole("button", { name: "Text" }));
 
     await waitFor(() => {
       expect(vi.mocked(previewAdminDomainProviderChangeSet)).toHaveBeenCalledTimes(1);
@@ -414,15 +414,15 @@ describe("AdminDnsPage provider form", () => {
     renderPage();
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "Primary Cloudflare 查看 Zones" }),
+      await screen.findByRole("button", { name: "Primary Cloudflare Text Zones" }),
     );
-    fireEvent.click(await screen.findByRole("button", { name: "example.com 查看 Records" }));
+    fireEvent.click(await screen.findByRole("button", { name: "example.com Text Records" }));
 
     await screen.findByText("v=spf1 -all");
 
-    fireEvent.click(await screen.findByRole("button", { name: "删除记录" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Text" }));
 
-    const saveButton = screen.getByRole("button", { name: "保存到服务商" });
+    const saveButton = screen.getByRole("button", { name: "Text and Text" });
     expect(saveButton).toBeEnabled();
 
     fireEvent.click(saveButton);
